@@ -38,7 +38,7 @@ public class  Member {
 	private int age;
 
 	@Column(nullable = false)
-	private int readBookCount;
+	private int readBookCount = 0;
 
 	@Column(nullable = false)
 	private String roleName = "ROLE_USER";
