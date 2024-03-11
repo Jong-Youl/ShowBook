@@ -1,4 +1,4 @@
-package com.showbook.back.security;
+package com.showbook.back.security.service;
 
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 
