@@ -2,6 +2,8 @@ package com.showbook.back.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,20 +40,18 @@ public class Book {
 	@Column(nullable = false)
 	private String description;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "category_id")
-	private BookCategory bookCategory;
+	@Enumerated(EnumType.STRING)
+	private Category category;
 
 	@Builder
-	public Book (String title, String author, String publisher, int totalPage, String bookImageURL, String description, BookCategory bookCategory) {
+	public Book (String title, String author, String publisher, int totalPage, String bookImageURL, String description, Category category) {
 		this.title = title;
 		this.author = author;
 		this.publisher = publisher;
 		this.totalPage = totalPage;
 		this.bookImageURL = bookImageURL;
 		this.description = description;
-		this.bookCategory = bookCategory;
+		this.category = category;
 	}
-
 
 }
