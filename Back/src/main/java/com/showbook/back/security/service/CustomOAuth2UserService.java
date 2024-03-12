@@ -3,6 +3,7 @@ package com.showbook.back.security.service;
 import com.showbook.back.entity.Member;
 import com.showbook.back.repository.MemberRepository;
 import com.showbook.back.security.dto.OAuth2Attributes;
+import com.showbook.back.service.MemberService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,7 +23,7 @@ import java.util.Optional;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     @Transactional
     @Override
@@ -48,9 +49,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String email = (String) memberAttribute.get("email");
 
         // 이미 가입된 회원인지 조회 DB에 조회
-        Optional<Member> findMember = memberRepository.findByEmail(email);
+        Member findMember = memberService.findMemberByEmail(email);
 
-        if (findMember.isEmpty()) { // 회원이 존재하지 않는 경우
+        if (findMember == null) { // 회원이 존재하지 않는 경우
             memberAttribute.put("exist", false);
             return new DefaultOAuth2User( // 권한 또한 존재하지 않으므로 default인 ROLE_USER를 넣어준다
                     Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
@@ -61,7 +62,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         memberAttribute.put("exist", true);
 
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_".concat(findMember.get().getRoleName()))),
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_".concat(findMember.getRoleName()))),
                 memberAttribute, "email"
         );
     }

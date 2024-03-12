@@ -29,19 +29,16 @@ public class  Member {
 	private String email;
 
 	@Column(nullable = false)
-	@ColumnDefault("닉네임을 설정하세요")
-	private String nickname; // 설문에서 지정
+	private String nickname; // 설문에서 작성
 
 	@Column(nullable = false)
-	private String name;
+	private String name; // 설문에서 작성
 
 	@Column(nullable = false)
-	@ColumnDefault("1")
-	private int gender; // 0 : 남성, 1 : 여성
+	private int gender; // 0 : 남성, 1 : 여성, 설문에서 작성
 
 	@Column(nullable = false)
-	@ColumnDefault("0")
-	private int age; // 설문에서 지정
+	private int age; // 설문에서 작성
 
 	@Column(nullable = false)
 	@ColumnDefault("0")

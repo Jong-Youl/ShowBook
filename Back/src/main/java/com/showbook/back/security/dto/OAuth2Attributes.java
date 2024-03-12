@@ -36,8 +36,9 @@ public class OAuth2Attributes {
 
     // 구글 로그인은 바로 get()으로 접근 가능 -> 사용자 정보가 따로 Wrapping 되지 않기 때문이다.
     private static OAuth2Attributes ofGoogle(String provider, String attributeKey, Map<String, Object> attributes) {
+        String googleEmail = provider + "_" + (String)attributes.get("email");
         return OAuth2Attributes.builder()
-                .email((String)attributes.get("email"))
+                .email(googleEmail)
                 .name((String) attributes.get("name"))
                 .profile((String) attributes.get("profile"))
                 .provider(provider)
@@ -52,8 +53,10 @@ public class OAuth2Attributes {
         Map<String, Object> kakaoAccount  = (Map<String,Object>) attributes.get("kakao_account");
         Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile_");
 
+        String kakaoEmail = provider + "_" + (String)kakaoAccount.get("email");
+
         return OAuth2Attributes.builder()
-                .email((String) kakaoAccount.get("email"))
+                .email(kakaoEmail)
                 .provider(provider)
                 .name((String) attributes.get("name"))
                 .profile((String) attributes.get("profile"))
