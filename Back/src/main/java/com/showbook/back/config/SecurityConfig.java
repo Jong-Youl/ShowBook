@@ -1,11 +1,13 @@
 package com.showbook.back.config;
 
+import com.showbook.back.repository.MemberRepository;
 import com.showbook.back.security.handlers.JwtAuthenticationEntryPoint;
 import com.showbook.back.security.handlers.OAuth2FailureHandler;
 import com.showbook.back.security.handlers.OAuth2SuccessHandler;
 import com.showbook.back.security.jwt.JwtAuthenticationFilter;
 import com.showbook.back.security.jwt.JwtTokenUtil;
 import com.showbook.back.security.service.CustomOAuth2UserService;
+import com.showbook.back.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +31,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
     private final JwtTokenUtil jwtTokenUtil;
+    private final MemberService memberService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final CustomOAuth2UserService customOAuth2UserService;
@@ -58,7 +61,7 @@ public class SecurityConfig {
                                 .failureHandler(oAuth2FailureHandler)
                         )
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil,memberService), UsernamePasswordAuthenticationFilter.class)
                 ;
 
         return http.build();

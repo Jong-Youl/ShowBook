@@ -11,6 +11,6 @@ public class RedisProperties {
 
     private String host;
     private int port;
-//    private String password;
+//    private String password; // 암호 생기면 추가
 
 }
