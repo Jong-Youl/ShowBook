@@ -2,7 +2,7 @@ package com.showbook.back.security.service;
 
 import com.showbook.back.entity.Member;
 import com.showbook.back.repository.MemberRepository;
-import com.showbook.back.security.dto.OAuth2Attribute;
+import com.showbook.back.security.dto.OAuth2Attributes;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,15 +39,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 
         // OAuth2User 정보를 바탕으로 OAuth2Attribute 객체 생성
-        OAuth2Attribute oAuth2Attribute = OAuth2Attribute.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+        OAuth2Attributes oAuth2Attributes = OAuth2Attributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         // 속성값들을 Map으로 받는다.
-        Map<String, Object> memberAttribute = oAuth2Attribute.convertToMap();
+        Map<String, Object> memberAttribute = oAuth2Attributes.convertToMap();
 
         // 사용자 email 정보를 가져온다
         String email = (String) memberAttribute.get("email");
 
-        // 이미 가입된 회원인지 조회
+        // 이미 가입된 회원인지 조회 DB에 조회
         Optional<Member> findMember = memberRepository.findByEmail(email);
 
         if (findMember.isEmpty()) { // 회원이 존재하지 않는 경우
