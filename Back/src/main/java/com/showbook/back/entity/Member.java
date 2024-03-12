@@ -11,9 +11,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class  Member {
 
@@ -26,18 +29,22 @@ public class  Member {
 	private String email;
 
 	@Column(nullable = false)
-	private String nickname;
+	@ColumnDefault("닉네임을 설정하세요")
+	private String nickname; // 설문에서 지정
 
 	@Column(nullable = false)
 	private String name;
 
 	@Column(nullable = false)
+	@ColumnDefault("1")
 	private int gender; // 0 : 남성, 1 : 여성
 
 	@Column(nullable = false)
-	private int age;
+	@ColumnDefault("0")
+	private int age; // 설문에서 지정
 
 	@Column(nullable = false)
+	@ColumnDefault("0")
 	private int readBookCount;
 
 	@Column(nullable = false)
