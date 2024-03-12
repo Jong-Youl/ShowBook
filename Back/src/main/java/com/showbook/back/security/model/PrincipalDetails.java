@@ -19,9 +19,10 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     private final Member member;
     private final Map<String, Object> oAuthAttributes;
 
+
     @Override
     public String getName() {
-        return null;
+        return member.getName();
     }
 
     @Override
