@@ -13,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
-@Entity
+//@Entity
 @NoArgsConstructor
 public class Review {
 	@Id
