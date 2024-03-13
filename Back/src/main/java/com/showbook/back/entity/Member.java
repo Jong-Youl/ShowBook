@@ -1,6 +1,7 @@
 package com.showbook.back.entity;
 
 
+import com.showbook.back.dto.request.SignupRequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
