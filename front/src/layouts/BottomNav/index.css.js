@@ -7,18 +7,18 @@ export const NavContainer = styled.div`
   max-height: 10vh;
   max-width: 456px;
   margin: 0 auto;
-  background-color: #ffc2c2;
+  background-color: var(--bg-beige);
+  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   height: 100%;
 `;
 
 export const NavItem = styled(Link)`
-  background-color: black;
-  color: white;
+  color: var(--font-black);
   text-decoration: none;
-  padding: 8px 16px;
-  margin: 4px;
+  //padding: 8px 16px;
+
   border-radius: 4px;
   display: flex;
   align-items: center;

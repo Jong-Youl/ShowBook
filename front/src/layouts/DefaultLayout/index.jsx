@@ -16,7 +16,7 @@ const DefaultLayout = styled.div`
   max-width: 456px;
   margin: 0 auto;
   padding: 30px 20px 20px;
-  background-color: #fffdf9;
+  background-color: var(--bg-beige);
   display: flex;
   flex-direction: column;
   gap: 24px;
