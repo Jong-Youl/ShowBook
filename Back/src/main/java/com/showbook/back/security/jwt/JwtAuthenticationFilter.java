@@ -1,8 +1,10 @@
 package com.showbook.back.security.jwt;
 
+import com.showbook.back.dto.RefreshToken;
 import com.showbook.back.entity.Member;
 import com.showbook.back.repository.MemberRepository;
 import com.showbook.back.service.MemberService;
+import com.showbook.back.service.RefreshTokenService;
 import io.netty.util.internal.StringUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,6 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,11 +33,15 @@ import java.util.List;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    @Value("${REFRESH_EXPIRATION_TIME}")
+    private long REFRESH_EXPIRATION_TIME;
+
     private final JwtTokenUtil jwtTokenUtil;
     private final MemberService memberService;
+    private final RefreshTokenService refreshTokenService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
+        log.info("JwtAuthenticationFilter.doFilterInternal");
         try {
             // header에서 accessToken을 가져옴
             String accessToken = request.getHeader("Authorization");
@@ -62,8 +71,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     // refresh 토큰 저장소 존재 유무 확인
                     boolean isRefreshToken = jwtTokenUtil.existsRefreshToken(accessToken);
                     if (validateRefreshToken && isRefreshToken) {
-                        Long memberId = jwtTokenUtil.getMemberId(accessToken); // accessToken에 이상이 있으면 여기서 예외
+                        // 기존의 accessToken을 기반 -> redis의 refresh토큰을 찾고
+                        RefreshToken existedRefreshToken = refreshTokenService.findRefreshTokenByAccessToken(accessToken);
+                        // 거기에 있는 memberId를 갖고온다
+                        Long memberId = existedRefreshToken.getMemberId();
+                        // 새로운 accessToken을 발급한다
                         String newAccessToken = jwtTokenUtil.createAccessToken(memberId);
+                        // redis에 refresh토큰을 저장
+                        existedRefreshToken.updateAccessToken(newAccessToken);
+                        refreshTokenService.saveTokenInfo(existedRefreshToken);
+
+                        log.info("newAccessToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken));
+                        log.info("existedRefreshToken -> {}", existedRefreshToken.getRefreshToken());
+
+                        response.setHeader(HttpHeaders.AUTHORIZATION,newAccessToken);
+
+                        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", existedRefreshToken.getRefreshToken())
+                                .maxAge(REFRESH_EXPIRATION_TIME)
+                                .secure(true)
+                                .httpOnly(true)
+                                .path("/")
+                                .build();
+
+                        response.setHeader(HttpHeaders.SET_COOKIE,refreshTokenCookie.toString());
+
                         this.setAuthentication(newAccessToken);
                     }
                 }
@@ -71,13 +102,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
 
         } catch(Exception e) {
-            log.error(e.getMessage());
+            log.error("JwtAuthenticaionFilter -> " + e.getMessage());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            throw new RuntimeException(e.getMessage());
         }
 
     }
 
     public void setAuthentication(String accessToken) {
-        Member member = memberService.findMemberByEmail(jwtTokenUtil.getEmail(accessToken));
+//        log.info("accessToken -> {}",accessToken);
+//        log.info("refreshToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(accessToken).getRefreshToken());
+        Long memberId = refreshTokenService.findRefreshTokenByAccessToken(accessToken).getMemberId();
+        Member member = memberService.findMemberById(memberId);
         Authentication auth = new UsernamePasswordAuthenticationToken(member, "",
                 List.of(new SimpleGrantedAuthority(member.getRoleName())));
         SecurityContextHolder.getContext().setAuthentication(auth);

@@ -106,6 +106,7 @@ public class JwtTokenUtil {
             DecodedJWT decodedJWT = verify(jwtToken);
             return decodedJWT != null && !decodedJWT.getExpiresAt().before(new Date());
         } catch (JWTVerificationException e) {
+            log.error("JwtTokenUtil.isTokenExpired에서 예외 - {}",e.getMessage());
             return false;
         }
     }
@@ -114,10 +115,11 @@ public class JwtTokenUtil {
     public DecodedJWT verify(String token) {
         try {
             // HMAC256 알고리즘을 사용하여 JWT를 확인하기 위한 JWTVerifier를 생성
+            token = token.replace(PREFIX, "");
             JWTVerifier jwtVerifier =JWT.require(Algorithm.HMAC256(SECRET_KEY)).withIssuer(ISSUER).build();
             return jwtVerifier.verify(token);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("JwtTokenUtil.verify에서 예외 - {}",e.getMessage());
             return null;
         }
     }
