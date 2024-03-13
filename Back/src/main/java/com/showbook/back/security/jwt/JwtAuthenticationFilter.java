@@ -60,7 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     // refresh 토큰 만료시간 검증
                     boolean validateRefreshToken = jwtTokenUtil.isTokenExpired(refreshToken);
                     // refresh 토큰 저장소 존재 유무 확인
-                    boolean isRefreshToken = jwtTokenUtil.existsRefreshToken(refreshToken);
+                    boolean isRefreshToken = jwtTokenUtil.existsRefreshToken(accessToken);
                     if (validateRefreshToken && isRefreshToken) {
                         Long memberId = jwtTokenUtil.getMemberId(accessToken); // accessToken에 이상이 있으면 여기서 예외
                         String newAccessToken = jwtTokenUtil.createAccessToken(memberId);

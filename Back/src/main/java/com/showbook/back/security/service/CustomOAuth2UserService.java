@@ -6,6 +6,7 @@ import com.showbook.back.security.dto.OAuth2Attributes;
 import com.showbook.back.service.MemberService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Slf4j
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
@@ -28,6 +30,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     @Transactional
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        log.info("CustomOAuth2UserService.loadUser 도착");
         // 기본 OAuth2UserService 객체 생성 후
         OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
 
@@ -51,11 +54,13 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         // 이미 가입된 회원인지 조회 DB에 조회
         Member findMember = memberService.findMemberByEmail(email);
 
+        log.info("findMember -> {}",findMember);
+
         if (findMember == null) { // 회원이 존재하지 않는 경우
             memberAttribute.put("exist", false);
             return new DefaultOAuth2User( // 권한 또한 존재하지 않으므로 default인 ROLE_USER를 넣어준다
                     Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
-                    memberAttribute, email);
+                    memberAttribute, "email");
         }
 
         // 회원이 존재하는 경우 -> exist 값을 true로 넣어준다

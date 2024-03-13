@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import lombok.NoArgsConstructor;
 
-@Entity
+//@Entity
 @NoArgsConstructor
 public class ShookLike {
 	@EmbeddedId

@@ -25,7 +25,7 @@ public class JwtTokenUtil {
     private final Integer ACCESS_EXPIRATION_TIME;
     private final Integer REFRESH_EXPIRATION_TIME;
 
-    public static final String PREFIX = "Bearer "; // 띄어쓰기 있어야 한다
+    public static final String PREFIX = "Bearer_"; // 띄어쓰기 있어야 한다
     private static final String ISSUER = "shook";
     public static final String HEADER_STRING = "Authorization";
 
@@ -91,9 +91,9 @@ public class JwtTokenUtil {
         }
     }
 
-    public boolean existsRefreshToken(String refreshToken) {
+    public boolean existsRefreshToken(String accessToken) {
 
-        Optional<RefreshToken> token = refreshTokenRepository.findById(refreshToken);
+        RefreshToken token = refreshTokenService.findRefreshTokenByAccessToken(accessToken);
 
         if (token != null) return true;
 
