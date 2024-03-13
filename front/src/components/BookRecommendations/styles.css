@@ -1,43 +1,45 @@
-#app { height: 100% }
-html,
-body {
-    position: relative;
-    height: 100%;
-}
+/*#app { height: 100% }*/
+/*html,*/
+/*body {*/
+/*    position: relative;*/
+/*    height: 100%;*/
+/*}*/
 
-body {
-    background: #eee;
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    color: #000;
-    margin: 0;
-    padding: 0;
-}
+/*body {*/
+/*    background: #eee;*/
+/*    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;*/
+/*    font-size: 14px;*/
+/*    color: #000;*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*}*/
 
-body {
-    background: #fff;
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    color: #000;
-    margin: 0;
-    padding: 0;
-}
+/*body {*/
+/*    background: #fff;*/
+/*    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;*/
+/*    font-size: 14px;*/
+/*    color: #000;*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*}*/
 
-html,
-body {
-    position: relative;
-    height: 100%;
-}
+/*html,*/
+/*body {*/
+/*    position: relative;*/
+/*    height: 100%;*/
+/*}*/
 
-#app {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+/*#app {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*}*/
 
 .swiper {
-    width: 255px;
-    height: 376px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 200px;
+    height: 300px;
 }
 
 .swiper-slide {

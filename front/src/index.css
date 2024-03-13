@@ -22,7 +22,7 @@ p {
   color: var(--font-black);
 }
 :root {
-  --main: #ee8b44;
+  --main: #D80041;
   --sub-color: #eab64d;
 
   --alert-green: #31a215;
@@ -30,7 +30,7 @@ p {
   --alert-red: #ffd5d5;
 
   --font-main: #ff725d;
-  --font-black: #8d9196;
+  --font-black: #535353;
   --font-gray: #aaacad;
   --font-light-gray: #b4b4b4;
 
@@ -44,8 +44,8 @@ p {
 
   --bold: 700;
   --medium: 500;
-  --regular: 400;
-  --light: 200;
+  --regular: 200;
+  --light: 100;
 
   --h1: 1.5rem;
   --h2: 1.375rem;
@@ -64,7 +64,7 @@ textarea {
   outline-style: none;
   color: inherit;
   border: none;
-  background-color: var(--pure-white);
+  /*background-color: var(--pure-white);*/
 }
 button {
   cursor: pointer;
@@ -93,4 +93,11 @@ a.active {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+body {
+    background: #eee;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #000;
 }

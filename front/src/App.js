@@ -6,7 +6,7 @@ import Library from './pages/Library';
 import MyPage from './pages/MyPage';
 import Shorts from './pages/Shorts';
 import Add from './pages/Add';
-import BottomNav from './components/BottomNav';
+import BottomNav from './layouts/BottomNav';
 
 import { QueryClientProvider } from 'react-query';
 import { queryClient } from './lib/queryClient';
