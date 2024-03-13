@@ -1,11 +1,11 @@
 import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {MobileLayout} from "./layouts/DefaultLayout";
 import MainPage from "./pages/MainPage";
 import Library from "./pages/Library";
-import Add from "./pages/Add";
 import MyPage from "./pages/MyPage";
-import {MobileLayout} from "./layouts/DefaultLayout";
 import Shorts from "./pages/Shorts";
+import Add from "./pages/Add";
 import BottomNav from "./components/BottomNav";
 
 function App() {

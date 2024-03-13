@@ -1,7 +1,7 @@
 import React from "react";
 
-const Add = () => {
+const Index = () => {
     return <div>Add Page</div>;
 }
 
-export default Add;
+export default Index;

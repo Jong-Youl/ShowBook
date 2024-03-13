@@ -1,4 +1,3 @@
-// src/styles/BottomNav.styles.js
 import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 

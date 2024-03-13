@@ -1,6 +1,5 @@
-// BottomNav 컴포넌트 파일 예: src/components/BottomNav.js
 import React from "react";
-import { NavContainer, NavItem } from "../styles/Bottomnav.styles";
+import { NavContainer, NavItem } from "./index.css";
 
 const BottomNav = () => {
     return (
