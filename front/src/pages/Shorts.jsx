@@ -1,6 +1,6 @@
 import React from "react";
 
-function Shorts() {
+const Shorts = () => {
     return <div>Shorts Page</div>;
 }
 

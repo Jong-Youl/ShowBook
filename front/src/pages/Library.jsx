@@ -1,6 +1,6 @@
 import React from "react";
 
-function Library() {
+const Library = () => {
     return <div>lib Page</div>;
 }
 
