@@ -56,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .filter(cookie -> cookie.getName().equals("refreshToken")) // 이름이 refreshToken인 cookie를 찾아서
                     .map(Cookie::getValue) // refreshToken을 찾음
                     .findFirst()// 어처피 1개이므로 findFirst
-                    .orElse(""); // 아무것도 없으면 ""
+                    .orElseThrow(() ->new RuntimeException("쿠키가 존재하지 않습니다!")); // 아무것도 없으면 ""
 
             log.info("refreshToken --> {}", refreshToken);
 
@@ -104,14 +104,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } catch(Exception e) {
             log.error("JwtAuthenticaionFilter -> " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            throw new RuntimeException(e.getMessage());
+            filterChain.doFilter(request,response);
         }
 
     }
 
     public void setAuthentication(String accessToken) {
-//        log.info("accessToken -> {}",accessToken);
-//        log.info("refreshToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(accessToken).getRefreshToken());
         Long memberId = refreshTokenService.findRefreshTokenByAccessToken(accessToken).getMemberId();
         Member member = memberService.findMemberById(memberId);
         Authentication auth = new UsernamePasswordAuthenticationToken(member, "",
