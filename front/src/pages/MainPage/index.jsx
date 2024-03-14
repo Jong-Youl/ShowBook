@@ -28,7 +28,7 @@ const MainPage = () => {
   return (
     <Container>
       <Heading>
-        <Heading bold color='black'>
+        <Heading $bold color='black'>
           조용한 수달
         </Heading>
         님
