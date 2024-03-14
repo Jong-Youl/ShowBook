@@ -66,11 +66,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     this.setAuthentication(accessToken);
                     // access토큰이 만료되었지만 refresh토큰은 남아있는 경우
                 } else if(!jwtTokenUtil.isTokenExpired(accessToken) && !(refreshToken.isEmpty())) {
+                    log.info("accessToken 만료!");
                     // refresh 토큰 만료시간 검증
                     boolean validateRefreshToken = jwtTokenUtil.isTokenExpired(refreshToken);
                     // refresh 토큰 저장소 존재 유무 확인
                     boolean isRefreshToken = jwtTokenUtil.existsRefreshToken(accessToken);
+                    log.info("validateRefreshToken - {}",validateRefreshToken);
+                    log.info("isRefreshToken - {}" , isRefreshToken);
                     if (validateRefreshToken && isRefreshToken) {
+                        log.info("refreshToken으로 accessToken 재발급!");
                         // 기존의 accessToken을 기반 -> redis의 refresh토큰을 찾고
                         RefreshToken existedRefreshToken = refreshTokenService.findRefreshTokenByAccessToken(accessToken);
                         // 거기에 있는 memberId를 갖고온다
@@ -81,10 +85,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         existedRefreshToken.updateAccessToken(newAccessToken);
                         refreshTokenService.saveTokenInfo(existedRefreshToken);
 
-                        log.info("newAccessToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken));
+                        log.info("newAccessToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken).getAccessToken());
                         log.info("existedRefreshToken -> {}", existedRefreshToken.getRefreshToken());
 
-                        response.setHeader(HttpHeaders.AUTHORIZATION,newAccessToken);
 
                         ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", existedRefreshToken.getRefreshToken())
                                 .maxAge(REFRESH_EXPIRATION_TIME)
@@ -93,7 +96,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                 .path("/")
                                 .build();
 
+                        response.setHeader(HttpHeaders.AUTHORIZATION,newAccessToken);
                         response.setHeader(HttpHeaders.SET_COOKIE,refreshTokenCookie.toString());
+
 
                         this.setAuthentication(newAccessToken);
                     }

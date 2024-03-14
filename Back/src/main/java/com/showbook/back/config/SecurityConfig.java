@@ -9,6 +9,7 @@ import com.showbook.back.security.jwt.JwtTokenUtil;
 import com.showbook.back.security.service.CustomOAuth2UserService;
 import com.showbook.back.service.MemberService;
 import com.showbook.back.service.RefreshTokenService;
+import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -50,8 +51,9 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(request ->
-                        request.anyRequest().permitAll()
+                .authorizeHttpRequests(request -> request
+                                .requestMatchers("/auth/test").authenticated()
+                                .anyRequest().permitAll()
                 )
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint))
