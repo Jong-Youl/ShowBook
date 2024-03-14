@@ -20,6 +20,7 @@ public class CorsConfig {
         config.addExposedHeader("Authorization");
         config.addExposedHeader("AccessToken");
         config.addExposedHeader("RefreshToken");
+        config.addExposedHeader("Set-Cookie");
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);
         source.registerCorsConfiguration("/**", config);

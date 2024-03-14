@@ -94,6 +94,7 @@ public class JwtTokenUtil {
     public boolean existsRefreshToken(String accessToken) {
 
         RefreshToken token = refreshTokenService.findRefreshTokenByAccessToken(accessToken);
+        log.info("JwtTokenUtil.existesRefreshToken -> token {}",token.getRefreshToken());
 
         if (token != null) return true;
 
@@ -131,7 +132,7 @@ public class JwtTokenUtil {
         if (decodedJWT != null) {
             return decodedJWT.getClaim("id").asLong();
         } else {
-            return null;
+            throw new RuntimeException("올바르지 못한 accessToken입니다!");
         }
     }
 
