@@ -42,13 +42,11 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
-        log.info("OAuth2SuccessHandler - onAuthenticationSuccess");
-
+        log.info("OAuth2SuccessHandler - onAuthenticationSuccess ON");
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String id = oAuth2User.getAttribute("id");
         String email = oAuth2User.getAttribute("email");
         String picture = oAuth2User.getAttribute("picture");
-        String provider = oAuth2User.getAttribute("provider");
         boolean isExist = oAuth2User.getAttribute("exist");
         String role = oAuth2User.getAuthorities().stream()
                 .findFirst()

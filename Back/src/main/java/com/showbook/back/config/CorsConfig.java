@@ -1,5 +1,6 @@
 package com.showbook.back.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -7,10 +8,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
+@Slf4j
 public class CorsConfig {
 
     @Bean
     public CorsFilter corsFilter() {
+        log.info("CorsFilter ON");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("http://localhost:5173");
@@ -19,7 +22,6 @@ public class CorsConfig {
         config.addAllowedHeader("*");
         config.addExposedHeader("Authorization");
         config.addExposedHeader("AccessToken");
-        config.addExposedHeader("RefreshToken");
         config.addExposedHeader("Set-Cookie");
         config.setAllowCredentials(true);
         config.setMaxAge(3600L);

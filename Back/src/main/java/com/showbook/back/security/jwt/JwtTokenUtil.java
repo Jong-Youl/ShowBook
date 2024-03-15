@@ -5,17 +5,26 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.showbook.back.common.constants.ErrorCode;
+import com.showbook.back.common.exception.CustomException;
 import com.showbook.back.dto.RefreshToken;
 import com.showbook.back.repository.RefreshTokenRepository;
 import com.showbook.back.security.dto.GeneratedToken;
 import com.showbook.back.service.RefreshTokenService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.Optional;
+
+import static com.showbook.back.common.constants.ErrorCode.UNAUTHORIZED_USER;
 
 @Slf4j
 @Component
@@ -132,7 +141,7 @@ public class JwtTokenUtil {
         if (decodedJWT != null) {
             return decodedJWT.getClaim("id").asLong();
         } else {
-            throw new RuntimeException("올바르지 못한 accessToken입니다!");
+            throw new CustomException(UNAUTHORIZED_USER);
         }
     }
 

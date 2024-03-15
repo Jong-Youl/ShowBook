@@ -29,7 +29,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @Slf4j
 public class SecurityConfig {
 
@@ -47,27 +47,29 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         log.info("SecurityConfig - 필터체인 시작");
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(request -> request
-                                .requestMatchers("/auth/test").authenticated()
-                                .anyRequest().permitAll()
-                )
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(jwtAuthenticationEntryPoint))
-                .oauth2Login(oauth -> // oauth2로그인에 대한 여러 설정의 진입점
-                        // oauth2 로그인 성공 이후 사용자 정보를 가져올 때 설정 담당
-                        oauth.userInfoEndpoint(c -> c.userService(customOAuth2UserService))
-                        // 로그인 성공 시 핸들러
-                                .successHandler(oAuth2SuccessHandler)
-                                .failureHandler(oAuth2FailureHandler)
-                        )
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil,memberService,refreshTokenService),
-                        UsernamePasswordAuthenticationFilter.class)
-                ;
+            .csrf(AbstractHttpConfigurer::disable)
+            .httpBasic(AbstractHttpConfigurer::disable)
+            .formLogin(AbstractHttpConfigurer::disable)
+            .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(request -> request
+                    // permitAll() -> 인증요청 시 필터를 거칠 때 예외가 터져도 무시할 뿐, 필터를 거친다!
+                            .requestMatchers("/auth/token","/auth/logout","/member/signup").permitAll()
+                            .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                            .anyRequest().authenticated()
+            )
+            .exceptionHandling(exception -> exception
+                    .authenticationEntryPoint(jwtAuthenticationEntryPoint))
+            .oauth2Login(oauth -> // oauth2로그인에 대한 여러 설정의 진입점
+                    // oauth2 로그인 성공 이후 사용자 정보를 가져올 때 설정 담당
+                    oauth.userInfoEndpoint(c -> c.userService(customOAuth2UserService))
+                    // 로그인 성공 시 핸들러
+                            .successHandler(oAuth2SuccessHandler)
+                            .failureHandler(oAuth2FailureHandler)
+                    )
+            .addFilterBefore(corsFilter,UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil,memberService,refreshTokenService),
+                UsernamePasswordAuthenticationFilter.class)
+            ;
 
         return http.build();
     }
