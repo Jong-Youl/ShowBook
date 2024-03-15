@@ -47,18 +47,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         log.info("SecurityConfig - 필터체인 시작");
         http
-            .csrf(AbstractHttpConfigurer::disable)
-            .httpBasic(AbstractHttpConfigurer::disable)
-            .formLogin(AbstractHttpConfigurer::disable)
-            .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(request -> request
                     // permitAll() -> 인증요청 시 필터를 거칠 때 예외가 터져도 무시할 뿐, 필터를 거친다!
                             .requestMatchers("/auth/token","/auth/logout","/member/signup").permitAll()
                             .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                             .anyRequest().authenticated()
             )
+            .csrf(AbstractHttpConfigurer::disable)
+            .formLogin(AbstractHttpConfigurer::disable)
+            .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(exception -> exception
                     .authenticationEntryPoint(jwtAuthenticationEntryPoint))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .oauth2Login(oauth -> // oauth2로그인에 대한 여러 설정의 진입점
                     // oauth2 로그인 성공 이후 사용자 정보를 가져올 때 설정 담당
                     oauth.userInfoEndpoint(c -> c.userService(customOAuth2UserService))

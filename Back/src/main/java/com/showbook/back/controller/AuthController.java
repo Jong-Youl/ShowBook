@@ -53,7 +53,7 @@ public class AuthController {
     }
 
     @PostMapping("/token")
-    public ResponseEntity<?> generateTokens(@RequestParam Long memberId, HttpServletResponse response) {
+    public ResponseEntity<?> generateTokens(@RequestParam Long memberId){
         log.info("AuthController.genenerate Tokens");
         GeneratedToken tokens = jwtTokenUtil.generateTokens(memberId);
 
@@ -61,21 +61,24 @@ public class AuthController {
         String refreshToken = tokens.getRefreshToken();
 
         ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", refreshToken)
-                .maxAge(REFRESH_EXPIRATION_TIME)
-                .secure(true)
-                .httpOnly(true)
                 .path("/")
+                .httpOnly(true)
                 .sameSite("None")
+                .secure(true)
+                .maxAge(REFRESH_EXPIRATION_TIME)
                 .build();
 
 //         Authorization Header에 accessToken, cookie에 refreshToken을 넣어서 client에 보내준다.
         HttpHeaders headers = new HttpHeaders();
         headers.add(AUTHORIZATION, tokens.getAccessToken());
-        headers.add(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
+        headers.add(SET_COOKIE, refreshTokenCookie.toString());
 
         refreshTokenService.saveTokenInfo(memberId, accessToken, refreshToken);
 
-        log.info("response에 담긴 header들 모음 {}" ,headers);
+        log.info("response에 담긴 header들 모음");
+        for (String key : headers.keySet()) {
+            log.info("{}={}",key,headers.get(key));
+        }
         log.info("AuthController.generateTokens() 끝! ");
         return ResponseEntity.ok().headers(headers).build();
     }

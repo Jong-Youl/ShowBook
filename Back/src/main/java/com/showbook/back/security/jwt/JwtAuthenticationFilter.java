@@ -89,18 +89,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         refreshTokenService.saveTokenInfo(existedRefreshToken);
 
                         log.info("새로 발급 받은 newAccessToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken).getAccessToken());
-                        log.info("이전의 existedRefreshToken -> {}", existedRefreshToken.getRefreshToken());
-
-
-                        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", existedRefreshToken.getRefreshToken())
-                                .maxAge(REFRESH_EXPIRATION_TIME)
-                                .secure(true)
-                                .httpOnly(true)
-                                .path("/")
-                                .build();
 
                         response.setHeader(HttpHeaders.AUTHORIZATION,newAccessToken);
-                        response.setHeader(HttpHeaders.SET_COOKIE,refreshTokenCookie.toString());
 
                         this.setAuthentication(newAccessToken);
                         filterChain.doFilter(request,response);
