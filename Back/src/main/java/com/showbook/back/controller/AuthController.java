@@ -60,9 +60,6 @@ public class AuthController {
         String accessToken = tokens.getAccessToken();
         String refreshToken = tokens.getRefreshToken();
 
-        log.info("jwt Access Token = {}", accessToken);
-        log.info("jwt Refresh Token = {}", refreshToken);
-
         ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", refreshToken)
                 .maxAge(REFRESH_EXPIRATION_TIME)
                 .secure(true)
@@ -71,15 +68,15 @@ public class AuthController {
                 .sameSite("None")
                 .build();
 
-
 //         Authorization Header에 accessToken, cookie에 refreshToken을 넣어서 client에 보내준다.
         HttpHeaders headers = new HttpHeaders();
         headers.add(AUTHORIZATION, tokens.getAccessToken());
-        headers.add("refreshToken",tokens.getRefreshToken());
-        response.setHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
+        headers.add(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
 
         refreshTokenService.saveTokenInfo(memberId, accessToken, refreshToken);
 
+        log.info("response에 담긴 header들 모음 {}" ,headers);
+        log.info("AuthController.generateTokens() 끝! ");
         return ResponseEntity.ok().headers(headers).build();
     }
 
