@@ -45,7 +45,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // header에서 accessToken을 가져옴
         String accessToken = request.getHeader("Authorization");
-        log.info("try catch문 밖 accessToken --> {}", accessToken);
 
         if (accessToken == null){
             doFilter(request,response,filterChain);
@@ -53,50 +52,58 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         try {
+            Cookie[] cookies = request.getCookies();
+
+            if (cookies == null) {
+                log.info("쿠키가 없습니다!");
+                return;
+            }
 
             // Cookie에서 refreshToken을 가져옴
             String refreshToken = Arrays.stream(request.getCookies())
                     .filter(cookie -> cookie.getName().equals("refreshToken")) // 이름이 refreshToken인 cookie를 찾아서
                     .map(Cookie::getValue) // refreshToken을 찾음
                     .findFirst()// 어처피 1개이므로 findFirst
-                    .orElseThrow(() ->new RuntimeException("쿠키가 존재하지 않습니다!")); // 아무것도 없으면 예외처리
+                    .orElse(null);
 
-            log.info("refreshToken --> {}", refreshToken);
+            // accessToken 만료 여부 확인
+            if(jwtTokenUtil.isTokenExpired(accessToken)){
+                this.setAuthentication(accessToken);
+                // access토큰이 만료되었지만 refresh토큰은 남아있는 경우
+            } else if(!jwtTokenUtil.isTokenExpired(accessToken) && !(refreshToken.isEmpty())) {
+                log.info("accessToken 만료!");
+                // refresh 토큰 만료시간 검증
+                boolean validateRefreshToken = jwtTokenUtil.isTokenExpired(refreshToken);
 
-            if (accessToken != null) {
-                // accessToken 만료 여부 확인
-                if(jwtTokenUtil.isTokenExpired(accessToken)){
-                    this.setAuthentication(accessToken);
-                    // access토큰이 만료되었지만 refresh토큰은 남아있는 경우
-                } else if(!jwtTokenUtil.isTokenExpired(accessToken) && !(refreshToken.isEmpty())) {
-                    log.info("accessToken 만료!");
-                    // refresh 토큰 만료시간 검증
-                    boolean validateRefreshToken = jwtTokenUtil.isTokenExpired(refreshToken);
-                    // refresh 토큰 저장소 존재 유무 확인
-                    boolean isRefreshToken = jwtTokenUtil.existsRefreshToken(accessToken);
-                    log.info("validateRefreshToken - {}",validateRefreshToken);
-                    log.info("isRefreshToken - {}" , isRefreshToken);
-                    if (validateRefreshToken && isRefreshToken) {
-                        log.info("refreshToken으로 accessToken 재발급!");
-                        // 기존의 accessToken을 기반 -> redis의 refresh토큰을 찾고
-                        RefreshToken existedRefreshToken = refreshTokenService.findRefreshTokenByAccessToken(accessToken);
-                        // 거기에 있는 memberId를 갖고온다
-                        Long memberId = existedRefreshToken.getMemberId();
-                        // 새로운 accessToken을 발급한다
-                        String newAccessToken = jwtTokenUtil.createAccessToken(memberId);
-                        // redis에 refresh토큰을 저장
-                        existedRefreshToken.updateAccessToken(newAccessToken);
-                        refreshTokenService.saveTokenInfo(existedRefreshToken);
+                // refresh 토큰 저장소 존재 유무 확인
+                boolean isRefreshToken = jwtTokenUtil.existsRefreshToken(accessToken);
 
-                        log.info("새로 발급 받은 newAccessToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken).getAccessToken());
+                log.info("validateRefreshToken - {}",validateRefreshToken);
+                log.info("isRefreshToken - {}" , isRefreshToken);
 
-                        response.setHeader(HttpHeaders.AUTHORIZATION,newAccessToken);
+                if (validateRefreshToken && isRefreshToken) {
+                    log.info("refreshToken으로 accessToken 재발급!");
+                    // 기존의 accessToken을 기반 -> redis의 refresh토큰을 찾고
+                    RefreshToken existedRefreshToken = refreshTokenService.findRefreshTokenByAccessToken(accessToken);
+                    // 거기에 있는 memberId를 갖고온다
+                    Long memberId = existedRefreshToken.getMemberId();
+                    // 새로운 accessToken을 발급한다
+                    String newAccessToken = jwtTokenUtil.createAccessToken(memberId);
+                    // redis에 refresh토큰을 저장
+                    existedRefreshToken.updateAccessToken(newAccessToken);
+                    refreshTokenService.saveTokenInfo(existedRefreshToken);
 
-                        this.setAuthentication(newAccessToken);
-                        filterChain.doFilter(request,response);
-                    }
+                    log.info("새로 발급 받은 newAccessToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken).getAccessToken());
+
+                    response.setHeader(HttpHeaders.AUTHORIZATION,newAccessToken);
+
+                    this.setAuthentication(newAccessToken);
+
+                    filterChain.doFilter(request,response);
+                    return;
                 }
             }
+
 
         } catch(Exception e) {
             log.error("JwtAuthenticaionFilter -> " + e.getMessage());

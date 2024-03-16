@@ -141,7 +141,7 @@ public class JwtTokenUtil {
         if (decodedJWT != null) {
             return decodedJWT.getClaim("id").asLong();
         } else {
-            throw new CustomException(UNAUTHORIZED_USER);
+            throw null;
         }
     }
 
