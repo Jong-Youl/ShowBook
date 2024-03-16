@@ -12,10 +12,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-//@Entity
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class Book {
 
 	@Id

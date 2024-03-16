@@ -7,10 +7,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-//@Entity
+@Entity
 @NoArgsConstructor
+@Getter
 public class Library {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
