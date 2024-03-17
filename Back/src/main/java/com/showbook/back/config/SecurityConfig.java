@@ -42,9 +42,10 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(request -> request
                     // permitAll() -> 인증요청 시 필터를 거칠 때 예외가 터져도 무시할 뿐, 필터를 거친다!
-                            .requestMatchers("/auth/token","/auth/logout","/member/signup").permitAll()
-                            .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
-                            .anyRequest().authenticated()
+                    .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
+                    .requestMatchers("/auth/token","/auth/logout","/member/signup").permitAll()
+                    .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                    .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)
             .formLogin(AbstractHttpConfigurer::disable)
