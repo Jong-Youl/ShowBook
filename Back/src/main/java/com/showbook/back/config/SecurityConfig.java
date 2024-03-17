@@ -30,7 +30,6 @@ public class SecurityConfig {
     private final JwtTokenUtil jwtTokenUtil;
     private final MemberService memberService;
     private final RefreshTokenService refreshTokenService;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;

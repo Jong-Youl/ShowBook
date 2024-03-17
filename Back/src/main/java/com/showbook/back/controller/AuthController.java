@@ -36,11 +36,25 @@ public class AuthController {
     private long REFRESH_EXPIRATION_TIME;
 
     @DeleteMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader("Authorization") final String accessToken) {
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") final String accessToken,
+                                    @CookieValue("refreshToken") String refreshToken) {
 
         // accessToken을 바탕으로 Redis에 있는 refreshToken 삭제
         refreshTokenService.removeRefreshToken(accessToken);
-        return ResponseEntity.ok("로그아웃");
+
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken",refreshToken)
+                .maxAge(0)
+                .httpOnly(true)
+                .path("/")
+                .build();
+
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.add(SET_COOKIE,refreshTokenCookie.toString());
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .build();
     }
 
     @GetMapping("/test")
