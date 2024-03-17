@@ -1,8 +1,8 @@
 package com.showbook.back.controller;
 
+import com.showbook.back.dto.request.ProfileUpdateRequestDTO;
 import com.showbook.back.dto.request.SignupRequestDTO;
 import com.showbook.back.entity.Category;
-import com.showbook.back.entity.LibraryBook;
 import com.showbook.back.entity.Member;
 import com.showbook.back.security.jwt.JwtTokenUtil;
 import com.showbook.back.service.LibraryBookService;
@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Month;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -51,6 +50,16 @@ public class MemberController {
         Long memberId = jwtTokenUtil.getMemberId(accessToken);
         Map<Category, Integer> readingLogs = libraryBookService.findCategories(memberId);
         return new ResponseEntity<>(readingLogs,OK);
+    }
+
+    @PutMapping("/change-profile")
+    public ResponseEntity<?> changeProfile(@RequestHeader("Authorization") String accessToken,
+                                           @RequestBody ProfileUpdateRequestDTO request) {
+        log.info("MemberController - changeProfile - {}",request.getId());
+        Long memberId = jwtTokenUtil.getMemberId(accessToken);
+        memberService.updateMemberProfile(memberId, request);
+
+        return new ResponseEntity<>("프로필 사진이 수정되었습니다", HttpStatus.OK);
     }
 
 
