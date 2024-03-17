@@ -30,7 +30,6 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
-@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Value("${REFRESH_EXPIRATION_TIME}")
@@ -67,13 +66,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .orElse(null);
 
             // accessToken 만료 여부 확인
-            if(jwtTokenUtil.isTokenExpired(accessToken)){
+            if(jwtTokenUtil.isTokenValid(accessToken)){
                 this.setAuthentication(accessToken);
                 // access토큰이 만료되었지만 refresh토큰은 남아있는 경우
-            } else if(!jwtTokenUtil.isTokenExpired(accessToken) && !(refreshToken.isEmpty())) {
-                log.info("accessToken 만료!");
+            } else if(!jwtTokenUtil.isTokenValid(accessToken) && !(refreshToken.isEmpty())) {
+                log.info("accessToken 만료! - {}", accessToken);
                 // refresh 토큰 만료시간 검증
-                boolean validateRefreshToken = jwtTokenUtil.isTokenExpired(refreshToken);
+                boolean validateRefreshToken = jwtTokenUtil.isTokenValid(refreshToken);
 
                 // refresh 토큰 저장소 존재 유무 확인
                 boolean isRefreshToken = jwtTokenUtil.existsRefreshToken(accessToken);
@@ -97,22 +96,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                     response.setHeader(HttpHeaders.AUTHORIZATION,newAccessToken);
 
+                    log.info("재발급 로직 완료!");
                     this.setAuthentication(newAccessToken);
 
-                    filterChain.doFilter(request,response);
-                    return;
                 }
             }
-
+            filterChain.doFilter(request,response);
 
         } catch(Exception e) {
             log.error("JwtAuthenticaionFilter -> " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
-        filterChain.doFilter(request,response);
+
     }
 
     public void setAuthentication(String accessToken) {
+        log.info("JwtAuthenticationFilter - setAuthentication");
         Long memberId = refreshTokenService.findRefreshTokenByAccessToken(accessToken).getMemberId();
         Member member = memberService.findMemberById(memberId);
         Authentication auth = new UsernamePasswordAuthenticationToken(member, "",

@@ -11,6 +11,8 @@ import com.showbook.back.dto.RefreshToken;
 import com.showbook.back.repository.RefreshTokenRepository;
 import com.showbook.back.security.dto.GeneratedToken;
 import com.showbook.back.service.RefreshTokenService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +54,7 @@ public class JwtTokenUtil {
 
     public GeneratedToken generateTokens(Long memberId) {
         String accessToken = createAccessToken(memberId);
-        String refreshToken = createRefreshToken();
+        String refreshToken = createRefreshToken(memberId);
 
         refreshTokenService.saveTokenInfo(memberId,accessToken,refreshToken); // 토큰이 생성되면 redis에도 저장
 
@@ -70,11 +72,12 @@ public class JwtTokenUtil {
         return PREFIX + accessToken;
     }
 
-    public String createRefreshToken() {
+    public String createRefreshToken(Long memberId) {
         String refreshToken =JWT.create()
                 .withSubject("refreshToken")
                 .withExpiresAt(new Date(System.currentTimeMillis() + REFRESH_EXPIRATION_TIME))
                 .withIssuer(ISSUER)
+                .withClaim("id",memberId)
                 .sign(Algorithm.HMAC256(SECRET_KEY));
 
         return PREFIX + refreshToken;
@@ -111,7 +114,7 @@ public class JwtTokenUtil {
 
     }
 
-    public boolean isTokenExpired(String jwtToken) { // 토큰의 만료시간 검증
+    public boolean isTokenValid(String jwtToken) { // 토큰의 만료시간 검증
         try {
             DecodedJWT decodedJWT = verify(jwtToken);
             return decodedJWT != null && !decodedJWT.getExpiresAt().before(new Date());
