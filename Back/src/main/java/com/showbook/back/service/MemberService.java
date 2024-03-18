@@ -1,8 +1,8 @@
 package com.showbook.back.service;
 
 
+import com.showbook.back.dto.request.ProfileUpdateRequestDTO;
 import com.showbook.back.dto.request.SignupRequestDTO;
-import com.showbook.back.entity.Category;
 import com.showbook.back.entity.Member;
 import com.showbook.back.entity.MemberCategory;
 import com.showbook.back.entity.MemberImage;
@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -68,6 +69,22 @@ public class MemberService {
 
         log.info("이 멤버가 가지고 있는 카테고리 - {}",memberCategoryRepository.findByMember(member));
         return findMemberById(member.getId());
+    }
+
+    @Transactional
+    public void updateMemberProfile(Long memberId, ProfileUpdateRequestDTO request){
+        log.info("MemberService - updateMemberProfile - {}",request.getImageUrl());
+        MemberImage newMemberImage = MemberImage.builder()
+                        .id(request.getId())
+                        .memberImageName(request.getMemberImageName())
+                        .originalImageName(request.getOriginalImageName())
+                        .imageUrl(request.getImageUrl())
+                        .build();
+
+        System.out.println(newMemberImage.toString());
+
+        memberImageRepository.save(newMemberImage);
+
     }
 
 }

@@ -13,6 +13,6 @@ import java.util.Optional;
 @Repository
 public interface MemberCategoryRepository extends CrudRepository<MemberCategory, Long> {
 
-    List<MemberCategory> findByMember(Member member);
+        List<MemberCategory> findByMember(Member member);
 
 }
