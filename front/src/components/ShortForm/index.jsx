@@ -23,7 +23,7 @@ const ShortForm = () => {
           },
         }}
         modules={[EffectCreative]}
-        className="mySwiper6"
+        className="mySwiper11"
       >
         <SwiperSlide>Slide 1</SwiperSlide>
         <SwiperSlide>Slide 2</SwiperSlide>
