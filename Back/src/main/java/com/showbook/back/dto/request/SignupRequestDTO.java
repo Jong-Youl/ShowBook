@@ -18,5 +18,6 @@ public class SignupRequestDTO {
     private int gender;
     private int age;
     private List<Category> categories;
+    private String roleName;
 
 }
