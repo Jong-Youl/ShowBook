@@ -3,9 +3,11 @@ package com.showbook.back.service;
 
 import com.showbook.back.dto.request.ProfileUpdateRequestDTO;
 import com.showbook.back.dto.request.SignupRequestDTO;
+import com.showbook.back.entity.Library;
 import com.showbook.back.entity.Member;
 import com.showbook.back.entity.MemberCategory;
 import com.showbook.back.entity.MemberImage;
+import com.showbook.back.repository.LibraryRepository;
 import com.showbook.back.repository.MemberCategoryRepository;
 import com.showbook.back.repository.MemberImageRepository;
 import com.showbook.back.repository.MemberRepository;
@@ -25,6 +27,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberImageRepository memberImageRepository;
     private final MemberCategoryRepository memberCategoryRepository;
+    private final LibraryRepository libraryRepository;
 
     public Member findMemberById(Long id){
         return memberRepository.findById(id).orElse(null);
@@ -54,10 +57,15 @@ public class MemberService {
                 .age(request.getAge())
                 .name(request.getName())
                 .memberImage(memberImage)
-                .roleName("ROLE_USER")
+                .roleName(request.getRoleName())
                 .build();
 
         memberRepository.save(member);
+
+        if(libraryRepository.findByMember(member) == null) {
+            Library library = Library.builder().member(member).build();
+            libraryRepository.save(library);
+        }
 
         List<MemberCategory> categories = request.getCategories().stream()
                 .map(category -> MemberCategory.builder()
