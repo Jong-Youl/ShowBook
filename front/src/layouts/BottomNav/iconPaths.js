@@ -4,8 +4,8 @@ const iconPaths = {
     unselected: '/img/icon/mainUnselected.svg',
   },
   shorts: {
-    selected: '/img/icon/ShookSelected.svg',
-    unselected: '/img/icon/ShookUnselected.svg',
+    selected: '/img/icon/shookSelected.svg',
+    unselected: '/img/icon/shookUnselected.svg',
   },
   add: {
     selected: '/img/icon/bottomPlus.svg',
