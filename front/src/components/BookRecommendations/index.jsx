@@ -30,16 +30,20 @@ function BookRecommendations({ booksJson }) {
   );
 }
 
+export default BookRecommendations;
+
 // propTypes를 사용하여 booksJson prop의 타입을 명시
 BookRecommendations.propTypes = {
   booksJson: PropTypes.arrayOf(
     PropTypes.shape({
+      book_id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      author: PropTypes.string.isRequired,
-      total_page: PropTypes.number.isRequired,
       book_image_url: PropTypes.string.isRequired,
+      author: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      total_page: PropTypes.number.isRequired,
+      publisher: PropTypes.string.isRequired,
       // ...
     }),
   ).isRequired,
 };
-export default BookRecommendations;

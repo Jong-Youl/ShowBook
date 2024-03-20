@@ -7,22 +7,22 @@ import {
 import 'swiper/css';
 import 'swiper/css/effect-creative';
 import { EffectCreative } from 'swiper/modules';
-import { booksJson } from '../../etc/booksJson';
+import PropTypes from 'prop-types';
 
-function ShortForm() {
+function ShortForm({ shortsJson }) {
   const [currentTitle, setCurrentTitle] = useState('');
 
   useEffect(() => {
-    if (booksJson.length > 0) {
-      setCurrentTitle(booksJson[0].title);
+    if (shortsJson.length > 0) {
+      setCurrentTitle(shortsJson[0].title);
     }
-  }, []);
+  }, [shortsJson]);
 
-  const booksListWithMap = booksJson.map((book, index) => (
+  const booksListWithMap = shortsJson.map((book, index) => (
     <StyledSwiperSlide
       key={index}
       style={{
-        backgroundImage: `url(${book.book_image_url})`,
+        backgroundImage: `url(${book.shook_img_url})`,
         backgroundSize: 'cover',
       }}
     >
@@ -35,7 +35,7 @@ function ShortForm() {
       <CurrentBookTitle>{currentTitle}</CurrentBookTitle>
       <StyledSwiper
         onSlideChange={(swiper) =>
-          setCurrentTitle(booksJson[swiper.realIndex].title)
+          setCurrentTitle(shortsJson[swiper.realIndex].title)
         }
         grabCursor
         effect='creative'
@@ -61,3 +61,17 @@ function ShortForm() {
 }
 
 export default ShortForm;
+
+ShortForm.propTypes = {
+  shortsJson: PropTypes.arrayOf(
+    PropTypes.shape({
+      book_id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      member_image_url: PropTypes.string.isRequired,
+      nickname: PropTypes.string.isRequired,
+      shook_id: PropTypes.number.isRequired,
+      shook_img_url: PropTypes.string.isRequired,
+      // ...
+    }),
+  ).isRequired,
+};

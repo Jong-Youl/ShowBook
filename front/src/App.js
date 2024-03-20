@@ -10,6 +10,9 @@ import BottomNav from './layouts/BottomNav';
 
 import { QueryClientProvider } from 'react-query';
 import { queryClient } from './lib/queryClient';
+import BeforeRead from './pages/Library/BeforeRead';
+import NowRead from './pages/Library/NowRead';
+import AfterRead from './pages/Library/AfterRead';
 
 function App() {
   return (
@@ -20,7 +23,11 @@ function App() {
             <Route path='main' element={<MainPage />} />
             <Route path='shorts' element={<Shorts />} />
             <Route path='add' element={<Add />} />
-            <Route path='library' element={<Library />} />
+            <Route path='library' element={<Library />}>
+              <Route path='before' element={<BeforeRead />} />
+              <Route path='now' element={<NowRead />} />
+              <Route path='after' element={<AfterRead />} />
+            </Route>
             <Route path='mypage' element={<MyPage />} />
           </Route>
         </Routes>
