@@ -6,7 +6,7 @@
 
 - [main](https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A206/-/tree/main?ref_type=heads): 프로젝트의 메인 브랜치로, 현재 산출물 및 기타 파일들이 등록되어 있습니다.
 - [front](https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A206/-/tree/develop/front?ref_type=heads): 프론트엔드 개발을 위한 브랜치입니다. 사용자 인터페이스 디자인, 클라이언트 사이드 로직, 프론트엔드 관련 기술 스택의 개발이 이 브랜치에서 진행됩니다.
-- [back](https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A206/-/tree/develop/back?ref_type=heads): 백엔드 개발을 위한 브랜치입니다. WebRTC Signaling Server, 서버 사이드 로직, 데이터베이스 관리, API 개발 등 백엔드 관련 작업이 이 브랜치에서 이루어집니다.
+- [back](https://lab.ssafy.com/s10-bigdata-recom-sub2/S10P22A206/-/tree/develop/back?ref_type=heads): 백엔드 개발을 위한 브랜치입니다.서버 사이드 로직, 데이터베이스 관리, API 개발 등 백엔드 관련 작업이 이 브랜치에서 이루어집니다.
 
 ## 기획 의도
 
