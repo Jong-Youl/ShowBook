@@ -1,6 +1,6 @@
 # 프로젝트명: 독서 흥미 유도 플랫폼
 
-![showbook](showbook.png)
+![showbook](ShowBook.png)
 
 ## 프로젝트 구조
 
