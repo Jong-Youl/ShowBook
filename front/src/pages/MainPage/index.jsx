@@ -3,7 +3,11 @@ import { useNavigate } from 'react-router';
 import BookRecommendations from '../../components/BookRecommendations';
 import { booksJson } from '../../etc/booksJson';
 import RefreshButton from '../../components/common/Link/RefreshButton';
-import { Container, Heading, RightAlignedButtonContainer } from './index.css';
+import {
+  Container,
+  Heading,
+  RightAlignedButtonContainer,
+} from './MainPage.styles';
 
 // import { useQuery } from 'react-query';
 // import { fetchBookRecommendations } from '../../api/bookService';
