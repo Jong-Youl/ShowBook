@@ -20,7 +20,6 @@ public class PrincipalDetails implements UserDetails {
 
     private final Member member;
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String role = member.getRoleName();

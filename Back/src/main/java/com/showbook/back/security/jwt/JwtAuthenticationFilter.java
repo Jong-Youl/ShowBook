@@ -115,7 +115,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public void setAuthentication(String accessToken) {
         log.info("JwtAuthenticationFilter - setAuthentication");
-        Long memberId = refreshTokenService.findRefreshTokenByAccessToken(accessToken).getMemberId();
+        Long memberId = jwtTokenUtil.getMemberId(accessToken);
         Member member = memberService.findMemberById(memberId);
         PrincipalDetails principalDetail = new PrincipalDetails(member);
         Authentication auth = new UsernamePasswordAuthenticationToken(principalDetail, "",
