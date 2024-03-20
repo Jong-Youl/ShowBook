@@ -1,4 +1,4 @@
-# 프로젝트명: 독서 흥미 유도 플랫폼
+# Show Book: 독서 흥미 유도 플랫폼
 
 ![showbook](ShowBook.png)
 
