@@ -4,39 +4,42 @@ import 'swiper/css';
 import 'swiper/css/effect-creative';
 import './styles.css';
 import { EffectCreative } from 'swiper/modules';
+import { booksJson } from '../../etc/booksJson';
 
-const ShortForm = () => {
-
+function ShortForm() {
+  const booksListWithMap = booksJson.map((book, index) => (
+    <SwiperSlide
+      key={index}
+      style={{
+        backgroundImage: `url(${book.book_image_url})`,
+        backgroundSize: 'cover',
+      }}
+    />
+  ));
 
   return (
-    <div>
-      <Swiper
-        grabCursor={true}
-        effect={'creative'}
-        creativeEffect={{
-          prev: {
-            shadow: true,
-            translate: [0, 0, -400],
-          },
-          next: {
-            translate: ['100%', 0, 0],
-          },
-        }}
-        modules={[EffectCreative]}
-        className="mySwiper11"
-      >
-        <SwiperSlide>Slide 1</SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
-        <SwiperSlide>Slide 3</SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
-        <SwiperSlide>Slide 5</SwiperSlide>
-        <SwiperSlide>Slide 6</SwiperSlide>
-        <SwiperSlide>Slide 7</SwiperSlide>
-        <SwiperSlide>Slide 8</SwiperSlide>
-        <SwiperSlide>Slide 9</SwiperSlide>
-      </Swiper>
-    </div>
+    <Swiper
+      grabCursor
+      effect='creative'
+      creativeEffect={{
+        prev: {
+          shadow: true,
+          origin: 'left center',
+          translate: ['-5%', 0, -200],
+          rotate: [0, 100, 0],
+        },
+        next: {
+          origin: 'right center',
+          translate: ['5%', 0, -200],
+          rotate: [0, -100, 0],
+        },
+      }}
+      modules={[EffectCreative]}
+      style={{ width: '100%', height: '300px' }}
+    >
+      {booksListWithMap}
+    </Swiper>
   );
-};
+}
 
 export default ShortForm;

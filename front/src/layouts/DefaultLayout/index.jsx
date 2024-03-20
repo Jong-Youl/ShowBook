@@ -1,14 +1,14 @@
 import React from 'react';
 import { Outlet } from 'react-router';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
-export const MobileLayout = () => {
+export function MobileLayout() {
   return (
     <DefaultLayout>
       <Outlet />
     </DefaultLayout>
   );
-};
+}
 
 const DefaultLayout = styled.div`
   width: 100%;

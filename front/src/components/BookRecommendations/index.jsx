@@ -5,7 +5,8 @@ import 'swiper/css';
 import 'swiper/css/effect-cards';
 import './styles.css';
 import { EffectCards } from 'swiper/modules';
-const BookRecommendations = ({ booksJson }) => {
+
+function BookRecommendations({ booksJson }) {
   const booksListWithMap = booksJson.map((book, index) => (
     <SwiperSlide
       key={index}
@@ -13,14 +14,14 @@ const BookRecommendations = ({ booksJson }) => {
         backgroundImage: `url(${book.book_image_url})`,
         backgroundSize: 'cover',
       }}
-    ></SwiperSlide>
+    />
   ));
 
   return (
     <div>
       <Swiper
-        effect={'cards'}
-        grabCursor={true}
+        effect='cards'
+        grabCursor
         modules={[EffectCards]}
         className='mySwiper'
       >
@@ -28,7 +29,7 @@ const BookRecommendations = ({ booksJson }) => {
       </Swiper>
     </div>
   );
-};
+}
 
 // propTypes를 사용하여 booksJson prop의 타입을 명시
 BookRecommendations.propTypes = {
