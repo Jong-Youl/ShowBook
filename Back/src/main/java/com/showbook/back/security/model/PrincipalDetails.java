@@ -16,21 +16,10 @@ import java.util.Map;
 @Getter
 @RequiredArgsConstructor
 @ToString
-public class PrincipalDetails implements UserDetails, OAuth2User {
+public class PrincipalDetails implements UserDetails {
 
     private final Member member;
-    private final Map<String, Object> oAuthAttributes;
 
-
-    @Override
-    public String getName() {
-        return member.getName();
-    }
-
-    @Override
-    public Map<String, Object> getAttributes() {
-        return oAuthAttributes;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
