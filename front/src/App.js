@@ -10,6 +10,7 @@ import BottomNav from './layouts/BottomNav';
 
 import { QueryClientProvider } from 'react-query';
 import { queryClient } from './lib/queryClient';
+import Review from './pages/Review';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path='add' element={<Add />} />
             <Route path='library' element={<Library />} />
             <Route path='mypage' element={<MyPage />} />
+            <Route path='review' element={<Review />} />
           </Route>
         </Routes>
         <BottomNav />
