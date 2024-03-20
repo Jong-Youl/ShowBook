@@ -2,10 +2,12 @@ package com.showbook.back.controller;
 
 import com.showbook.back.dto.RefreshToken;
 import com.showbook.back.entity.Member;
+import com.showbook.back.entity.MemberImage;
 import com.showbook.back.repository.MemberRepository;
 import com.showbook.back.repository.RefreshTokenRepository;
 import com.showbook.back.security.dto.GeneratedToken;
 import com.showbook.back.security.jwt.JwtTokenUtil;
+import com.showbook.back.security.model.PrincipalDetails;
 import com.showbook.back.service.MemberService;
 import com.showbook.back.service.RefreshTokenService;
 import jakarta.servlet.http.Cookie;
@@ -17,6 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -58,11 +61,13 @@ public class AuthController {
     }
 
     @GetMapping("/test")
-    public ResponseEntity<?> test(@RequestHeader("Authorization") final String accessToken) {
-        log.info("AuthController.test | AccessToken -> {}",accessToken);
-        Long id = jwtTokenUtil.getMemberId(accessToken);
-        Member member = memberService.findMemberById(id);
+    public ResponseEntity<?> test(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+//        log.info("AuthController.test | AccessToken -> {}",accessToken);
+//        Long id = jwtTokenUtil.getMemberId(accessToken);
+//        Member member = memberService.findMemberById(id);
 
+        Member member = principalDetails.getMember();
+        log.info("AuthController - test => {}",member.getId());
         return ResponseEntity.ok("테스트테스트 -> " + member.getEmail());
     }
 

@@ -3,6 +3,7 @@ package com.showbook.back.security.jwt;
 import com.showbook.back.dto.RefreshToken;
 import com.showbook.back.entity.Member;
 import com.showbook.back.repository.MemberRepository;
+import com.showbook.back.security.model.PrincipalDetails;
 import com.showbook.back.service.MemberService;
 import com.showbook.back.service.RefreshTokenService;
 import io.netty.util.internal.StringUtil;
@@ -20,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,6 +29,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -114,7 +117,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         log.info("JwtAuthenticationFilter - setAuthentication");
         Long memberId = refreshTokenService.findRefreshTokenByAccessToken(accessToken).getMemberId();
         Member member = memberService.findMemberById(memberId);
-        Authentication auth = new UsernamePasswordAuthenticationToken(member, "",
+        Map<String,Object> map = null;
+        OAuth2User oAuth2User = new PrincipalDetails(member,map);
+        Authentication auth = new UsernamePasswordAuthenticationToken(oAuth2User, "",
                 List.of(new SimpleGrantedAuthority(member.getRoleName())));
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
