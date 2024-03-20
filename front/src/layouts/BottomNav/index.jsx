@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavContainer, NavItem } from './index.css';
+import { NavContainer, NavItem } from './styles';
 import iconPaths from './iconPaths';
 
 const BottomNav = () => {

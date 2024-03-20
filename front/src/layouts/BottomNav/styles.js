@@ -1,10 +1,10 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 export const NavContainer = styled.div`
   width: 100%;
-  min-height: 10vh;
-  max-height: 10vh;
+  min-height: 10svh;
+  max-height: 10svh;
   max-width: 456px;
   margin: 0 auto;
   background-color: var(--bg-beige);
