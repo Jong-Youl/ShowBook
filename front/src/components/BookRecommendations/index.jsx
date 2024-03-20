@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { StyledSwiper, StyledSwiperSlide } from './BookRecommendations.styles';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
-import './styles.css';
 import { EffectCards } from 'swiper/modules';
 
 function BookRecommendations({ booksJson }) {
   const booksListWithMap = booksJson.map((book, index) => (
-    <SwiperSlide
+    <StyledSwiperSlide
       key={index}
       style={{
         backgroundImage: `url(${book.book_image_url})`,
@@ -19,14 +18,14 @@ function BookRecommendations({ booksJson }) {
 
   return (
     <div>
-      <Swiper
+      <StyledSwiper
         effect='cards'
         grabCursor
         modules={[EffectCards]}
         className='mySwiper'
       >
         <div>{booksListWithMap}</div>
-      </Swiper>
+      </StyledSwiper>
     </div>
   );
 }
