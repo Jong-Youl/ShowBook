@@ -117,9 +117,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         log.info("JwtAuthenticationFilter - setAuthentication");
         Long memberId = refreshTokenService.findRefreshTokenByAccessToken(accessToken).getMemberId();
         Member member = memberService.findMemberById(memberId);
-        Map<String,Object> map = null;
-        OAuth2User oAuth2User = new PrincipalDetails(member,map);
-        Authentication auth = new UsernamePasswordAuthenticationToken(oAuth2User, "",
+        PrincipalDetails principalDetail = new PrincipalDetails(member);
+        Authentication auth = new UsernamePasswordAuthenticationToken(principalDetail, "",
                 List.of(new SimpleGrantedAuthority(member.getRoleName())));
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
