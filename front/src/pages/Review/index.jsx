@@ -35,7 +35,7 @@ const Review = () => {
           {[...Array(5)].map((_, index) => (
             <StarIcon
               key={index}
-              src={`/img/icon/star${index < rating ? '' : '-filled'}.png`}
+              src={`/img/icon/Star${index < rating ? '' : '-filled'}.png`}
               alt='Star Icon'
               onClick={() => handleClick(index)}
             />
@@ -147,7 +147,6 @@ const BookDesc = styled.h2`
 `;
 
 const BookDetail = styled.h2`
-  //margin-bottom: 5%;
   white-space: nowrap;
   font-weight: bold;
 `;
@@ -156,9 +155,6 @@ const SubmitButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-  //box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
-  //margin-top: 5%;
-  //height: 10svh;
 `;
 const SubmitButton = styled.button`
   margin-top: 10%;
