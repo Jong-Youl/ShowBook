@@ -12,8 +12,10 @@ export const StyledSwiperSlide = styled(SwiperSlide)`
 `;
 
 export const StyledSwiper = styled(Swiper)`
-  width: 50vh;
-  height: 75vh;
+  aspect-ratio: 3 / 4.43;
+
+  width: 90svw;
+  max-width: 100%;
 `;
 export const CurrentBookTitle = styled.div`
   position: absolute;
