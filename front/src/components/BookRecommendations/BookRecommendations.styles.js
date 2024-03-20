@@ -12,8 +12,9 @@ export const StyledSwiperSlide = styled(SwiperSlide)`
 `;
 
 export const StyledSwiper = styled(Swiper)`
+  aspect-ratio: 3 / 4.43;
+  width: 70svw;
+  max-width: 300px;
   margin-top: 30px;
   margin-bottom: 30px;
-  width: 30vh;
-  height: 45vh;
 `;
