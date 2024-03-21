@@ -28,5 +28,10 @@ public interface LibraryBookRepository extends JpaRepository<LibraryBook,Long> {
             + "ORDER BY lb.finishedDate")
     List<LibraryBook> findLibraryBookByFinishedDate(Long libraryId, int year);
 
-
+    @Query("SELECT lb "
+        + "FROM LibraryBook lb "
+        + "JOIN FETCH lb.library l "
+        + "WHERE l.libraryId = :libraryId "
+        + "AND lb.readStatus = :readStatus ")
+    List<LibraryBook> findLibraryBooksByLibraryIdAndReadStatus(Long libraryId, int readStatus);
 }
