@@ -58,6 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (cookies == null) {
                 log.info("쿠키가 없습니다!");
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
 
@@ -67,6 +68,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .map(Cookie::getValue) // refreshToken을 찾음
                     .findFirst()// 어처피 1개이므로 findFirst
                     .orElse(null);
+
 
             // accessToken 만료 여부 확인
             if(jwtTokenUtil.isTokenValid(accessToken)){
@@ -105,7 +107,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
             filterChain.doFilter(request,response);
-
         } catch(Exception e) {
             log.error("JwtAuthenticationFilter -> " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
