@@ -10,6 +10,7 @@ export const Container = styled.div`
 export const CategoryContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  width: 85%;
 `;
 
 export const Heading = styled.span`
