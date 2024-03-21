@@ -1,5 +1,6 @@
 package com.showbook.back.controller;
 
+import com.showbook.back.common.exception.CustomException;
 import com.showbook.back.dto.RefreshToken;
 import com.showbook.back.entity.Member;
 import com.showbook.back.entity.MemberImage;
@@ -22,6 +23,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import static com.showbook.back.common.constants.ErrorCode.TOKEN_NOT_FOUND;
+import static com.showbook.back.common.constants.ErrorCode.UNAUTHORIZED_USER;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
