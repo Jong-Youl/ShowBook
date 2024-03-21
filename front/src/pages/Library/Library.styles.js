@@ -16,6 +16,7 @@ export const BookGrid = styled.div`
   gap: 20px;
   padding: 15px;
   margin-right: 5px;
+  margin-left: 5px;
   height: calc(85vh - 100px);
   overflow-y: auto;
   align-content: start;

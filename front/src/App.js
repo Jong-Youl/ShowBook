@@ -12,12 +12,23 @@ import { QueryClientProvider } from 'react-query';
 import { queryClient } from './lib/queryClient';
 import LibrarySelectedResult from './pages/Library/LibrarySelectedResult';
 import Review from './pages/Review';
+import Login from './pages/User/Login';
+import Signup from './pages/User/Signup';
+import SelectCategory from './pages/User/CategoryServey';
+import { FullScreenLayout } from './layouts/FullScreenLayout';
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationProvider>
         <BrowserRouter>
           <Routes>
+            <Route index element={<Navigate replace to='/user/login' />} />
+            <Route path='user' element={<FullScreenLayout />}>
+              <Route path='login' element={<Login />} />
+              <Route path='signup' element={<Signup />} />
+              <Route path='category-servey' element={<SelectCategory />} />
+            </Route>
             <Route path='/' element={<MobileLayout />}>
               <Route path='main' element={<MainPage />} />
               <Route path='shorts' element={<Shorts />} />
