@@ -12,6 +12,7 @@ import { QueryClientProvider } from 'react-query';
 import { queryClient } from './lib/queryClient';
 import LibrarySelectedResult from './pages/Library/LibrarySelectedResult';
 import Review from './pages/Review';
+import BookDetail from './pages/BookDetail';
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -28,6 +29,7 @@ function App() {
               </Route>
               <Route path='mypage' element={<MyPage />} />
               <Route path='review' element={<Review />} />
+              <Route path='book-detail' element={<BookDetail/>}/>
             </Route>
           </Routes>
           <BottomNav />
