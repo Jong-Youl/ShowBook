@@ -28,7 +28,6 @@ function LibrarySelectedResult() {
 
   return (
     <>
-      <div>{`현재 선택된 카테고리: ${category}`}</div>
       <BookGrid>
         {bookList.map((book) => (
           <BookItem key={book.book_id}>
