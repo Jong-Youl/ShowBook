@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavContainer, NavItem } from './styles';
 import iconPaths from './iconPaths';
+import { useNavigation } from '../../context/NavigationContext';
 
 const BottomNav = () => {
-  const [selectedItem, setSelectedItem] = useState('main');
+  const { selectedItem, handleSelect } = useNavigation();
 
-  const handleSelect = (item) => {
-    setSelectedItem(item);
-  };
   return (
     <NavContainer>
       {Object.keys(iconPaths).map((item, index) => (

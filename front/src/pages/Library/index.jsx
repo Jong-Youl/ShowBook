@@ -1,20 +1,20 @@
-// Library.jsx
-import { Routes, Route } from 'react-router-dom';
-import BeforeRead from './BeforeRead';
-import NowRead from './NowRead';
-import AfterRead from './AfterRead';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './Navbar';
+import React from 'react';
+import LibrarySelectedResult from './LibrarySelectedResult';
+import { BookListProvider } from '../../context/BookListContext';
+import { booksBeforeReadJson } from '../../etc/booksBeforeReadJson';
 
 function Library() {
   return (
     <div>
-      <h2>서재</h2>
-      <Navbar></Navbar>
-      <Routes>
-        <Route path='before' element={<BeforeRead />} />
-        <Route path='now' element={<NowRead />} />
-        <Route path='after' element={<AfterRead />} />
-      </Routes>
+      <Navbar />
+      <BookListProvider bookList={booksBeforeReadJson}>
+        <Routes>
+          <Route index element={<Navigate replace to='before' />} />
+          <Route path='/:category' element={<LibrarySelectedResult />} />
+        </Routes>
+      </BookListProvider>
     </div>
   );
 }

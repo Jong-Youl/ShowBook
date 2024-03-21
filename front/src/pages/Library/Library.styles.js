@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { scrollbarStyles } from '../../components/common/styles/ScrollbarStyles';
 
 export const Container = styled.div`
   display: flex;
@@ -7,4 +8,21 @@ export const Container = styled.div`
   justify-content: center;
   text-align: center;
   height: 80vh;
+`;
+
+export const BookGrid = styled.div`
+  ${scrollbarStyles};
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+  height: calc(85vh - 100px);
+  overflow-y: auto;
+`;
+
+export const BookItem = styled.div`
+  img {
+    width: 100%;
+    height: auto;
+  }
 `;
