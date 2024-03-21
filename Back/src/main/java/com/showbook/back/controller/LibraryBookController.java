@@ -9,11 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.showbook.back.dto.request.LibraryBookUpdateRequestDTO;
 import com.showbook.back.dto.response.LibraryBookResponseDTO;
 import com.showbook.back.security.jwt.JwtTokenUtil;
 import com.showbook.back.service.LibraryBookService;
@@ -37,5 +40,12 @@ public class LibraryBookController {
 	public ResponseEntity<List<LibraryBookResponseDTO>> getAllBooks(@RequestHeader("Authorization") String token, @RequestParam("read_status") int readStatus) {
 		Long memberId = jwtTokenUtil.getMemberId(token);
 		return new ResponseEntity<>(libraryBookService.getAllBooks(memberId, readStatus), OK);
+	}
+
+	// URI에 LibraryId 필요없을듯?
+	@PutMapping("/{book_id}")
+	public void modifyLibrary(@RequestHeader("Authorization") String token, @RequestBody LibraryBookUpdateRequestDTO libraryBookUpdateRequestDTO, @PathVariable(value = "book_id") Long bookId) {
+		Long memberId = jwtTokenUtil.getMemberId(token);
+		libraryBookService.modifyLibrary(memberId, bookId, libraryBookUpdateRequestDTO);
 	}
 }
