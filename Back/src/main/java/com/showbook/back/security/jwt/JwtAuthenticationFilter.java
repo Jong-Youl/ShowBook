@@ -58,20 +58,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        Cookie[] cookies = request.getCookies();
-
-        if (cookies == null) {
-            log.info("쿠키가 없습니다!");
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
-
-        // Cookie에서 refreshToken을 가져옴
-        String refreshToken = Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals("refreshToken")) // 이름이 refreshToken인 cookie를 찾아서
-                .map(Cookie::getValue) // refreshToken을 찾음
-                .findFirst()// 어처피 1개이므로 findFirst
-                .orElse(null);
 
 
         // accessToken 만료 여부 확인
@@ -81,8 +67,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
 
             // access토큰이 만료되었지만 refresh토큰은 남아있는 경우
-        } else if(!jwtTokenUtil.isTokenValid(accessToken) && !(refreshToken.isEmpty())) {
+        } else if(!jwtTokenUtil.isTokenValid(accessToken)) {
             log.info("accessToken 만료! - {}", accessToken);
+            
+            // redis에서 accessToken을 통해 refreshToken가져오기
+            String refreshToken = refreshTokenService.findRefreshTokenByAccessToken(accessToken).getAccessToken();
             // refresh 토큰 만료시간 검증
             boolean validateRefreshToken = jwtTokenUtil.isTokenValid(refreshToken);
 
