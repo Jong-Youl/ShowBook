@@ -15,11 +15,11 @@ const DefaultLayout = styled.div`
   min-height: 90svh;
   max-width: 456px;
   margin: 0 auto;
-  padding: 30px 20px 20px;
+  padding-top: 30px;
   background-color: var(--bg-beige);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  //gap: 24px;
 `;
 
 export default DefaultLayout;
