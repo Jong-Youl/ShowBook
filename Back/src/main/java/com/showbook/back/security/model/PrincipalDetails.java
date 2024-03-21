@@ -3,6 +3,7 @@ package com.showbook.back.security.model;
 import com.showbook.back.entity.Member;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -14,26 +15,15 @@ import java.util.Map;
 
 @Getter
 @RequiredArgsConstructor
-public class PrincipalDetails implements UserDetails, OAuth2User {
+@ToString
+public class PrincipalDetails implements UserDetails {
 
     private final Member member;
-    private final Map<String, Object> oAuthAttributes;
-
-
-    @Override
-    public String getName() {
-        return member.getName();
-    }
-
-    @Override
-    public Map<String, Object> getAttributes() {
-        return oAuthAttributes;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String role = member.getRoleName();
-        List<GrantedAuthority> authorities =new ArrayList<>();
+        List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {

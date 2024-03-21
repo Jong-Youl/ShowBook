@@ -3,6 +3,7 @@ package com.showbook.back.security.jwt;
 import com.showbook.back.dto.RefreshToken;
 import com.showbook.back.entity.Member;
 import com.showbook.back.repository.MemberRepository;
+import com.showbook.back.security.model.PrincipalDetails;
 import com.showbook.back.service.MemberService;
 import com.showbook.back.service.RefreshTokenService;
 import io.netty.util.internal.StringUtil;
@@ -20,6 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,6 +29,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -55,6 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             if (cookies == null) {
                 log.info("쿠키가 없습니다!");
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
 
@@ -64,6 +68,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .map(Cookie::getValue) // refreshToken을 찾음
                     .findFirst()// 어처피 1개이므로 findFirst
                     .orElse(null);
+
 
             // accessToken 만료 여부 확인
             if(jwtTokenUtil.isTokenValid(accessToken)){
@@ -102,7 +107,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
             filterChain.doFilter(request,response);
-
         } catch(Exception e) {
             log.error("JwtAuthenticationFilter -> " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -112,9 +116,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public void setAuthentication(String accessToken) {
         log.info("JwtAuthenticationFilter - setAuthentication");
-        Long memberId = refreshTokenService.findRefreshTokenByAccessToken(accessToken).getMemberId();
+        Long memberId = jwtTokenUtil.getMemberId(accessToken);
         Member member = memberService.findMemberById(memberId);
-        Authentication auth = new UsernamePasswordAuthenticationToken(member, "",
+        PrincipalDetails principalDetail = new PrincipalDetails(member);
+        Authentication auth = new UsernamePasswordAuthenticationToken(principalDetail, "",
                 List.of(new SimpleGrantedAuthority(member.getRoleName())));
         SecurityContextHolder.getContext().setAuthentication(auth);
     }

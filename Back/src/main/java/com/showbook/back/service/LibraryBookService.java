@@ -4,6 +4,7 @@ import com.showbook.back.entity.*;
 import com.showbook.back.repository.LibraryBookRepository;
 import com.showbook.back.repository.LibraryRepository;
 import com.showbook.back.repository.MemberRepository;
+import com.showbook.back.security.model.PrincipalDetails;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,8 @@ public class LibraryBookService {
     private final LibraryBookRepository libraryBookRepository;
     private final LibraryRepository libraryRepository;
 
-    public Map<Month,Integer> findReadingLogByYear(Long memberId, int year) {
+    public Map<Month,Integer> findReadingLogByYear(PrincipalDetails principalDetails, int year) {
+        Long memberId = principalDetails.getMember().getId();
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("해당 멤버가 존재하지 않습니다!"));
         Long libraryId = libraryRepository.findByMember(member).getLibraryId();
 
@@ -41,7 +43,8 @@ public class LibraryBookService {
         return months;
     }
 
-    public Map<Category, Integer> findCategories(Long memberId) {
+    public Map<Category, Integer> findCategories(PrincipalDetails principalDetails) {
+        Long memberId = principalDetails.getMember().getId();
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("해당 멤버가 존재하지 않습니다!"));
         Long libraryId = libraryRepository.findByMember(member).getLibraryId();
 
