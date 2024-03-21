@@ -14,7 +14,7 @@ import LibrarySelectedResult from './pages/Library/LibrarySelectedResult';
 import Review from './pages/Review';
 import Login from './pages/User/Login';
 import Signup from './pages/User/Signup';
-import SelectCategory from './pages/User/SelectCategory';
+import SelectCategory from './pages/User/CategoryServey';
 import { FullScreenLayout } from './layouts/FullScreenLayout';
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
             <Route path='user' element={<FullScreenLayout />}>
               <Route path='login' element={<Login />} />
               <Route path='signup' element={<Signup />} />
-              <Route path='select-category' element={<SelectCategory />} />
+              <Route path='category-servey' element={<SelectCategory />} />
             </Route>
             <Route path='/' element={<MobileLayout />}>
               <Route path='main' element={<MainPage />} />

@@ -24,8 +24,8 @@ p {
 :root {
   --main: #D80041;
   --sub-color: #ffa0b8;
+  --wine5: #f6e2e8;
 
-  --alert-green: #31a215;
   --alert-amber: #ef8523;
   --alert-red: #ffd5d5;
 
@@ -34,7 +34,7 @@ p {
   --font-gray: #aaacad;
   --font-light-gray: #b4b4b4;
 
-  --bg-gray: #d8dede;
+  --bg-gray: #b1b9b9;
   --bg-light: #e9f3f3;
   --bg-beige: #FFFDF9;
 
