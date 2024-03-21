@@ -22,8 +22,6 @@ public class Review {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long reviewId;
 
-	@Column(nullable = false)
-	private String title;
 
 	@Column(nullable = false)
 	private String content;
@@ -46,10 +44,9 @@ public class Review {
 	private Book book;
 
 	@Builder
-	public Review(Long reviewId, String title, String content, LocalDate createdAt, LocalDate updatedAt, Integer rating,
+	public Review(Long reviewId, String content, LocalDate createdAt, LocalDate updatedAt, Integer rating,
 		Member member, Book book) {
 		this.reviewId = reviewId;
-		this.title = title;
 		this.content = content;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
