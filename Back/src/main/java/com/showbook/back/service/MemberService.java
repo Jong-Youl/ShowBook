@@ -11,6 +11,7 @@ import com.showbook.back.repository.LibraryRepository;
 import com.showbook.back.repository.MemberCategoryRepository;
 import com.showbook.back.repository.MemberImageRepository;
 import com.showbook.back.repository.MemberRepository;
+import com.showbook.back.security.model.PrincipalDetails;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -80,10 +81,11 @@ public class MemberService {
     }
 
     @Transactional
-    public void updateMemberProfile(Long memberId, ProfileUpdateRequestDTO request){
+    public void updateMemberProfile(PrincipalDetails principalDetails, ProfileUpdateRequestDTO request){
         log.info("MemberService - updateMemberProfile - {}",request.getImageUrl());
+        Long memberId = principalDetails.getMember().getId();
         MemberImage newMemberImage = MemberImage.builder()
-                        .id(request.getId())
+                        .id(memberId)
                         .memberImageName(request.getMemberImageName())
                         .originalImageName(request.getOriginalImageName())
                         .imageUrl(request.getImageUrl())
