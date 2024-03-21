@@ -70,6 +70,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 this.setAuthentication(accessToken);
                 // access토큰이 만료되었지만 refresh토큰은 남아있는 경우
             } else if(!jwtTokenUtil.isTokenValid(accessToken) && !(refreshToken.isEmpty())) {
+                log.info("1차 검증 - {}", jwtTokenUtil.isTokenValid(accessToken));
+                log.info("2차 검증 - {}", refreshToken.isEmpty());
                 log.info("accessToken 만료! - {}", accessToken);
                 // refresh 토큰 만료시간 검증
                 boolean validateRefreshToken = jwtTokenUtil.isTokenValid(refreshToken);
