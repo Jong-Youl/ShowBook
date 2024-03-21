@@ -1,7 +1,7 @@
 package com.showbook.back.service;
 
+import com.showbook.back.dto.request.LibraryBookUpdateRequestDTO;
 import com.showbook.back.dto.response.LibraryBookResponseDTO;
-import com.showbook.back.dto.response.ReviewResponseDTO;
 import com.showbook.back.entity.*;
 import com.showbook.back.repository.BookRepository;
 import com.showbook.back.repository.LibraryBookRepository;
@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,5 +89,24 @@ public class LibraryBookService {
             libraryBookResponseDTOList.add(libraryBookResponseDTO);
         }
         return libraryBookResponseDTOList;
+    }
+
+
+    @Transactional
+    public void modifyLibrary(Long memberId, Long bookId, LibraryBookUpdateRequestDTO libraryBookUpdateRequestDTO) {
+        int newReadStatus = libraryBookUpdateRequestDTO.getReadStatus();
+        System.out.println("newReadStatus : " + newReadStatus);
+        Long libraryId = libraryRepository.findByMemberId(memberId).getLibraryId();
+        // libraryId, bookId 일치하는 LibraryBook 찾기
+        LibraryBook libraryBook = libraryBookRepository.findLibraryBookByLibraryIdAndBookId(libraryId, bookId);
+
+        // readStatus 업데이트
+        libraryBook.setReadStatus(newReadStatus);
+        // readStatus가 2 --> finishedDate도 함께 업데이트
+        if (newReadStatus == 2) {
+            libraryBook.setFinishedDate();
+        }
+
+        libraryBookRepository.save(libraryBook);
     }
 }

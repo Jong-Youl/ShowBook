@@ -17,6 +17,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import net.minidev.json.annotate.JsonIgnore;
 
@@ -30,7 +31,6 @@ public class LibraryBook {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long libraryBookId;
 
-	//@Setter
 	@Column(nullable = false)
 	private int readStatus; // 0 = wish, 1 = reading, 2= finish
 
@@ -53,4 +53,10 @@ public class LibraryBook {
 		this.book = book;
 	 }
 
+	 public void setReadStatus(int newReadStatus){
+		this.readStatus = newReadStatus;
+	 }
+	public void setFinishedDate(){
+		this.finishedDate = LocalDate.now();
+	}
 }
