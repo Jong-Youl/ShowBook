@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class ProfileUpdateRequestDTO {
-    private Long id;
     private String memberImageName;
     private String originalImageName;
     private String imageUrl;
