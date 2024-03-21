@@ -18,5 +18,4 @@ const FullLayout = styled.div`
   background-color: var(--bg-beige);
   display: flex;
   flex-direction: column;
-  //gap: 24px;
 `;
