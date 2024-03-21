@@ -1,12 +1,31 @@
-import React from 'react';
+// LibrarySelectedResult 컴포넌트 수정
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useBookList } from '../../context/BookListContext';
 import { BookGrid, BookItem } from './Library.styles';
+import { booksBeforeReadJson } from '../../etc/booksBeforeReadJson';
+import { booksNowReadJson } from '../../etc/booksNowReadJson';
+import { booksAfterReadJson } from '../../etc/booksAfterReadJson';
 
 function LibrarySelectedResult() {
   const { category } = useParams();
+  const [bookList, setBookList] = useState([]);
 
-  const bookList = useBookList();
+  useEffect(() => {
+    switch (category) {
+      case 'before':
+        setBookList(booksBeforeReadJson);
+        break;
+      case 'now':
+        setBookList(booksNowReadJson);
+        break;
+      case 'after':
+        setBookList(booksAfterReadJson);
+        break;
+      default:
+        setBookList([]);
+    }
+  }, [category]);
+
   return (
     <>
       <div>{`현재 선택된 카테고리: ${category}`}</div>

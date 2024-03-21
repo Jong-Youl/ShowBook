@@ -18,11 +18,19 @@ export const BookGrid = styled.div`
   padding: 20px;
   height: calc(85vh - 100px);
   overflow-y: auto;
+  align-content: start;
 `;
 
 export const BookItem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
   img {
-    width: 100%;
+    width: auto;
+    max-width: 100%;
     height: auto;
+    max-height: 100%;
   }
 `;
