@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { MobileLayout } from './layouts/DefaultLayout';
 import MainPage from './pages/MainPage';
 import Library from './pages/Library';
@@ -7,32 +7,31 @@ import MyPage from './pages/MyPage';
 import Shorts from './pages/Shorts';
 import Add from './pages/Add';
 import BottomNav from './layouts/BottomNav';
-
+import { NavigationProvider } from './context/NavigationContext';
 import { QueryClientProvider } from 'react-query';
 import { queryClient } from './lib/queryClient';
-import BeforeRead from './pages/Library/BeforeRead';
-import NowRead from './pages/Library/NowRead';
-import AfterRead from './pages/Library/AfterRead';
+import LibrarySelectedResult from './pages/Library/LibrarySelectedResult';
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<MobileLayout />}>
-            <Route path='main' element={<MainPage />} />
-            <Route path='shorts' element={<Shorts />} />
-            <Route path='add' element={<Add />} />
-            <Route path='library' element={<Library />}>
-              <Route path='before' element={<BeforeRead />} />
-              <Route path='now' element={<NowRead />} />
-              <Route path='after' element={<AfterRead />} />
+      <NavigationProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<MobileLayout />}>
+              <Route path='main' element={<MainPage />} />
+              <Route path='shorts' element={<Shorts />} />
+              <Route path='add' element={<Add />} />
+              <Route path='library/*' element={<Library />}>
+                <Route index element={<Navigate replace to='before' />} />
+                <Route path=':category' element={<LibrarySelectedResult />} />
+              </Route>
+              <Route path='mypage' element={<MyPage />} />
             </Route>
-            <Route path='mypage' element={<MyPage />} />
-          </Route>
-        </Routes>
-        <BottomNav />
-      </BrowserRouter>
+          </Routes>
+          <BottomNav />
+        </BrowserRouter>
+      </NavigationProvider>
     </QueryClientProvider>
   );
 }
