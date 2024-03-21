@@ -44,6 +44,7 @@ public class SecurityConfig {
                     // permitAll() -> 인증요청 시 필터를 거칠 때 예외가 터져도 무시할 뿐, 필터를 거친다!
                     .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
                     .requestMatchers("/auth/token","/auth/logout","/member/signup").permitAll()
+
                     .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)
