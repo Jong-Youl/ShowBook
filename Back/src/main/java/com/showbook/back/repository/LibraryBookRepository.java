@@ -34,4 +34,12 @@ public interface LibraryBookRepository extends JpaRepository<LibraryBook,Long> {
         + "WHERE l.libraryId = :libraryId "
         + "AND lb.readStatus = :readStatus ")
     List<LibraryBook> findLibraryBooksByLibraryIdAndReadStatus(Long libraryId, int readStatus);
+
+    @Query("SELECT lb "
+        + "FROM LibraryBook lb "
+        + "JOIN FETCH lb.library l "
+        + "JOIN FETCH lb.book b "
+        + "WHERE l.libraryId = :libraryId "
+        + "AND b.bookId = :bookId ")
+    LibraryBook findLibraryBookByLibraryIdAndBookId(Long libraryId, Long bookId);
 }
