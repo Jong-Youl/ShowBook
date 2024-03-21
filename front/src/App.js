@@ -11,6 +11,7 @@ import { NavigationProvider } from './context/NavigationContext';
 import { QueryClientProvider } from 'react-query';
 import { queryClient } from './lib/queryClient';
 import LibrarySelectedResult from './pages/Library/LibrarySelectedResult';
+import Review from './pages/Review';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
                 <Route path=':category' element={<LibrarySelectedResult />} />
               </Route>
               <Route path='mypage' element={<MyPage />} />
+              <Route path='review' element={<Review />} />
             </Route>
           </Routes>
           <BottomNav />
