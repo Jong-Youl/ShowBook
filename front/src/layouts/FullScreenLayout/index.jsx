@@ -2,22 +2,20 @@ import React from 'react';
 import { Outlet } from 'react-router';
 import styled from 'styled-components';
 
-export function MobileLayout() {
+export function FullScreenLayout() {
   return (
-    <DefaultLayout>
+    <FullLayout>
       <Outlet />
-    </DefaultLayout>
+    </FullLayout>
   );
 }
 
-const DefaultLayout = styled.div`
+const FullLayout = styled.div`
   width: 100%;
-  min-height: 90svh;
+  min-height: 100svh;
   max-width: 456px;
   margin: 0 auto;
-  padding-top: 30px;
   background-color: var(--bg-beige);
   display: flex;
   flex-direction: column;
-  //gap: 24px;
 `;
