@@ -1,5 +1,6 @@
 package com.showbook.back.config;
 
+import com.showbook.back.repository.MemberRepository;
 import com.showbook.back.security.handlers.JwtAuthenticationEntryPoint;
 import com.showbook.back.security.handlers.OAuth2FailureHandler;
 import com.showbook.back.security.handlers.OAuth2SuccessHandler;
@@ -28,7 +29,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
 
     private final JwtTokenUtil jwtTokenUtil;
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
     private final RefreshTokenService refreshTokenService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final CustomOAuth2UserService customOAuth2UserService;
@@ -61,7 +62,7 @@ public class SecurityConfig {
                             .failureHandler(oAuth2FailureHandler)
                     )
             .addFilterBefore(corsFilter,UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil,memberService,refreshTokenService),
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil,memberRepository,refreshTokenService),
                 UsernamePasswordAuthenticationFilter.class)
             ;
 

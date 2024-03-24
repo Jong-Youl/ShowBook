@@ -2,6 +2,7 @@ package com.showbook.back.controller;
 
 import com.showbook.back.dto.request.ProfileUpdateRequestDTO;
 import com.showbook.back.dto.request.SignupRequestDTO;
+import com.showbook.back.dto.response.MemberInfoResponseDTO;
 import com.showbook.back.entity.Category;
 import com.showbook.back.entity.Member;
 import com.showbook.back.security.jwt.JwtTokenUtil;
@@ -35,9 +36,16 @@ public class MemberController {
     public ResponseEntity<?> signup(@RequestBody SignupRequestDTO signupRequestDTO) {
         log.info("MemberController.signup() - 추가 정보를 바탕으로 회원가입 시작");
         log.info("signupRequestDTO - {}",signupRequestDTO.getCategories());
-        Member response = memberService.createMember(signupRequestDTO);
+        MemberInfoResponseDTO response = memberService.createMember(signupRequestDTO);
         log.info("response - {}",response);
         return new ResponseEntity<>(response, CREATED);
+    }
+
+    @GetMapping("/memberInfo")
+    public ResponseEntity<?> getMemberInfo(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        log.info("MemberController.getMemberInfo() - 회원정보 조회");
+        Long memberId = principalDetails.getMember().getId();
+        return ResponseEntity.ok(memberService.getMemberInfo(memberId));
     }
 
     @GetMapping("/reading-logs/monthly")

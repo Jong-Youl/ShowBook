@@ -1,8 +1,11 @@
 package com.showbook.back.service;
 
 
+import com.showbook.back.common.constants.ErrorCode;
+import com.showbook.back.common.exception.CustomException;
 import com.showbook.back.dto.request.ProfileUpdateRequestDTO;
 import com.showbook.back.dto.request.SignupRequestDTO;
+import com.showbook.back.dto.response.MemberInfoResponseDTO;
 import com.showbook.back.entity.Library;
 import com.showbook.back.entity.Member;
 import com.showbook.back.entity.MemberCategory;
@@ -19,6 +22,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static com.showbook.back.common.constants.ErrorCode.MEMBER_NOT_FOUND;
 
 @Slf4j
 @Service
@@ -30,16 +36,23 @@ public class MemberService {
     private final MemberCategoryRepository memberCategoryRepository;
     private final LibraryRepository libraryRepository;
 
-    public Member findMemberById(Long id){
-        return memberRepository.findById(id).orElse(null);
+    public MemberInfoResponseDTO getMemberInfo(Long id){
+        Optional<Member> member = memberRepository.findById(id);
+        MemberInfoResponseDTO response =
+                member.map(value -> MemberInfoResponseDTO.builder()
+                        .member(value)
+                        .build()
+                ).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+        return response;
     }
 
     public Member findMemberByEmail(String email) {
-        return memberRepository.findByEmail(email).orElse(null);
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
     }
 
     @Transactional
-    public Member createMember(SignupRequestDTO request) {
+    public MemberInfoResponseDTO createMember(SignupRequestDTO request) {
         log.info("MemberService - createMember");
         String memberImageUrl = request.getMemberImageUrl();
         // 각종 이름들을 memberImageUrl로 초기화
@@ -77,7 +90,7 @@ public class MemberService {
         memberCategoryRepository.saveAll(categories);
 
         log.info("이 멤버가 가지고 있는 카테고리 - {}",memberCategoryRepository.findByMember(member));
-        return findMemberById(member.getId());
+        return getMemberInfo(member.getId());
     }
 
     @Transactional
