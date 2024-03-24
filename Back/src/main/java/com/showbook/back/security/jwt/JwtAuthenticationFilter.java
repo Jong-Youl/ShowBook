@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static com.showbook.back.common.constants.ErrorCode.MEMBER_NOT_FOUND;
 import static com.showbook.back.common.constants.ErrorCode.TOKEN_NOT_FOUND;
 
 @RequiredArgsConstructor
@@ -44,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private long REFRESH_EXPIRATION_TIME;
 
     private final JwtTokenUtil jwtTokenUtil;
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
     private final RefreshTokenService refreshTokenService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -112,7 +113,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public void setAuthentication(String accessToken) {
         log.info("JwtAuthenticationFilter - setAuthentication");
         Long memberId = jwtTokenUtil.getMemberId(accessToken);
-        Member member = memberService.findMemberById(memberId);
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         PrincipalDetails principalDetail = new PrincipalDetails(member);
         Authentication auth = new UsernamePasswordAuthenticationToken(principalDetail, "",
                 List.of(new SimpleGrantedAuthority(member.getRoleName())));
