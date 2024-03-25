@@ -31,7 +31,7 @@ const BookDetail = () => {
         <ReviewRating>4.2</ReviewRating>
       </ReviewContainer>
       <ButtonsContainer>
-        <BookMarkImg src={bookmarked ? `/img/icon/Bookmarked.png` : `/img/icon/Bookmark.png`}
+        <BookMarkImg src={bookmarked ? `/img/icon/bookmarked.png` : `/img/icon/bookmark.png`}
         onClick={handleClick}></BookMarkImg>
         <BuyButton>구매하러가기</BuyButton>
         <ReviewButton onClick={goReview}>한줄평 작성</ReviewButton>

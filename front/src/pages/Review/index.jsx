@@ -35,7 +35,7 @@ const Review = () => {
           {[...Array(5)].map((_, index) => (
             <StarIcon
               key={index}
-              src={`/img/icon/Star${index < rating ? '' : '-filled'}.png`}
+              src={`/img/icon/star${index < rating ? '' : '-filled'}.png`}
               alt='Star Icon'
               onClick={() => handleClick(index)}
             />
