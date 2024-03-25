@@ -13,6 +13,7 @@ export const RightAlignedButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 100%;
+  padding-right: 10px;
 `;
 
 export const Heading = styled.span`
