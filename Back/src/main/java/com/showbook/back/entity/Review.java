@@ -11,9 +11,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor
 public class Review {
 	@Id
@@ -21,15 +23,12 @@ public class Review {
 	private Long reviewId;
 
 	@Column(nullable = false)
-	private String title;
-
-	@Column(nullable = false)
 	private String content;
 
 	@Column(nullable = false)
 	private LocalDate createdAt;
 
-	@Column(nullable = false)
+	@Column
 	private LocalDate updatedAt;
 
 	@Column(nullable = false)
