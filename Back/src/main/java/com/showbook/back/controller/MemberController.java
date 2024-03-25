@@ -35,10 +35,8 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignupRequestDTO signupRequestDTO) {
         log.info("MemberController.signup() - 추가 정보를 바탕으로 회원가입 시작");
-        log.info("signupRequestDTO - {}",signupRequestDTO.getCategories());
-        MemberInfoResponseDTO response = memberService.createMember(signupRequestDTO);
-        log.info("response - {}",response);
-        return new ResponseEntity<>(response, CREATED);
+        Long memberId = memberService.createMember(signupRequestDTO);
+        return new ResponseEntity<>(memberId, CREATED);
     }
 
     @GetMapping("/memberInfo")
@@ -50,14 +48,12 @@ public class MemberController {
 
     @GetMapping("/reading-logs/monthly")
     public ResponseEntity<?> getMonthlyReadingLog(@AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam int year) {
-//        Long memberId = jwtTokenUtil.getMemberId(accessToken);
         Map<Month,Integer> readingLogs = libraryBookService.findReadingLogByYear(principalDetails, year);
         return new ResponseEntity<>(readingLogs,OK);
     }
 
     @GetMapping("/reading-logs/category")
     public ResponseEntity<?> getReadingLogByCategory(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-//        Long memberId = jwtTokenUtil.getMemberId(accessToken);
         Map<Category, Integer> readingLogs = libraryBookService.findCategories(principalDetails);
         return new ResponseEntity<>(readingLogs,OK);
     }

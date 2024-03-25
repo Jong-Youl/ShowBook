@@ -32,7 +32,7 @@ import java.nio.charset.StandardCharsets;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtTokenUtil jwtTokenUtil;
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
     private final RefreshTokenService refreshTokenService;
 
     @Value("${BASE_URL}")
@@ -50,15 +50,15 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String id = oAuth2User.getAttribute("id");
         String email = oAuth2User.getAttribute("email");
         String picture = oAuth2User.getAttribute("picture");
-        boolean isExist = oAuth2User.getAttribute("exist");
         String role = oAuth2User.getAuthorities().stream()
                 .findFirst()
                 .orElseThrow(IllegalAccessError::new)
                 .getAuthority();
 
+        Member member = memberRepository.findByEmail(email).orElse(null);
 
-        if(isExist) { // 이미 존재하는 회원
-            Long memberId = memberService.findMemberByEmail(email).getId();
+        if(member != null) { // 이미 존재하는 회원
+            Long memberId = member.getId();
 
             String targetUrl = UriComponentsBuilder.fromUriString(BASE_URL + "/proxy")
                     .queryParam("id",memberId)

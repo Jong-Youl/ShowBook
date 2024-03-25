@@ -25,7 +25,7 @@ import java.util.Optional;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @Transactional
     @Override
@@ -52,7 +52,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String email = (String) memberAttribute.get("email");
 
         // 이미 가입된 회원인지 조회 DB에 조회
-        Member findMember = memberService.findMemberByEmail(email);
+        Member findMember = memberRepository.findByEmail(email).orElse(null);
 
         log.info("findMember -> {}",findMember);
 
