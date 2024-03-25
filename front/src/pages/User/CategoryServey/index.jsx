@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   CategoryButton,
   Button,
@@ -10,8 +10,14 @@ import {
   MarginBottom,
 } from '../../../components/common/styles/CommonStyles';
 import CATEGORIES from './CATEGORIES';
+import CATEGORY_MAPPING from './CATEGORY_MAPPING';
+import { UserService } from '../../../api/UserService';
+
+const userService = new UserService();
 
 function SelectCategory() {
+  const location = useLocation();
+  
   let navigate = useNavigate();
   const [selectedCategories, setSelectedCategories] = useState([]);
 
@@ -30,6 +36,10 @@ function SelectCategory() {
   const handleSubmit = () => {
     navigate('/main');
     // 선택된 카테고리를 처리하는 로직
+    const memberInfo = {...location.state, categories : selectedCategories}
+    console.log("member의 정보")
+    console.log(memberInfo.categories)
+    userService.signup(memberInfo);
   };
 
   return (
@@ -45,12 +55,12 @@ function SelectCategory() {
             onClick={() => toggleCategory(category)}
             selected={selectedCategories.includes(category)}
           >
-            {category}
+            {CATEGORY_MAPPING[category]}
           </CategoryButton>
         ))}
       </CategoryContainer>
       <MarginBottom />
-      <Button onClick={handleSubmit}>Next</Button>
+      <Button onClick={handleSubmit}>회원가입 완료</Button>
     </Container>
   );
 }

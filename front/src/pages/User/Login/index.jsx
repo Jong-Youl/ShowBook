@@ -1,14 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ButtonsContainer, Container, ImageContainer } from './Login.styles';
+import { UserService } from '../../../api/UserService';
+
+
+const userService = new UserService();
+
 function Login() {
-  let navigate = useNavigate();
-
-  const handleLogin = (service) => {
-    console.log(`Login with ${service}`);
-
-    navigate('/user/signup');
-  };
 
   return (
     <Container>
@@ -16,8 +13,12 @@ function Login() {
         <img src='/img/BigLogo.png' alt='Welcome' />
       </ImageContainer>
       <ButtonsContainer>
-        <button onClick={() => handleLogin('Google')}>Login with Google</button>
-        <button onClick={() => handleLogin('Kakao')}>Login with Kakao</button>
+        <button onClick={() => userService.googleLogin()}>
+          Login with Google
+        </button>
+        <button onClick={() => userService.kakaoLogin()}>
+          Login with Kakao
+        </button>
       </ButtonsContainer>
     </Container>
   );
