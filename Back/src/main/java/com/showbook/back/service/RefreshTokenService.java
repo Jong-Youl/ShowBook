@@ -15,7 +15,7 @@ import static com.showbook.back.common.constants.ErrorCode.TOKEN_NOT_FOUND;
 @RequiredArgsConstructor
 public class RefreshTokenService {
 
-    @Value("${REFRESH_TOKEN_EXPIRE_TIME}")
+    @Value("${REFRESH_EXPIRATION_TIME}")
     private long refreshTokenExpireTime;
     private final RefreshTokenRepository refreshTokenRepository;
 
