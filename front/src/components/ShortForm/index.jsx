@@ -42,14 +42,11 @@ function ShortForm({ shortsJson }) {
         creativeEffect={{
           prev: {
             shadow: true,
-            origin: 'left center',
-            translate: ['-5%', 0, -200],
-            rotate: [0, 100, 0],
+            translate: ['-120%', 0, -500],
           },
           next: {
-            origin: 'right center',
-            translate: ['5%', 0, -200],
-            rotate: [0, -100, 0],
+            shadow: true,
+            translate: ['120%', 0, -500],
           },
         }}
         modules={[EffectCreative]}

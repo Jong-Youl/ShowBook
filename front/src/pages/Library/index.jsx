@@ -1,13 +1,20 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './Navbar';
+import Navbar from '../../components/common/Navbar';
 import React from 'react';
 import LibrarySelectedResult from './LibrarySelectedResult';
 import { BookListProvider } from '../../context/BookListContext';
 import { booksBeforeReadJson } from '../../etc/booksBeforeReadJson';
+import { Heading } from './Library.styles';
 
 function Library() {
   return (
-    <div>
+    <>
+      <Heading>
+        <Heading $bold color='var(--main)'>
+          조용한 수달
+        </Heading>
+        님의 서재
+      </Heading>
       <Navbar />
       <BookListProvider bookList={booksBeforeReadJson}>
         <Routes>
@@ -15,7 +22,7 @@ function Library() {
           <Route path='/:category' element={<LibrarySelectedResult />} />
         </Routes>
       </BookListProvider>
-    </div>
+    </>
   );
 }
 
