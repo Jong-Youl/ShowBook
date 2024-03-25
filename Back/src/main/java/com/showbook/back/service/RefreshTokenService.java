@@ -6,6 +6,7 @@ import com.showbook.back.dto.RefreshToken;
 import com.showbook.back.repository.RefreshTokenRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import static com.showbook.back.common.constants.ErrorCode.TOKEN_NOT_FOUND;
@@ -14,6 +15,8 @@ import static com.showbook.back.common.constants.ErrorCode.TOKEN_NOT_FOUND;
 @RequiredArgsConstructor
 public class RefreshTokenService {
 
+    @Value("${REFRESH_TOKEN_EXPIRE_TIME}")
+    private long refreshTokenExpireTime;
     private final RefreshTokenRepository refreshTokenRepository;
 
     public RefreshToken findRefreshTokenByAccessToken(String accessToken) {
@@ -22,7 +25,7 @@ public class RefreshTokenService {
 
     @Transactional
     public void saveTokenInfo(Long memberId, String accessToken, String refreshToken) {
-        refreshTokenRepository.save(new RefreshToken(memberId, accessToken, refreshToken));
+        refreshTokenRepository.save(new RefreshToken(memberId, accessToken, refreshToken, refreshTokenExpireTime));
     }
 
     @Transactional
