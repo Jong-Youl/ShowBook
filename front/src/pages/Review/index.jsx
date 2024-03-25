@@ -6,7 +6,7 @@ const Review = () => {
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
-    navigate('/main');
+    navigate(-1);
   };
   const [rating, setRating] = useState(0);
 
