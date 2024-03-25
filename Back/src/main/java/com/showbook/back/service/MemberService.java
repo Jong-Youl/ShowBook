@@ -52,7 +52,7 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberInfoResponseDTO createMember(SignupRequestDTO request) {
+    public Long createMember(SignupRequestDTO request) {
         log.info("MemberService - createMember");
         String memberImageUrl = request.getMemberImageUrl();
         // 각종 이름들을 memberImageUrl로 초기화
@@ -89,8 +89,7 @@ public class MemberService {
                 .toList();
         memberCategoryRepository.saveAll(categories);
 
-        log.info("이 멤버가 가지고 있는 카테고리 - {}",memberCategoryRepository.findByMember(member));
-        return getMemberInfo(member.getId());
+        return member.getId();
     }
 
     @Transactional

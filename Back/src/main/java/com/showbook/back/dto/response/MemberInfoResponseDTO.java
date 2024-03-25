@@ -7,7 +7,6 @@ import lombok.Getter;
 
 @Getter
 public class MemberInfoResponseDTO {
-
     private String email;
     private String name;
     private String nickname;
