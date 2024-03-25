@@ -12,6 +12,12 @@ import static org.springframework.http.HttpStatus.*;
 @AllArgsConstructor
 public enum ErrorCode {
 
+    /*
+     * LIBRARY BOOK
+     */
+    /* 403 BAD_REQUEST */
+    EMPTY_BOOKLIST(BAD_REQUEST, ""),
+
     /* 401 UNAUTHORIZED: 인증 실패 */
     UNAUTHORIZED_USER(UNAUTHORIZED, "만료되었거나 잘못된 토큰입니다. 토큰을 확인해주세요."),
 

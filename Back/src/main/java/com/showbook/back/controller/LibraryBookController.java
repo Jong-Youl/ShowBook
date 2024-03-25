@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -44,13 +45,12 @@ public class LibraryBookController {
 	}
 
 
-	@PutMapping("/{book_id}")
-	public void modifyLibrary(@RequestHeader("Authorization") String token, @RequestBody LibraryBookUpdateRequestDTO libraryBookUpdateRequestDTO, @PathVariable(value = "book_id") Long bookId) {
+	@PatchMapping("/edit")
+	public void modifyLibrary(@RequestHeader("Authorization") String token, @RequestBody LibraryBookUpdateRequestDTO libraryBookUpdateRequestDTO) {
 		Long memberId = jwtTokenUtil.getMemberId(token);
-		libraryBookService.modifyLibrary(memberId, bookId, libraryBookUpdateRequestDTO);
+		libraryBookService.modifyLibrary(memberId, libraryBookUpdateRequestDTO);
 	}
 
-	// requestBody로 readStatus 필요한가 ??
 	@DeleteMapping("/{book_id}")
 	public void deleteBook(@RequestHeader("Authorization") String token, @PathVariable(value = "book_id") Long bookId) {
 		Long memberId = jwtTokenUtil.getMemberId(token);

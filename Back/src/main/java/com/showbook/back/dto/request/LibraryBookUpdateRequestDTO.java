@@ -1,5 +1,6 @@
 package com.showbook.back.dto.request;
 
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,5 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LibraryBookUpdateRequestDTO {
+	private List<Long> bookIdList;
 	private int readStatus;
 }
