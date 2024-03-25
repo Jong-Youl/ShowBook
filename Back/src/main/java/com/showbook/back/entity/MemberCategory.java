@@ -9,8 +9,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 public class MemberCategory {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +26,11 @@ public class MemberCategory {
 
 	@Enumerated(EnumType.STRING)
 	private Category category;
+
+	@Builder
+	public MemberCategory(Long memberCategoryId, Member member, Category category) {
+		this.memberCategoryId = memberCategoryId;
+		this.member = member;
+		this.category = category;
+	}
 }
