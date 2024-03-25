@@ -9,6 +9,8 @@ import {
   ToggleButton,
   ToggleButtonContainer,
 } from './MyPage.styles';
+import MyHistory from './MyHistory';
+import MyReview from './MyReview';
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('reviews');
@@ -24,13 +26,13 @@ const MyPage = () => {
       </ProfileHeader>
       <ToggleButtonContainer>
         <ToggleButton
-          active={activeTab === 'reviews'}
+          active={(activeTab === 'reviews').toString()}
           onClick={() => setActiveTab('reviews')}
         >
           나의 한줄평
         </ToggleButton>
         <ToggleButton
-          active={activeTab === 'records'}
+          active={(activeTab === 'records').toString()}
           onClick={() => setActiveTab('records')}
         >
           나의 기록
@@ -40,7 +42,10 @@ const MyPage = () => {
         {activeTab === 'reviews' ? (
           <div>나의 한줄평입니다.</div>
         ) : (
-          <div>나의 기록입니다.</div>
+          <>
+            <MyHistory />
+            <MyReview />
+          </>
         )}
       </Content>
     </Container>

@@ -38,7 +38,6 @@ function BookRecommendations({ booksJson }) {
 
 export default BookRecommendations;
 
-// propTypes를 사용하여 booksJson prop의 타입을 명시
 BookRecommendations.propTypes = {
   booksJson: PropTypes.arrayOf(
     PropTypes.shape({

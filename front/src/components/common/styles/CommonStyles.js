@@ -83,3 +83,19 @@ export const Button = styled.button`
     background-color: var(--main);
   }
 `;
+
+export const ChartTitle = styled.h2`
+  text-align: left;
+  margin: 15px 15px 30px;
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+export const ChartContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 50px;
+`;
