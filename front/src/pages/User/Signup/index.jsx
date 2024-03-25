@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   CategoryButton,
   InputText,
@@ -11,23 +11,38 @@ import {
 } from '../../../components/common/styles/CommonStyles';
 
 function Signup() {
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const email = queryParams.get("email");
+  const role = queryParams.get("role");
+  const picture = queryParams.get("picture");
+
   let navigate = useNavigate();
-  const [gender, setGender] = useState(''); // 성별 상태
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  const [gender, setGender] = useState(''); 
+  const [nickname, setNickname] = useState('');
 
   const handleSubmit = async () => {
-    if (!gender) {
-      alert('성별을 선택해주세요.');
+    // 어느 하나 공란이 있으면 안됨
+    if (!name || !age || !gender || !nickname) {
+      alert('모든 회원 정보를 입력해주세요!');
       return;
     }
+    
+  // 회원가입 처리 로직
+    navigate('/user/category-servey',{
+      state : {
+        email : email,
+        roleName : role,
+        memberImageUrl : picture,
+        name : name,
+        age : age,
+        gender: gender === "male"? 0 : 1,
+        nickname : nickname
+      }
+    });
 
-    // 회원가입 처리 로직
-    try {
-      // axios.post('/api/signup', { gender, ...otherData });
-      console.log('성별:', gender);
-      navigate('/user/category-servey');
-    } catch (error) {
-      console.error('회원가입 오류:', error);
-    }
   };
 
   return (
@@ -37,21 +52,31 @@ function Signup() {
       <MarginBottom />
 
       <SmallLetters>이름</SmallLetters>
-      <InputText type='text' placeholder='이름을 입력해주세요.' />
+      <InputText 
+        type='text' 
+        placeholder='이름을 입력해주세요.' 
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        />
 
       <SmallLetters>나이</SmallLetters>
-      <InputText type='number' placeholder='나이를 입력해주세요.' />
+      <InputText 
+        type='number' 
+        placeholder='나이를 입력해주세요.' 
+        value = {age}
+        onChange={(e) => setAge(e.target.value)}
+        />
 
       <SmallLetters>성별</SmallLetters>
       <div>
         <CategoryButton
-          onClick={() => setGender('male')}
+          onClick={() => setGender("male")}
           selected={gender === 'male'}
         >
           남자
         </CategoryButton>
         <CategoryButton
-          onClick={() => setGender('female')}
+          onClick={() => setGender("female")}
           selected={gender === 'female'}
         >
           여자
@@ -60,7 +85,12 @@ function Signup() {
       <MarginBottom />
 
       <SmallLetters>닉네임</SmallLetters>
-      <InputText type='text' placeholder='닉네임을 입력해주세요.  ' />
+      <InputText 
+        type='text' 
+        placeholder='닉네임을 입력해주세요' 
+        value={nickname}
+        onChange={(e) => setNickname(e.target.value)}
+        />
 
       <Button onClick={handleSubmit}>Next</Button>
     </Container>
