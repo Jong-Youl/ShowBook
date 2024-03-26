@@ -43,6 +43,7 @@ export const SelectedOverlay = styled.div`
   left: 72%;
   right: 8px;
   bottom: 72%;
-  background: url('/img/button/checkButton.png') center/contain no-repeat;
-  display: ${({ isSelected }) => (isSelected ? 'block' : 'none')};
+  background: url('/img/button/checkButton.png') no-repeat right top;
+  background-size: contain;
+  display: ${({ $isSelected }) => ($isSelected ? 'block' : 'none')};
 `;

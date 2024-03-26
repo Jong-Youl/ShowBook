@@ -18,6 +18,7 @@ import Signup from './pages/User/Signup';
 import SelectCategory from './pages/User/CategoryServey';
 import { FullScreenLayout } from './layouts/FullScreenLayout';
 import Proxy from './pages/User/Proxy';
+import ShookImageUpload from './pages/Add/ShookImageUpload';
 
 function App() {
   return (
@@ -34,7 +35,14 @@ function App() {
             <Route path='/' element={<MobileLayout />}>
               <Route path='main' element={<MainPage />} />
               <Route path='shorts' element={<Shorts />} />
-              <Route path='add' element={<BookSelection />} />
+              <Route path='add' element={<MobileLayout />}>
+                <Route
+                  index
+                  element={<Navigate replace to='/add/book-selection' />}
+                />
+                <Route path='book-selection' element={<BookSelection />} />
+                <Route path='image-selection' element={<ShookImageUpload />} />
+              </Route>
               <Route path='library/*' element={<Library />}>
                 <Route index element={<Navigate replace to='before' />} />
                 <Route path=':category' element={<LibrarySelectedResult />} />
