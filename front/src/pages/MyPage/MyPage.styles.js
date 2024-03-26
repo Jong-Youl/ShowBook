@@ -34,19 +34,22 @@ export const EditLink = styled.a`
 export const ToggleButtonContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
 `;
 
 export const ToggleButton = styled.button`
+  border: 2px solid
+    ${({ active }) => (active === 'true' ? 'var(--main)' : 'var(--bg-gray)')};
   background-color: ${({ active }) =>
-    active === 'true' ? 'var(--main)' : 'gray'};
-  color: white;
-  border: none;
+    active === 'true' ? 'var(--main)' : 'var(--bg-beige)'};
+  color: ${({ active }) =>
+    active === 'true' ? 'var(--pure-white)' : 'var(--font-black)'};
   padding: 10px 20px;
-  margin: 0 5px;
+
+  //border-radius: 30px;
   cursor: pointer;
 `;
 
 export const Content = styled.div`
   text-align: center;
+  margin-top: 20px;
 `;
