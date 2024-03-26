@@ -22,6 +22,7 @@ function localAxios() {
                 const newAccessToken = response["headers"]["authorization"]
                 localStorage.setItem("accessToken",newAccessToken);
             }
+            return response
         },
         async (error) => {
             console.error(error)
@@ -29,6 +30,7 @@ function localAxios() {
             //     console.log(error)
             //     // userService.logout()
             // }
+            return Promise.reject(error);
         }
     )
     return instance

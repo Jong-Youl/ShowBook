@@ -11,6 +11,9 @@ import {
 } from './MyPage.styles';
 import MyHistory from './MyHistory';
 import MyReview from './MyReview';
+import { UserService } from '../../api/UserService';
+
+const userService = new UserService();
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('reviews');
@@ -22,6 +25,11 @@ const MyPage = () => {
         <div>
           <Nickname>조용한 가재</Nickname>
           <EditLink href='/edit-profile'>개인정보 수정</EditLink>
+          <ToggleButton
+            onClick={() => userService.getBookListByCategory()}
+          >
+            테스트
+          </ToggleButton>
         </div>
       </ProfileHeader>
       <ToggleButtonContainer>
