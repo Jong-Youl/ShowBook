@@ -1,15 +1,29 @@
 package com.showbook.back.dto.response;
 
-public class MemberInfoResponseDTO {
+import com.showbook.back.entity.Member;
+import com.showbook.back.entity.MemberImage;
+import lombok.Builder;
+import lombok.Getter;
 
-    private Long memberId;
+@Getter
+public class MemberInfoResponseDTO {
     private String email;
     private String name;
     private String nickname;
-    private String gender;
+    private int gender;
     private int age;
     private int readBookCount;
-    private String imageUrl;
+    private MemberImage memberImage;
 
+    @Builder
+    public MemberInfoResponseDTO(Member member) {
+        this.email = member.getEmail();
+        this.name = member.getName();
+        this.nickname = member.getNickname();
+        this.gender = member.getGender();
+        this.age = member.getAge();
+        this.readBookCount = member.getReadBookCount();
+        this.memberImage = member.getMemberImage();
+    }
 
 }

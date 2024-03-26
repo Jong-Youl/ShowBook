@@ -1,40 +1,35 @@
 package com.showbook.back.security.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.showbook.back.common.constants.ErrorCode;
 import com.showbook.back.common.exception.CustomException;
 import com.showbook.back.dto.RefreshToken;
 import com.showbook.back.entity.Member;
 import com.showbook.back.repository.MemberRepository;
 import com.showbook.back.security.model.PrincipalDetails;
-import com.showbook.back.service.MemberService;
 import com.showbook.back.service.RefreshTokenService;
-import io.netty.util.internal.StringUtil;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-import static com.showbook.back.common.constants.ErrorCode.TOKEN_NOT_FOUND;
+
+import static com.showbook.back.common.constants.ErrorCode.MEMBER_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -44,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private long REFRESH_EXPIRATION_TIME;
 
     private final JwtTokenUtil jwtTokenUtil;
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
     private final RefreshTokenService refreshTokenService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -58,30 +53,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-
-
         // accessToken 만료 여부 확인
         if(jwtTokenUtil.isTokenValid(accessToken)){
             log.info("토큰 만료 아직 안됨");
             this.setAuthentication(accessToken);
-            filterChain.doFilter(request,response);
+            doFilter(request,response,filterChain);
+            return;
 
             // access토큰이 만료되었지만 refresh토큰은 남아있는 경우
-        } else if(!jwtTokenUtil.isTokenValid(accessToken)) {
+        } else if(!jwtTokenUtil.isTokenValid(accessToken) && jwtTokenUtil.existsRefreshToken(accessToken)) {
             log.info("accessToken 만료! - {}", accessToken);
-            
+
             // redis에서 accessToken을 통해 refreshToken가져오기
-            String refreshToken = refreshTokenService.findRefreshTokenByAccessToken(accessToken).getAccessToken();
+            String refreshToken = refreshTokenService.findRefreshTokenByAccessToken(accessToken).getRefreshToken();
+
             // refresh 토큰 만료시간 검증
             boolean validateRefreshToken = jwtTokenUtil.isTokenValid(refreshToken);
 
-            // refresh 토큰 저장소 존재 유무 확인
-            boolean isRefreshToken = jwtTokenUtil.existsRefreshToken(accessToken);
+            log.info("validateRefreshToken - {}", validateRefreshToken);
 
-            log.info("validateRefreshToken - {}",validateRefreshToken);
-            log.info("isRefreshToken - {}" , isRefreshToken);
-
-            if (validateRefreshToken && isRefreshToken) {
+            if (validateRefreshToken) {
                 log.info("refreshToken으로 accessToken 재발급!");
                 // 기존의 accessToken을 기반 -> redis의 refresh토큰을 찾고
                 RefreshToken existedRefreshToken = refreshTokenService.findRefreshTokenByAccessToken(accessToken);
@@ -93,26 +84,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 existedRefreshToken.updateAccessToken(newAccessToken);
                 refreshTokenService.saveTokenInfo(existedRefreshToken);
 
-                log.info("새로 발급 받은 newAccessToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken).getAccessToken());
+                log.info("새로 발급 받은 RefreshToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken).getAccessToken());
 
                 response.setHeader(HttpHeaders.AUTHORIZATION,newAccessToken);
 
                 log.info("재발급 로직 완료!");
                 this.setAuthentication(newAccessToken);
-            } else {
-                // refreshToken가 만료되었음
-                log.info("쿠키가 없습니다!");
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
-
-            filterChain.doFilter(request,response);
+        } else {
+        log.info("쿠키가 없습니다!");
+        throw new JwtException("refreshToken이 없습니다!");
         }
+        filterChain.doFilter(request,response);
     }
 
     public void setAuthentication(String accessToken) {
         log.info("JwtAuthenticationFilter - setAuthentication");
         Long memberId = jwtTokenUtil.getMemberId(accessToken);
-        Member member = memberService.findMemberById(memberId);
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         PrincipalDetails principalDetail = new PrincipalDetails(member);
         Authentication auth = new UsernamePasswordAuthenticationToken(principalDetail, "",
                 List.of(new SimpleGrantedAuthority(member.getRoleName())));
@@ -121,11 +110,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludePath = {"/auth/token","/member/signup"}; // 필터를 타면 안되는 요청
+        String[] excludePath = {"/api/auth/token","/api/member/signup"}; // 필터를 타면 안되는 요청
         // 제외할 url 설정
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith);
     }
+
+
 }
 
 
