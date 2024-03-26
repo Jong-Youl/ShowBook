@@ -30,7 +30,7 @@ export const shortsJson = [
     book_id: 3,
     nickname: 'author4',
     member_img_url: 'publisher4',
-    total_page: 14,
+    shook_id: 14,
     shook_img_url:
       'https://contents.kyobobook.co.kr/sih/fit-in/300x0/pdt/9791193078211.jpg',
     title: 'description4',

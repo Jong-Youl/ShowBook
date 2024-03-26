@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ErrorMessage, Title, TitleContainer } from '../Add.styles';
-import { SmallButton } from '../../../components/common/styles/CommonStyles';
+import {
+  SmallButton,
+  SmallLetters,
+} from '../../../components/common/styles/CommonStyles';
 import {
   HiddenFileInput,
   ImageUploadContainer,
@@ -44,14 +47,14 @@ const ShookImageUpload = () => {
     <div>
       {/*<BackButton />*/}
       <TitleContainer>
-        <Title activeStep>1. 책 선택하기</Title>
-        <Title activeStep>2. 슈욱 작성하기</Title>
+        <Title $isactive>1. 책 선택하기</Title>
+        <Title $isactive>2. 슈욱 작성하기</Title>
       </TitleContainer>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
 
       <ImageUploadContainer
         onClick={triggerFileSelectPopup}
-        backgroundImage={imagePreviewUrl || '/img/icon/imageUpload.png'}
+        backgroundimage={imagePreviewUrl || '/img/icon/imageUpload.png'}
       />
 
       <HiddenFileInput
@@ -60,8 +63,12 @@ const ShookImageUpload = () => {
         onChange={handleImageChange}
         ref={fileInputRef}
       />
-
-      <SmallButton onClick={handleSubmit} isActive={image}>
+      <SmallLetters>· 슈욱에 게시할 사진을 선택해주세요</SmallLetters>
+      <br />
+      <SmallLetters>
+        · 책에서 맘에 들었던 글귀나 표현 어떤 것이든 좋아요
+      </SmallLetters>
+      <SmallButton onClick={handleSubmit} $isactive={!!image}>
         작성
       </SmallButton>
     </div>

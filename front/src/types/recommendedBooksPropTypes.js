@@ -1,10 +1,15 @@
 import PropTypes from 'prop-types';
 
 export const bookDataPropTypes = {
-  bookData: PropTypes.arrayOf(
+  booksJson: PropTypes.arrayOf(
     PropTypes.shape({
-      category: PropTypes.string.isRequired,
-      count: PropTypes.number.isRequired,
-    }),
+      // book_id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      book_image_url: PropTypes.string.isRequired,
+      author: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      total_page: PropTypes.number.isRequired,
+      publisher: PropTypes.string.isRequired,
+    }).isRequired,
   ).isRequired,
 };
