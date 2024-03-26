@@ -17,7 +17,7 @@ import Login from './pages/User/Login';
 import Signup from './pages/User/Signup';
 import SelectCategory from './pages/User/CategoryServey';
 import { FullScreenLayout } from './layouts/FullScreenLayout';
-import Proxy from './pages/User/Proxy';
+import LoginProxy from './pages/User/LoginProxy';
 
 function App() {
   return (
@@ -43,7 +43,7 @@ function App() {
               <Route path='review' element={<Review />} />
               <Route path='book-detail' element={<BookDetail/>}/>
             </Route>
-            <Route path='proxy' element={<Proxy/>}/>
+            <Route path='login_proxy' element={<LoginProxy/>}/>
           </Routes>
           <BottomNav />
         </BrowserRouter>

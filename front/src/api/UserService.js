@@ -1,7 +1,6 @@
-// import axios from 'axios';
 import { localAxios } from '../utils/http-commons';
 
-const REACT_APP_BASE_URL = "http://localhost:8080"
+const BASE_URL = process.env.REACT_APP_BASE_URL
 
 const local = localAxios()
 
@@ -10,7 +9,7 @@ class UserService {
     async login (memberId) {
         console.log("")
         local
-          .post(`${REACT_APP_BASE_URL}/api/auth/token?memberId=${memberId}`,{},{withCredentials: true})
+          .post(`${BASE_URL}/api/auth/token?memberId=${memberId}`,{},{withCredentials: true})
           .then((res) => {
             alert("슈욱에 오신 것을 환영합니다!")
             console.log(res)
@@ -27,7 +26,7 @@ class UserService {
 
     async googleLogin() {
         try {
-            window.location.replace(`${REACT_APP_BASE_URL}/oauth2/authorization/google`);
+            window.location.replace(`${BASE_URL}/oauth2/authorization/google`);
         } catch (error) {
             console.error("구글 로그인 실패 : ",error)
         }
@@ -35,7 +34,7 @@ class UserService {
 
     async kakaoLogin() {
         try {
-            window.location.replace(`${REACT_APP_BASE_URL}/oauth2/authorization/kakao`);
+            window.location.replace(`${BASE_URL}/oauth2/authorization/kakao`);
         } catch (error) {
             console.error("구글 로그인 실패 : ",error)
         }
@@ -54,7 +53,7 @@ class UserService {
         }
 
         local
-            .post("http://localhost:8080/api/member/signup",
+            .post(`${BASE_URL}/api/member/signup`,
             signupRequest,{})
             .then((res) => {
                 console.log(res)
@@ -72,14 +71,13 @@ class UserService {
 
     async logout() {
         local
-            .delete(`${REACT_APP_BASE_URL}/api/auth/logout`,
+            .delete(`${BASE_URL}/api/auth/logout`,
                     {headers : {
                         "Authorization" : localStorage.getItem("accessToken")
-                    }})
+                    }},{withCredentials: true})
             .then((res) => {
                 console.log(res)
                 localStorage.clear()
-                alert("로그아웃!")
                 window.location.replace("/user/login");
                 
             })
@@ -89,7 +87,7 @@ class UserService {
     }
 
     async getBookListByCategory() {
-        local.get(`${REACT_APP_BASE_URL}/api/member/reading-logs/category`,
+        local.get(`${BASE_URL}/api/member/reading-logs/category`,
                 {
                     headers: {
                         "Authorization" : localStorage.getItem("accessToken")
@@ -101,7 +99,7 @@ class UserService {
     }
 
     async getBookListByMonth() {
-        local.get(`${REACT_APP_BASE_URL}/api/member/reading-logs/category`,
+        local.get(`${BASE_URL}/api/member/reading-logs/category`,
                 {
                     headers: {
                         "Authorization" : localStorage.getItem("accessToken")

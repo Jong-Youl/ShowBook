@@ -3,7 +3,7 @@ import {UserService} from '../../../api/UserService';
 
 const userService = new UserService();
 
-function Proxy() {
+function LoginProxy() {
     const [memberId, setMemberId] = useState(null); // null로 초기값 설정
 
     
@@ -40,4 +40,4 @@ function Proxy() {
 
 }
 
-export default Proxy;
+export default LoginProxy;
