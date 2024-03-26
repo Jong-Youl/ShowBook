@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class Shook {
 
 	@Id
+	@Column(name = "shook_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long shookId;
 
