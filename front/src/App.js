@@ -19,6 +19,7 @@ import SelectCategory from './pages/User/CategoryServey';
 import { FullScreenLayout } from './layouts/FullScreenLayout';
 import Proxy from './pages/User/Proxy';
 import ShookImageUpload from './pages/Add/ShookImageUpload';
+import { Outlet } from 'react-router';
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
             <Route path='/' element={<MobileLayout />}>
               <Route path='main' element={<MainPage />} />
               <Route path='shorts' element={<Shorts />} />
-              <Route path='add' element={<MobileLayout />}>
+              <Route path='add' element={<Outlet />}>
                 <Route
                   index
                   element={<Navigate replace to='/add/book-selection' />}
