@@ -1,5 +1,7 @@
 package com.showbook.back.config;
 
+import com.showbook.back.repository.MemberRepository;
+import com.showbook.back.security.handlers.CustomExceptionHandlerFilter;
 import com.showbook.back.security.handlers.JwtAuthenticationEntryPoint;
 import com.showbook.back.security.handlers.OAuth2FailureHandler;
 import com.showbook.back.security.handlers.OAuth2SuccessHandler;
@@ -28,7 +30,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
 
     private final JwtTokenUtil jwtTokenUtil;
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
     private final RefreshTokenService refreshTokenService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final CustomOAuth2UserService customOAuth2UserService;
@@ -43,7 +45,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(request -> request
                     // permitAll() -> 인증요청 시 필터를 거칠 때 예외가 터져도 무시할 뿐, 필터를 거친다!
                     .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
-                    .requestMatchers("/auth/token","/auth/logout","/member/signup").permitAll()
+                    .requestMatchers("/api/auth/token","/api/auth/logout","/api/member/signup").permitAll()
 
                     .anyRequest().authenticated()
             )
@@ -61,7 +63,8 @@ public class SecurityConfig {
                             .failureHandler(oAuth2FailureHandler)
                     )
             .addFilterBefore(corsFilter,UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil,memberService,refreshTokenService),
+            .addFilterBefore(new CustomExceptionHandlerFilter(), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil,memberRepository,refreshTokenService),
                 UsernamePasswordAuthenticationFilter.class)
             ;
 

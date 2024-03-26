@@ -29,7 +29,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
@@ -45,6 +45,7 @@ public class AuthController {
     public ResponseEntity<?> logout(@RequestHeader("Authorization") final String accessToken,
                                     @CookieValue("refreshToken") String refreshToken) {
 
+        log.info("AuthController - logout");
         // accessToken을 바탕으로 Redis에 있는 refreshToken 삭제
         refreshTokenService.removeRefreshToken(accessToken);
 
@@ -57,10 +58,11 @@ public class AuthController {
         HttpHeaders headers = new HttpHeaders();
 
         headers.add(SET_COOKIE,refreshTokenCookie.toString());
-
+        
         return ResponseEntity.ok()
                 .headers(headers)
-                .build();
+                .build()
+                ;
     }
 
     @GetMapping("/test")

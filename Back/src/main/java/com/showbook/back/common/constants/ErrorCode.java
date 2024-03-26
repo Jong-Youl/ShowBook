@@ -23,6 +23,7 @@ public enum ErrorCode {
 
     /* 404 NOT FOUND: 리소스가 없음  */
     TOKEN_NOT_FOUND(NOT_FOUND,"토큰을 찾을 수 없습니다!"),
+    MEMBER_NOT_FOUND(NOT_FOUND, "유저를 찾을 수 없습니다!");
 
     /**
      * BOOK

@@ -32,8 +32,11 @@ import java.nio.charset.StandardCharsets;
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtTokenUtil jwtTokenUtil;
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
     private final RefreshTokenService refreshTokenService;
+
+    @Value("${BASE_URL}")
+    private String BASE_URL;
 
     @Value("${REFRESH_EXPIRATION_TIME}")
     private long REFRESH_EXPIRATION_TIME;
@@ -47,17 +50,17 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String id = oAuth2User.getAttribute("id");
         String email = oAuth2User.getAttribute("email");
         String picture = oAuth2User.getAttribute("picture");
-        boolean isExist = oAuth2User.getAttribute("exist");
         String role = oAuth2User.getAuthorities().stream()
                 .findFirst()
                 .orElseThrow(IllegalAccessError::new)
                 .getAuthority();
 
+        Member member = memberRepository.findByEmail(email).orElse(null);
 
-        if(isExist) { // 이미 존재하는 회원
-            Long memberId = memberService.findMemberByEmail(email).getId();
+        if(member != null) { // 이미 존재하는 회원
+            Long memberId = member.getId();
 
-            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:5173/proxy")
+            String targetUrl = UriComponentsBuilder.fromUriString(BASE_URL + "/proxy")
                     .queryParam("id",memberId)
                     .build()
                     .encode(StandardCharsets.UTF_8)
@@ -69,7 +72,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         } else {
             // 존재하는 회원이 아니라면 -> 로그인 페이지로 리다이렉트
             // query parameter에 email, role, profile을 보내준다
-            String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:5173/signup") // 추후 변경 예정
+            String targetUrl = UriComponentsBuilder.fromUriString(BASE_URL + "/user/signup") // 추후 변경 예정
                     .queryParam("email",email)
                     .queryParam("role",role)
                     .queryParam("picture",picture)
