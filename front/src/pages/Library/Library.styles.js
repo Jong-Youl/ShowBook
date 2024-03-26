@@ -23,6 +23,7 @@ export const BookGrid = styled.div`
 `;
 
 export const BookItem = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,4 +35,14 @@ export const BookItem = styled.div`
     height: auto;
     max-height: 100%;
   }
+`;
+
+export const SelectedOverlay = styled.div`
+  position: absolute;
+  top: 8px;
+  left: 72%;
+  right: 8px;
+  bottom: 72%;
+  background: url('/img/button/checkButton.png') center/contain no-repeat;
+  display: ${({ isSelected }) => (isSelected ? 'block' : 'none')};
 `;
