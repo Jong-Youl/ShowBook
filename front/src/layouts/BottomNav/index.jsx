@@ -24,7 +24,7 @@ const BottomNav = () => {
                 : iconPaths[item].unselected
             }
             alt={item}
-            style={index === 2 ? { position: 'relative', top: '-30px' } : {}}
+            style={index === 2 ? { position: 'relative', top: '-40%' } : {}}
           />
         </NavItem>
       ))}

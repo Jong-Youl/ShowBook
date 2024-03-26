@@ -1,16 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { StyledSwiper, StyledSwiperSlide } from './BookRecommendations.styles';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
 import { EffectCards } from 'swiper/modules';
 import { useNavigate } from 'react-router';
+import { bookDataPropTypes } from '../../types/recommendedBooksPropTypes';
 
 function BookRecommendations({ booksJson }) {
   const navigate = useNavigate();
   const onHandleClick = () => {
-    navigate('/book-detail')
-  }
+    navigate('/book-detail');
+  };
   const booksListWithMap = booksJson.map((book, index) => (
     <StyledSwiperSlide
       key={index}
@@ -36,19 +36,6 @@ function BookRecommendations({ booksJson }) {
   );
 }
 
-export default BookRecommendations;
+BookRecommendations.propTypes = bookDataPropTypes;
 
-BookRecommendations.propTypes = {
-  booksJson: PropTypes.arrayOf(
-    PropTypes.shape({
-      book_id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      book_image_url: PropTypes.string.isRequired,
-      author: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-      total_page: PropTypes.number.isRequired,
-      publisher: PropTypes.string.isRequired,
-      // ...
-    }),
-  ).isRequired,
-};
+export default BookRecommendations;

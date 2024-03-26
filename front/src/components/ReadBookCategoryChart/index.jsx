@@ -4,9 +4,9 @@ import { readBookCategoryDataPropTypes } from '../../types/readBookCategoryDataP
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-const ReadBookCategoryChart = ({ bookData }) => {
-  const labels = bookData.map((item) => item.category);
-  const data = bookData.map((item) => item.count);
+const ReadBookCategoryChart = ({ readCategoryJson }) => {
+  const labels = readCategoryJson.map((item) => item.category);
+  const data = readCategoryJson.map((item) => item.count);
 
   const chartData = {
     labels: labels,
