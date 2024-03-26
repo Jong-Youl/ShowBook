@@ -54,12 +54,15 @@ class UserService {
         }
 
         local
-            .post("http://localhost:8080/member/signup",
+            .post("http://localhost:8080/api/member/signup",
             signupRequest,{})
             .then((res) => {
-                alert("회원가입 완료!")
-                const memberId = res.data
-                this.login(memberId) // 회원가입 즉시 로그인
+                console.log(res)
+                if (res.status == 201){
+                    alert("회원가입 완료!")
+                    const memberId = res.data
+                    this.login(memberId) // 회원가입 즉시 로그인
+                }
             })
             .catch((error) => {
                 alert("회원가입 실패!")
@@ -82,6 +85,30 @@ class UserService {
             })
             .catch((error) => {
                 console.error(error)
+            })
+    }
+
+    async getBookListByCategory() {
+        local.get(`${REACT_APP_BASE_URL}/api/member/reading-logs/category`,
+                {
+                    headers: {
+                        "Authorization" : localStorage.getItem("accessToken")
+                    }
+                })
+            .then((res) => {
+                console.log(res)
+            })
+    }
+
+    async getBookListByMonth() {
+        local.get(`${REACT_APP_BASE_URL}/api/member/reading-logs/category`,
+                {
+                    headers: {
+                        "Authorization" : localStorage.getItem("accessToken")
+                    }
+                })
+            .then((res) => {
+                console.log(res)
             })
     }
 
