@@ -60,7 +60,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         if(member != null) { // 이미 존재하는 회원
             Long memberId = member.getId();
 
-            String targetUrl = UriComponentsBuilder.fromUriString(BASE_URL + "/login_proxy")
+            String targetUrl = UriComponentsBuilder.fromUriString(BASE_URL + "/proxy")
                     .queryParam("id",memberId)
                     .build()
                     .encode(StandardCharsets.UTF_8)
