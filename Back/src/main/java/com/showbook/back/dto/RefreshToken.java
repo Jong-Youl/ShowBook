@@ -13,7 +13,7 @@ import org.springframework.data.redis.core.index.Indexed;
 import java.io.Serializable;
 
 @Getter
-@RedisHash(value = "jwtToken",timeToLive = 60 * 60 * 24) // hash Collection임을 명시
+@RedisHash(value = "jwtToken",timeToLive = 60*60*24) // hash Collection임을 명시
 @AllArgsConstructor
 public class RefreshToken implements Serializable { //
 

@@ -85,6 +85,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 refreshTokenService.saveTokenInfo(existedRefreshToken);
 
                 log.info("새로 발급 받은 AccessToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken).getAccessToken());
+                log.info("기존의 RefreshToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken).getRefreshToken());
 
                 response.setHeader(HttpHeaders.AUTHORIZATION,newAccessToken);
 
@@ -92,7 +93,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 this.setAuthentication(newAccessToken);
             }
         } else {
-        log.info("쿠키가 없습니다!");
         throw new JwtException("refreshToken이 없습니다!");
         }
         filterChain.doFilter(request,response);
