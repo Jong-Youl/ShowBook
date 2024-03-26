@@ -25,6 +25,5 @@ export const ButtonsContainer = styled.div`
 `;
 
 export const ButtomImg = styled.img`
-width : 40svh;
-height : 10svh;
+height : 9svh;
 `
