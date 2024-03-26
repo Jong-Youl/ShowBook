@@ -6,7 +6,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+Back/src/main/generated
 ### STS ###
 .apt_generated
 .classpath
@@ -27,7 +27,7 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-
+src/main/gem
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/

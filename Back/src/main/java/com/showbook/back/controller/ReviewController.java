@@ -4,6 +4,8 @@ import static org.springframework.http.HttpStatus.*;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,12 +38,12 @@ public class ReviewController {
 	}
 
 	@GetMapping("/{bookId}")
-	public ResponseEntity<List<ReviewResponseDTO>> getBookReviews(@PathVariable("bookId") Long bookId) {
-		return new ResponseEntity<>(reviewService.getBookReviews(bookId), OK);
+	public ResponseEntity<Page<ReviewResponseDTO>> getBookReviews(Pageable pageable, @PathVariable("bookId") Long bookId) {
+		return new ResponseEntity<>(reviewService.getBookReviews(pageable, bookId), OK);
 	}
 
 	@GetMapping("/my")
-	public ResponseEntity<List<MyReviewResponseDTO>> getMyReviews(@RequestHeader("Authorization") String token) {
-		return new ResponseEntity<>(reviewService.getMyReviews(token), OK);
+	public ResponseEntity<Page<MyReviewResponseDTO>> getMyReviews(Pageable pageable, @RequestHeader("Authorization") String token) {
+		return new ResponseEntity<>(reviewService.getMyReviews(pageable, token), OK);
 	}
 }

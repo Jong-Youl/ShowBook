@@ -1,5 +1,7 @@
 package com.showbook.back.service;
 
+import com.showbook.back.common.constants.ErrorCode;
+import com.showbook.back.common.exception.CustomException;
 import com.showbook.back.dto.request.LibraryBookUpdateRequestDTO;
 import com.showbook.back.dto.response.LibraryBookResponseDTO;
 import com.showbook.back.entity.*;
@@ -93,20 +95,35 @@ public class LibraryBookService {
 
 
     @Transactional
-    public void modifyLibrary(Long memberId, Long bookId, LibraryBookUpdateRequestDTO libraryBookUpdateRequestDTO) {
+    public void modifyLibrary(Long memberId, LibraryBookUpdateRequestDTO libraryBookUpdateRequestDTO) {
+        List<Long> bookIdList = libraryBookUpdateRequestDTO.getBookIdList();
         int newReadStatus = libraryBookUpdateRequestDTO.getReadStatus();
-        System.out.println("newReadStatus : " + newReadStatus);
         Long libraryId = libraryRepository.findByMemberId(memberId).getLibraryId();
-        // libraryId, bookId 일치하는 LibraryBook 찾기
-        LibraryBook libraryBook = libraryBookRepository.findLibraryBookByLibraryIdAndBookId(libraryId, bookId);
 
-        // readStatus 업데이트
-        libraryBook.setReadStatus(newReadStatus);
-        // readStatus가 2 --> finishedDate도 함께 업데이트
-        if (newReadStatus == 2) {
-            libraryBook.setFinishedDate();
+        // bookIdList가 비어있다면
+        if(bookIdList.isEmpty()) {
+            throw new CustomException(ErrorCode.EMPTY_BOOKLIST);
         }
 
-        libraryBookRepository.save(libraryBook);
+        for(Long bookId : bookIdList) {
+            // libraryId, bookId 일치하는 LibraryBook 찾기
+            LibraryBook libraryBook = libraryBookRepository.findLibraryBookByLibraryIdAndBookId(libraryId, bookId);
+
+            // readStatus 업데이트
+            libraryBook.setReadStatus(newReadStatus);
+            // readStatus가 2인 경우 finishedDate도 함께 업데이트
+            if (newReadStatus == 2) {
+                libraryBook.setFinishedDate();
+            }
+
+            libraryBookRepository.save(libraryBook);
+        }
+    }
+
+    public void deleteBook(Long memberId, Long bookId) {
+        Long libraryId = libraryRepository.findByMemberId(memberId).getLibraryId();
+        // libraryId, bookId 일치하는 LibraryBook 찾기
+        Long libraryBookId = libraryBookRepository.findLibraryBookByLibraryIdAndBookId(libraryId, bookId).getLibraryBookId();
+        libraryBookRepository.deleteById(libraryBookId);
     }
 }
