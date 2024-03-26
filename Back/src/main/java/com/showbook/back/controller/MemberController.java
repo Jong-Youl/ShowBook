@@ -36,7 +36,7 @@ public class MemberController {
     public ResponseEntity<?> signup(@RequestBody SignupRequestDTO signupRequestDTO) {
         log.info("MemberController.signup() - 추가 정보를 바탕으로 회원가입 시작");
         Long memberId = memberService.createMember(signupRequestDTO);
-        return new ResponseEntity<>(memberId, CREATED);
+        return ResponseEntity.status(CREATED).body(memberId);
     }
 
     @GetMapping("/memberInfo")
