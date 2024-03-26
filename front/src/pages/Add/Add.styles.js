@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const TitleContainer = styled.div`
   display: flex;
@@ -8,20 +8,14 @@ export const TitleContainer = styled.div`
 
 export const Title = styled.div`
   font-size: 20px;
-  color: #999;
-  font-weight: normal;
-  border: 2px solid var(--bg-gray);
+  color: ${({ $isactive }) => ($isactive ? 'var(--main)' : '#999')};
+  border: 2px solid
+    ${({ $isactive }) => ($isactive ? 'var(--main)' : 'var(--bg-gray)')};
+
   border-radius: 30px;
   padding: 8px 20px;
   margin-left: 10px;
   margin-right: 10px;
-
-  ${(props) =>
-    props.activeStep &&
-    css`
-      color: var(--main);
-      border: 2px solid var(--main);
-    `}
 `;
 export const ErrorMessage = styled.div`
   color: var(--main);

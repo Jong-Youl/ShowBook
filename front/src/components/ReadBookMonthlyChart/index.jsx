@@ -4,16 +4,16 @@ import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { readBookMonthlyDataPropTypes } from '../../types/readBookMonthlyDataPropTypes';
 
-const ReadBookMonthlyChart = ({ bookData }) => {
-  const maxCount = Math.max(...bookData.map((data) => data.count));
+const ReadBookMonthlyChart = ({ readMonthlyJson }) => {
+  const maxCount = Math.max(...readMonthlyJson.map((data) => data.count));
   const maxYValue = maxCount + maxCount * 0.1;
 
   const data = {
-    labels: bookData.map((data) => data.month),
+    labels: readMonthlyJson.map((data) => data.month),
     datasets: [
       {
         label: 'Books Read',
-        data: bookData.map((data) => data.count),
+        data: readMonthlyJson.map((data) => data.count),
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgb(210,86,120)',
         borderWidth: 1,

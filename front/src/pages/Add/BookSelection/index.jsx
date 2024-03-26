@@ -34,7 +34,7 @@ const BookSelection = () => {
   return (
     <div>
       <TitleContainer>
-        <Title activeStep>1. 책 선택하기</Title>
+        <Title $isactive>1. 책 선택하기</Title>
         <Title>2. 슈욱 작성하기</Title>
       </TitleContainer>
       <SearchBar onSearch={handleSearch} />
@@ -52,7 +52,7 @@ const BookSelection = () => {
           </BookItem>
         ))}
       </BookGrid>
-      <SmallButton onClick={handleNext} isActive={!!selectedBookId}>
+      <SmallButton onClick={handleNext} $isactive={!!selectedBookId}>
         다음
       </SmallButton>
     </div>
