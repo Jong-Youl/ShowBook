@@ -1,5 +1,7 @@
 package com.showbook.back.service;
 
+import com.showbook.back.common.constants.ErrorCode;
+import com.showbook.back.common.exception.CustomException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -8,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.showbook.back.dto.response.BookDetailResponseDTO;
 import com.showbook.back.dto.response.BookPurchaseResponseDTO;
 import com.showbook.back.entity.Book;
-import com.showbook.back.execption.BookNotFoundException;
 import com.showbook.back.repository.BookRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -34,13 +35,13 @@ public class BookService {
 		//feature에 결측치를 가지는 book은 db에 없음
 		return book.map(value -> BookDetailResponseDTO.builder()
 			.book(value)
-			.build()).orElseThrow(BookNotFoundException::new);
+			.build()).orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
 	}
 
 	public BookPurchaseResponseDTO getPurchaseUrl(long bookId) {
 
 		Book book = bookRepository.findById(bookId).
-			orElseThrow(BookNotFoundException::new);
+			orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
 
 		return BookPurchaseResponseDTO.builder()
 			.url(transformTitleToUrl(book))

@@ -21,6 +21,9 @@ public class Shook {
 	private Long shookId;
 
 	@Column(nullable = false)
+	private String bookTitle;
+
+	@Column(nullable = false)
 	private String shookImageUrl;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -31,6 +34,12 @@ public class Shook {
 	@JoinColumn(name="member_id")
 	private Member member;
 
-
-
+	@Builder
+	public Shook(Long shookId, String bookTitle, String shookImageUrl, Book book, Member member) {
+		this.shookId = shookId;
+		this.bookTitle = bookTitle;
+		this.shookImageUrl = shookImageUrl;
+		this.book = book;
+		this.member = member;
+	}
 }
