@@ -1,26 +1,35 @@
 package com.showbook.back.entity;
 
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.io.Serializable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Embeddable
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class ShookLikePK implements Serializable {
-	@Column(name = "member_id")
-	private Long memberId;
 
-	@Column(name = "shook_id")
-	private Long shookId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Member member;
 
-	@Builder
-	public ShookLikePK(Long memberId, Long shookId){
-		this.memberId = memberId;
-		this.shookId = shookId;
-	}
-	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "shook_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Shook shook;
 }
