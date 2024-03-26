@@ -1,15 +1,21 @@
-import axios from 'axios';
+// import axios from 'axios';
+import { localAxios } from '../utils/http-commons';
+
+const REACT_APP_BASE_URL = "http://localhost:8080"
+
+const local = localAxios()
 
 class UserService {
 
     async login (memberId) {
-        axios
-          .post(`http://localhost:8080/auth/token?memberId=${memberId}`,{},{withCredentials: true})
+        console.log("")
+        local
+          .post(`${REACT_APP_BASE_URL}/api/auth/token?memberId=${memberId}`,{},{withCredentials: true})
           .then((res) => {
             alert("슈욱에 오신 것을 환영합니다!")
             console.log(res)
-            const accessToken = res["headers"]["authorization"]
-            localStorage.setItem("accessToken",accessToken)
+            // const accessToken = res["headers"]["authorization"]
+            // localStorage.setItem("accessToken",accessToken)
             window.location.replace("/main")
           })
           .catch(error => {
@@ -21,7 +27,7 @@ class UserService {
 
     async googleLogin() {
         try {
-            window.location.replace("http://localhost:8080/oauth2/authorization/google");
+            window.location.replace(`${REACT_APP_BASE_URL}/oauth2/authorization/google`);
         } catch (error) {
             console.error("구글 로그인 실패 : ",error)
         }
@@ -29,7 +35,7 @@ class UserService {
 
     async kakaoLogin() {
         try {
-            window.location.replace("http://localhost:8080/oauth2/authorization/kakao");
+            window.location.replace(`${REACT_APP_BASE_URL}/oauth2/authorization/kakao`);
         } catch (error) {
             console.error("구글 로그인 실패 : ",error)
         }
@@ -47,7 +53,7 @@ class UserService {
             memberImageUrl : memberInfo.memberImageUrl
         }
 
-        axios
+        local
             .post("http://localhost:8080/member/signup",
             signupRequest,{})
             .then((res) => {
@@ -59,8 +65,27 @@ class UserService {
                 alert("회원가입 실패!")
                 console.error(error)
             })
-        
     }
+
+    async logout() {
+        local
+            .delete(`${REACT_APP_BASE_URL}/api/auth/logout`,
+                    {headers : {
+                        "Authorization" : localStorage.getItem("accessToken")
+                    }})
+            .then((res) => {
+                console.log(res)
+                localStorage.clear()
+                alert("로그아웃!")
+                window.location.replace("/user/login");
+                
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+    }
+
+
 
 }
 
