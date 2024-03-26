@@ -5,7 +5,9 @@ import {
   ChartTitle,
 } from '../../../../components/common/styles/CommonStyles';
 
+
 const ReadCategorical = () => {
+
   const bookData = [
     { category: '소설', count: 12 },
     { category: '시/에세이', count: 2 },

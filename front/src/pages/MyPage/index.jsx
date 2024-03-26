@@ -17,6 +17,16 @@ const userService = new UserService();
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('reviews');
+  // const [categoryBook, setCategoryBook] = useState([])
+
+  // const fetchBookListByCategory = async() => {
+  //   try {
+  //     const data = userService.getBookListByCategory();
+  //     setCategoryBook(data)
+  //   } catch(error) {
+  //       console.error("카테고리 별 책 가져오기 실패! -> ZZ" , error)
+  //   }
+  // }
 
   return (
     <Container>
@@ -26,7 +36,7 @@ const MyPage = () => {
           <Nickname>조용한 가재</Nickname>
           <EditLink href='/edit-profile'>개인정보 수정</EditLink>
           <ToggleButton
-            onClick={() => userService.getBookListByCategory()}
+          onClick={() => userService.getBookListByCategory()}
           >
             테스트
           </ToggleButton>
