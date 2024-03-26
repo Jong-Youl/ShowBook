@@ -9,12 +9,12 @@ import lombok.Getter;
 public class LibraryBookResponseDTO {
 	private final Long bookId;
 	private final String bookImgURL;
-	private final String bookTitle;
+	private final String title;
 
 	@Builder
 	public LibraryBookResponseDTO(Book book) {
 		this.bookId = book.getBookId();
 		this.bookImgURL = book.getBookImageURL();
-		this.bookTitle = book.getTitle();
+		this.title = book.getTitle();
 	}
 }
