@@ -27,7 +27,7 @@ const BookDetail = () => {
 
       </ContentContainer>
       <ReviewContainer>
-        <StarIcon src={`/img/icon/Star.png`}></StarIcon>
+        <StarIcon src={`/img/icon/star.png`}></StarIcon>
         <ReviewRating>4.2</ReviewRating>
       </ReviewContainer>
       <ButtonsContainer>
