@@ -38,7 +38,8 @@ export const ToggleButtonContainer = styled.div`
 `;
 
 export const ToggleButton = styled.button`
-  background-color: ${({ active }) => (active ? 'var(--main)' : 'gray')};
+  background-color: ${({ active }) =>
+    active === 'true' ? 'var(--main)' : 'gray'};
   color: white;
   border: none;
   padding: 10px 20px;
