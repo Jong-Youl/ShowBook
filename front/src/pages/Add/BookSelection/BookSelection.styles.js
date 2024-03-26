@@ -1,13 +1,5 @@
 import styled from 'styled-components';
-import { scrollbarStyles } from '../../components/common/styles/ScrollbarStyles';
-
-export const Heading = styled.span`
-  color: ${(props) => props.color || 'var(--font-black)'};
-  font-weight: ${(props) => (props.bold ? '920' : '620')};
-  white-space: pre-wrap;
-  font-size: large;
-  padding: 5px 5px 5px 10px;
-`;
+import { scrollbarStyles } from '../../../components/common/styles/ScrollbarStyles';
 
 export const BookGrid = styled.div`
   ${scrollbarStyles};
@@ -17,7 +9,7 @@ export const BookGrid = styled.div`
   padding: 15px;
   margin-right: 5px;
   margin-left: 5px;
-  height: calc(85vh - 100px);
+  height: calc(70vh - 100px);
   overflow-y: auto;
   align-content: start;
 `;
@@ -35,4 +27,21 @@ export const BookItem = styled.div`
     height: auto;
     max-height: 100%;
   }
+`;
+
+export const SelectedOverlay = styled.div`
+  position: absolute;
+  top: 8px;
+  left: 72%;
+  right: 8px;
+  bottom: 72%;
+  background: url('/img/button/checkButton.png') no-repeat right top;
+  background-size: contain;
+  display: ${({ $isSelected }) => ($isSelected ? 'block' : 'none')};
+`;
+
+export const BackButton = styled.button`
+  padding: 5px 10px;
+  font-size: 16px;
+  cursor: pointer;
 `;

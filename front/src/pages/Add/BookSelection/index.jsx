@@ -1,37 +1,46 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  BookGrid,
-  BookItem,
-  SelectedOverlay,
-} from '../../Library/Library.styles';
 import SearchBar from '../../../components/common/SearchBar';
-import { booksAfterReadJson } from '../../../etc/booksAfterReadJson';
+import { booksBeforeReadJson } from '../../../etc/booksBeforeReadJson';
+import { SmallButton } from '../../../components/common/styles/CommonStyles';
+import { BookGrid, BookItem, SelectedOverlay } from './BookSelection.styles';
+import { ErrorMessage, Title, TitleContainer } from '../Add.styles';
 
 const BookSelection = () => {
-  const [bookList, setBookList] = useState([]); // API 호출을 통해 업데이트됨
+  const [bookList, setBookList] = useState([]);
   const [selectedBookId, setSelectedBookId] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSearch = async (searchTerm) => {
     console.log(searchTerm);
-    // 검색 API 호출 로직
-    setBookList(booksAfterReadJson);
+    setBookList(booksBeforeReadJson);
+    setErrorMessage('');
   };
 
   const handleSelectBook = (bookId) => {
     setSelectedBookId(selectedBookId === bookId ? null : bookId);
+    setErrorMessage('');
   };
+
   const handleNext = () => {
     if (selectedBookId === null) {
-      alert('책을 선택해주세요.');
+      setErrorMessage('책을 선택해주세요.');
       return;
     }
     navigate('/add/image-selection');
   };
+
   return (
     <div>
+      <TitleContainer>
+        <Title activeStep>1. 책 선택하기</Title>
+        <Title>2. 슈욱 작성하기</Title>
+      </TitleContainer>
       <SearchBar onSearch={handleSearch} />
+      {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+
       <BookGrid>
         {bookList.map((book) => (
           <BookItem
@@ -43,7 +52,9 @@ const BookSelection = () => {
           </BookItem>
         ))}
       </BookGrid>
-      <button onClick={handleNext}>다음</button>
+      <SmallButton onClick={handleNext} isActive={!!selectedBookId}>
+        다음
+      </SmallButton>
     </div>
   );
 };
