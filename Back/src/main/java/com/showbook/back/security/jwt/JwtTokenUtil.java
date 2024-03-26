@@ -3,28 +3,22 @@ package com.showbook.back.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.showbook.back.common.constants.ErrorCode;
-import com.showbook.back.common.exception.CustomException;
 import com.showbook.back.dto.RefreshToken;
-import com.showbook.back.repository.RefreshTokenRepository;
 import com.showbook.back.security.dto.GeneratedToken;
 import com.showbook.back.service.RefreshTokenService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.Date;
-import java.util.Optional;
 
 import static com.showbook.back.common.constants.ErrorCode.UNAUTHORIZED_USER;
 
@@ -83,34 +77,13 @@ public class JwtTokenUtil {
         return PREFIX + refreshToken;
     }
 
-    public String checkAccessToken(String token) {
-        token = token.replace(PREFIX, "");
-        DecodedJWT decodedJWT = verify(token);
-        if (decodedJWT != null && decodedJWT.getSubject().equals("accessToken")) {
-            return decodedJWT.getClaim("id").asString();
-        } else {
-            return null;
-        }
-    }
-
-    public boolean checkRefreshToken(String token) {
-        token = token.replace(PREFIX, "");
-        DecodedJWT decodedJWT = verify(token);
-        if (decodedJWT != null && decodedJWT.getSubject().equals("refreshToken")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public boolean existsRefreshToken(String accessToken) {
-
+        log.info("JwtTokenUtil - existsRefreshToken");
         RefreshToken token = refreshTokenService.findRefreshTokenByAccessToken(accessToken);
-        log.info("JwtTokenUtil.existesRefreshToken -> token {}",token.getRefreshToken());
+        if (token == null)
+            return false;
 
-        if (token != null) return true;
-
-        return false;
+        return true;
 
     }
 
@@ -118,8 +91,8 @@ public class JwtTokenUtil {
         try {
             DecodedJWT decodedJWT = verify(jwtToken);
             return decodedJWT != null && !decodedJWT.getExpiresAt().before(new Date());
-        } catch (JWTVerificationException e) {
-            log.error("JwtTokenUtil.isTokenExpired에서 예외 - {}",e.getMessage());
+        } catch (TokenExpiredException e) {
+            log.error("JwtTokenUtil -> 토큰 시간이 만료됨! {}",e.getMessage());
             return false;
         }
     }
