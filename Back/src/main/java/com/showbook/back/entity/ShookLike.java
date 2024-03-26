@@ -7,11 +7,18 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-//@Entity
+@Entity
+@Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class ShookLike {
+
 	@EmbeddedId
 	private ShookLikePK shookLikePK;
 
@@ -24,6 +31,7 @@ public class ShookLike {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "shook_id", referencedColumnName = "shook_id")
 	private Shook shook;
+
 	@Column(nullable = false)
 	private Boolean likeStatus = false;
 }
