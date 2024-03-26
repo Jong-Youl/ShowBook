@@ -1,13 +1,10 @@
 import axios from 'axios'
-// import { UserService } from '../api/UserService';
 
-const REACT_APP_BASE_URL = "http://localhost:8080"
-
-// const userService = new UserService()
+const BASE_URL = process.env.REACT_APP_BASE_URL
 
 function localAxios() {
     const instance = axios.create({
-        baseURL : REACT_APP_BASE_URL,
+        baseURL : BASE_URL,
         withCredentials: true,
         headers : {
             "Content-Type" : "application/json;charset=utf-8",
@@ -22,13 +19,16 @@ function localAxios() {
                 const newAccessToken = response["headers"]["authorization"]
                 localStorage.setItem("accessToken",newAccessToken);
             }
+            return response
         },
-        async (error) => {
-            console.error(error)
-            // if(error.status === 400 && error.data.message ==="RELOGIN") {
-            //     console.log(error)
-            //     // userService.logout()
-            // }
+        (error) => {
+            // refreshToken 만료시 로그아웃
+            if(error.response.status === 400 && error.response.data.message ==="RELOGIN") {
+                localStorage.clear()
+                alert("자동 로그아웃!")
+                window.location.replace("/user/login")
+            }
+            return error;
         }
     )
     return instance
