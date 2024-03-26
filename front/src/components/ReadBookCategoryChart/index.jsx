@@ -40,8 +40,17 @@ const ReadBookCategoryChart = ({ bookData }) => {
       },
       datalabels: {
         display: true,
-        color: '#444',
-        font: { size: '12%' },
+        color: (context) => {
+          // 첫 번째 데이터 레이블의 경우 빨간색을 반환
+          if (context.dataIndex === 0) {
+            return '#D80041';
+          }
+          // 그 외에는 기본 색상을 반환
+          return '#444';
+        },
+        font: {
+          size: '12%',
+        },
         align: 'end',
         anchor: 'end',
         formatter: function (value, context) {
@@ -56,7 +65,6 @@ const ReadBookCategoryChart = ({ bookData }) => {
         },
       },
     },
-
     cutout: '50%',
     responsive: false,
     layout: {

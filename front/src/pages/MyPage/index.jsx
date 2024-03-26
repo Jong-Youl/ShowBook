@@ -39,14 +39,7 @@ const MyPage = () => {
         </ToggleButton>
       </ToggleButtonContainer>
       <Content>
-        {activeTab === 'reviews' ? (
-          <div>나의 한줄평입니다.</div>
-        ) : (
-          <>
-            <MyHistory />
-            <MyReview />
-          </>
-        )}
+        {activeTab === 'reviews' ? <MyReview /> : <MyHistory />}
       </Content>
     </Container>
   );
