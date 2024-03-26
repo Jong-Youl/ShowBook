@@ -7,7 +7,7 @@ import {
 import 'swiper/css';
 import 'swiper/css/effect-creative';
 import { EffectCreative } from 'swiper/modules';
-import PropTypes from 'prop-types';
+import { shookDataPropTypes } from '../../types/shooksPropTypes';
 
 function ShortForm({ shortsJson }) {
   const [currentTitle, setCurrentTitle] = useState('');
@@ -57,18 +57,6 @@ function ShortForm({ shortsJson }) {
   );
 }
 
-export default ShortForm;
+ShortForm.propTypes = shookDataPropTypes;
 
-ShortForm.propTypes = {
-  shortsJson: PropTypes.arrayOf(
-    PropTypes.shape({
-      book_id: PropTypes.number.isRequired,
-      title: PropTypes.string.isRequired,
-      member_image_url: PropTypes.string.isRequired,
-      nickname: PropTypes.string.isRequired,
-      shook_id: PropTypes.number.isRequired,
-      shook_img_url: PropTypes.string.isRequired,
-      // ...
-    }),
-  ).isRequired,
-};
+export default ShortForm;

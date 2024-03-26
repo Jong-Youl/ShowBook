@@ -99,3 +99,21 @@ export const ChartContainer = styled.div`
   width: 100%;
   margin-bottom: 50px;
 `;
+
+export const SmallButton = styled.button`
+  padding: 10px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  background-color: ${({ $isactive }) =>
+    $isactive ? 'var(--main)' : '#cccccc'};
+  color: ${({ $isactive }) => ($isactive ? 'white' : 'white')};
+  cursor: ${({ $isactive }) => ($isactive ? 'pointer' : 'not-allowed')};
+  transition: background-color 0.3s ease;
+
+  display: block;
+  margin-left: auto;
+  margin-right: 20px;
+  margin-top: 15px;
+  width: fit-content;
+`;

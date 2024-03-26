@@ -25,7 +25,7 @@ const ReadMonthly = () => {
     <>
       <ChartTitle>월별 독서량</ChartTitle>
       <ChartContainer>
-        <ReadBookMonthlyChart bookData={bookData} />
+        <ReadBookMonthlyChart readMonthlyJson={bookData} />
       </ChartContainer>
     </>
   );

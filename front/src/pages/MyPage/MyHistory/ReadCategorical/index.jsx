@@ -20,7 +20,7 @@ const ReadCategorical = () => {
     <>
       <ChartTitle>카테고리별</ChartTitle>
       <ChartContainer>
-        <ReadBookCategoryChart bookData={bookData} />
+        <ReadBookCategoryChart readCategoryJson={bookData} />
       </ChartContainer>
     </>
   );
