@@ -4,6 +4,7 @@ import com.showbook.back.common.constants.ErrorCode;
 import com.showbook.back.common.exception.CustomException;
 import com.showbook.back.dto.RefreshToken;
 import com.showbook.back.repository.RefreshTokenRepository;
+import io.jsonwebtoken.JwtException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,12 +21,12 @@ public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     public RefreshToken findRefreshTokenByAccessToken(String accessToken) {
-        return refreshTokenRepository.findByAccessToken(accessToken).orElseThrow(()-> new CustomException(TOKEN_NOT_FOUND));
+        return refreshTokenRepository.findByAccessToken(accessToken).orElse(null);
     }
 
     @Transactional
     public void saveTokenInfo(Long memberId, String accessToken, String refreshToken) {
-        refreshTokenRepository.save(new RefreshToken(memberId, accessToken, refreshToken, refreshTokenExpireTime));
+        refreshTokenRepository.save(new RefreshToken(memberId, accessToken, refreshToken));
     }
 
     @Transactional

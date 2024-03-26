@@ -24,10 +24,6 @@ public class RefreshToken implements Serializable { //
 
     private String refreshToken;
 
-    @TimeToLive
-    @Value("${REFRESH_EXPIRATION_TIME}")
-    private Long expirationTime;
-
     public void updateAccessToken(String accessToken) {
         this.accessToken = accessToken;
     }
