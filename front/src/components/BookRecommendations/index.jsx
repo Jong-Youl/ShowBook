@@ -4,8 +4,13 @@ import { StyledSwiper, StyledSwiperSlide } from './BookRecommendations.styles';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
 import { EffectCards } from 'swiper/modules';
+import { useNavigate } from 'react-router';
 
 function BookRecommendations({ booksJson }) {
+  const navigate = useNavigate();
+  const onHandleClick = () => {
+    navigate('/book-detail')
+  }
   const booksListWithMap = booksJson.map((book, index) => (
     <StyledSwiperSlide
       key={index}
@@ -13,6 +18,7 @@ function BookRecommendations({ booksJson }) {
         backgroundImage: `url(${book.book_image_url})`,
         backgroundSize: 'cover',
       }}
+      onClick={onHandleClick}
     />
   ));
 
