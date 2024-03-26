@@ -49,7 +49,7 @@ public class  Member {
 	private String roleName = "ROLE_USER";
 
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="member_image_id")
+	@JoinColumn(name="member_image_id", nullable = true)
 	private MemberImage memberImage;
 
 	@Builder
