@@ -2,6 +2,7 @@ package com.showbook.back.controller;
 
 import com.showbook.back.common.exception.CustomException;
 import com.showbook.back.dto.RefreshToken;
+import com.showbook.back.dto.response.MemberInfoResponseDTO;
 import com.showbook.back.entity.Member;
 import com.showbook.back.entity.MemberImage;
 import com.showbook.back.repository.MemberRepository;
@@ -34,9 +35,9 @@ import static org.springframework.http.HttpHeaders.SET_COOKIE;
 @Slf4j
 public class AuthController {
 
+    private final MemberService memberService;
     private final RefreshTokenService refreshTokenService;
     private final JwtTokenUtil jwtTokenUtil;
-    private final MemberService memberService;
 
     @Value("${REFRESH_EXPIRATION_TIME}")
     private long REFRESH_EXPIRATION_TIME;
@@ -65,16 +66,6 @@ public class AuthController {
                 ;
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<?> test(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-//        log.info("AuthController.test | AccessToken -> {}",accessToken);
-//        Long id = jwtTokenUtil.getMemberId(accessToken);
-//        Member member = memberService.findMemberById(id);
-
-        Member member = principalDetails.getMember();
-        log.info("AuthController - test => {}",member.getId());
-        return ResponseEntity.ok("테스트테스트 -> " + member.getEmail());
-    }
 
     @PostMapping("/token")
     public ResponseEntity<?> generateTokens(@RequestParam Long memberId){
@@ -97,6 +88,9 @@ public class AuthController {
         headers.add(AUTHORIZATION, tokens.getAccessToken());
         headers.add(SET_COOKIE, refreshTokenCookie.toString());
 
+        // member정보를 보낸다
+        MemberInfoResponseDTO memberInfo = memberService.getMemberInfo(memberId);
+
         refreshTokenService.saveTokenInfo(memberId, accessToken, refreshToken);
 
         log.info("response에 담긴 header들 모음");
@@ -104,28 +98,7 @@ public class AuthController {
             log.info("{}={}",key,headers.get(key));
         }
         log.info("AuthController.generateTokens() 끝! ");
-        return ResponseEntity.ok().headers(headers).build();
+        return ResponseEntity.ok().headers(headers).body(memberInfo);
     }
 
-//    @PostMapping("/refresh") // 필요한지 의문
-//    public ResponseEntity<?> refresh(@RequestHeader("Authorization") final String accessToken) {
-//        log.info("AuthController.refresh()");
-//        RefreshToken refreshToken = refreshTokenService.findRefreshTokenByAccessToken(accessToken);
-//
-//        // refreshToken이 존재하고 유효하다면
-//        if(refreshToken != null && jwtTokenUtil.isTokenExpired(refreshToken.getRefreshToken())){
-//            // memberId를 이용해 새로운 accessToken 만들기
-//            Long memberId = refreshToken.getMemberId();
-//            String newAccessToken = jwtTokenUtil.createAccessToken(memberId);
-//            refreshToken.updateAccessToken(newAccessToken);
-//            refreshTokenService.saveTokenInfo(refreshToken);
-//            return ResponseEntity
-//                    .status(HttpStatus.OK)
-//                    .header("accessToken",newAccessToken)
-//                    .build();
-//        }
-//        return ResponseEntity
-//                .status(HttpStatus.BAD_REQUEST)
-//                .build();
-//    }
 }
