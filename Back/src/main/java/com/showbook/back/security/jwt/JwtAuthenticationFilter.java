@@ -84,7 +84,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 existedRefreshToken.updateAccessToken(newAccessToken);
                 refreshTokenService.saveTokenInfo(existedRefreshToken);
 
-                log.info("새로 발급 받은 RefreshToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken).getAccessToken());
+                log.info("새로 발급 받은 AccessToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken).getAccessToken());
+                log.info("기존의 RefreshToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken).getRefreshToken());
 
                 response.setHeader(HttpHeaders.AUTHORIZATION,newAccessToken);
 
@@ -92,7 +93,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 this.setAuthentication(newAccessToken);
             }
         } else {
-        log.info("쿠키가 없습니다!");
         throw new JwtException("refreshToken이 없습니다!");
         }
         filterChain.doFilter(request,response);
@@ -110,7 +110,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludePath = {"/api/auth/token","/api/member/signup"}; // 필터를 타면 안되는 요청
+        String[] excludePath = {"/api/auth/token","/api/auth/logout","/api/member/signup"}; // 필터를 타면 안되는 요청
         // 제외할 url 설정
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith);
