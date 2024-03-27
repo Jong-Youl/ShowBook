@@ -1,7 +1,5 @@
 from flask import Flask
 from flask_cors import CORS
-from flask_migrate import Migrate # 테이블 생성 및 칼럼 추가
-from flask_sqlalchemy import SQLAlchemy
 
 from config import dbConfig
 from config.dbConfig import db
