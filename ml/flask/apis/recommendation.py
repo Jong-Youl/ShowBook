@@ -19,7 +19,7 @@ jsonify -> Json 응답 생성
 recommendation = Blueprint("recommendation",__name__)
 api = Api(recommendation)
 
-@recommendation.route("/test/<int:member_id>",methods=["GET"])
+@recommendation.route("/book_recommend/<int:member_id>",methods=["GET"])
 def test(member_id):
     print("Test api!")
     
