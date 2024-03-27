@@ -7,7 +7,7 @@ def BookResponseDTO(book):
         "title" : book.title,
         "book_imageURL" : book.book_imageURL,
         "category" : book.category,
-        "description" : book.publisher,
+        "description" : book.description,
         "total_page" : book.total_page 
     }
     return response
