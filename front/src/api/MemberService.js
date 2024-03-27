@@ -1,26 +1,21 @@
 import { localAxios } from '../utils/http-commons';
 
+
 const BASE_URL = process.env.REACT_APP_BASE_URL
 
-const local = localAxios()
+const local = localAxios();
 
-class UserService {
-
-    async login (memberId) {
-        console.log("")
-        local
-          .post(`${BASE_URL}/api/auth/token?memberId=${memberId}`,{},{withCredentials: true})
-          .then((res) => {
-            alert("슈욱에 오신 것을 환영합니다!")
-            console.log(res)
-            // const accessToken = res["headers"]["authorization"]
-            // localStorage.setItem("accessToken",accessToken)
-            window.location.replace("/main")
-          })
-          .catch(error => {
-            alert("불러오기 실패")
+class MemberService {
+    
+    async login(memberId) {
+        try {
+            const res = await local.post(`${BASE_URL}/api/auth/token?memberId=${memberId}`, {}, { withCredentials: true });
+            console.log(res.data);
+            return res.data;
+        } catch (error) {
+            alert("불러오기 실패");
             console.error(error);
-          })
+        }
     }
 
 
@@ -36,7 +31,7 @@ class UserService {
         try {
             window.location.replace(`${BASE_URL}/oauth2/authorization/kakao`);
         } catch (error) {
-            console.error("구글 로그인 실패 : ",error)
+            console.error("카카오 로그인 실패 : ",error)
         }
     }
 
@@ -86,6 +81,9 @@ class UserService {
             })
     }
 
+    
+
+
     async getBookListByCategory() {
         local.get(`${BASE_URL}/api/member/reading-logs/category`,
                 {
@@ -98,8 +96,8 @@ class UserService {
             })
     }
 
-    async getBookListByMonth() {
-        local.get(`${BASE_URL}/api/member/reading-logs/category`,
+    async getBookListByMonth(year) {
+        local.get(`${BASE_URL}/api/member/reading-logs/monthly?year=${year}`,
                 {
                     headers: {
                         "Authorization" : localStorage.getItem("accessToken")
@@ -115,4 +113,4 @@ class UserService {
 }
 
 
-export {UserService};
+export {MemberService};
