@@ -13,7 +13,7 @@ public class MemberInfoResponseDTO {
     private int gender;
     private int age;
     private int readBookCount;
-    private MemberImage memberImage;
+    private String memberImageURL;
 
     @Builder
     public MemberInfoResponseDTO(Member member) {
@@ -23,7 +23,7 @@ public class MemberInfoResponseDTO {
         this.gender = member.getGender();
         this.age = member.getAge();
         this.readBookCount = member.getReadBookCount();
-        this.memberImage = member.getMemberImage();
+        this.memberImageURL = member.getMemberImage().getImageUrl();
     }
 
 }
