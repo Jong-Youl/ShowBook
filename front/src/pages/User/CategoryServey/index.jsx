@@ -11,9 +11,9 @@ import {
 } from '../../../components/common/styles/CommonStyles';
 import CATEGORIES from './CATEGORIES';
 import CATEGORY_MAPPING from './CATEGORY_MAPPING';
-import { UserService } from '../../../api/UserService';
+import { MemberService } from '../../../api/MemberService';
 
-const userService = new UserService();
+const memberService = new MemberService();
 
 function SelectCategory() {
   const location = useLocation();
@@ -39,7 +39,7 @@ function SelectCategory() {
     const memberInfo = {...location.state, categories : selectedCategories}
     console.log("member의 정보")
     console.log(memberInfo.categories)
-    userService.signup(memberInfo);
+    memberService.signup(memberInfo);
   };
 
   return (
