@@ -44,7 +44,6 @@ public class ShookController {
     public ResponseEntity likeShook(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
             @PathVariable("shook_id") Long shookId) {
-        System.out.println("LIKE SHOOK " + shookId);
         shookService.likeShook(principalDetails.getMember(), shookId);
         return ResponseEntity.ok().build();
     }
