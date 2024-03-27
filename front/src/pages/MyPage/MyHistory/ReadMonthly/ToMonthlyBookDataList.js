@@ -30,8 +30,6 @@ const toMonthlyBookDataList = (readingLogs) => {
 
     }
 
-    console.log(response)
-
     return response
 }
 
