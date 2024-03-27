@@ -37,3 +37,11 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Python ###
+__pycache__/
+pyvenv.cfg
+Scripts/
+share/
+Lib/
+Include/
