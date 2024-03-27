@@ -1,12 +1,11 @@
 from flask import Flask
 from flask_cors import CORS
-from flask_migrate import Migrate # 테이블 생성 및 칼럼 추가
-from flask_sqlalchemy import SQLAlchemy
 
 from config import dbConfig
 from config.dbConfig import db
 
 from apis.recommendation import recommendation
+from apis.shook_recommendation import shook_recommendation
 
 from flask import make_response, jsonify
 
@@ -31,6 +30,7 @@ def create_app():
     cors = CORS(app, resources={r"/*": {"origins": "*"}})
     
     app.register_blueprint(recommendation, url_prefix="/ml/api/recommend")
+    app.register_blueprint(shook_recommendation, url_prefix="/ml/api/shook_recommend")
     
     return app
 
@@ -38,4 +38,4 @@ def create_app():
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True, host="127.0.0.1", port="5000")
+    app.run(debug=True, host="0.0.0.0", port="5000")
