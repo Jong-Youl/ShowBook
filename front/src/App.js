@@ -27,7 +27,7 @@ function App() {
       <NavigationProvider>
         <BrowserRouter>
           <Routes>
-            {/* <Route index element={<Navigate replace to='/user/login' />} /> */}
+            <Route index element={<Navigate replace to='/user/login' />} />
             <Route path='user' element={<FullScreenLayout />}>
               <Route path='login' element={<Login />} />
               <Route path='signup' element={<Signup />} />
