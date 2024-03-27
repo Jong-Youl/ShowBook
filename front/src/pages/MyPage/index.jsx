@@ -13,13 +13,13 @@ import {
 import MyHistory from './MyHistory';
 import MyReview from './MyReview';
 // import { MemberService } from '../../api/MemberService';
-import {memberState } from '../../recoil/memberRecoil';
+import { memberState } from '../../lib/memberRecoil';
 
 // const memberService = new MemberService();
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('reviews');
-  const memberInfo = useRecoilValue(memberState)
+  const memberInfo = useRecoilValue(memberState);
 
   return (
     <Container>
