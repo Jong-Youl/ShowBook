@@ -56,7 +56,7 @@ public class LibraryBook {
 	 public void setReadStatus(int newReadStatus){
 		this.readStatus = newReadStatus;
 	 }
-	public void setFinishedDate(){
-		this.finishedDate = LocalDate.now();
+	public void setFinishedDate(LocalDate date){
+		this.finishedDate = date;
 	}
 }
