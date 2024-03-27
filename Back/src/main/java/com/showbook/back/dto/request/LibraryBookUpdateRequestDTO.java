@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LibraryBookUpdateRequestDTO {
 	private List<Long> bookIdList;
-	private int readStatus;
+	private int newReadStatus;
 }
