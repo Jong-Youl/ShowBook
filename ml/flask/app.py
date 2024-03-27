@@ -7,6 +7,7 @@ from config import dbConfig
 from config.dbConfig import db
 
 from apis.recommendation import recommendation
+from apis.shook_recommendation import shook_recommendation
 
 from flask import make_response, jsonify
 
@@ -31,6 +32,7 @@ def create_app():
     cors = CORS(app, resources={r"/*": {"origins": "*"}})
     
     app.register_blueprint(recommendation, url_prefix="/ml/api/recommend")
+    app.register_blueprint(shook_recommendation, url_prefix="/ml/api/shook_recommend")
     
     return app
 
