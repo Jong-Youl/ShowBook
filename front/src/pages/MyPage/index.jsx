@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import {
   Container,
   Content,
@@ -11,35 +12,22 @@ import {
 } from './MyPage.styles';
 import MyHistory from './MyHistory';
 import MyReview from './MyReview';
-import { UserService } from '../../api/UserService';
+// import { MemberService } from '../../api/MemberService';
+import {memberState } from '../../recoil/memberRecoil';
 
-const userService = new UserService();
+// const memberService = new MemberService();
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('reviews');
-  // const [categoryBook, setCategoryBook] = useState([])
-
-  // const fetchBookListByCategory = async() => {
-  //   try {
-  //     const data = userService.getBookListByCategory();
-  //     setCategoryBook(data)
-  //   } catch(error) {
-  //       console.error("카테고리 별 책 가져오기 실패! -> ZZ" , error)
-  //   }
-  // }
+  const memberInfo = useRecoilValue(memberState)
 
   return (
     <Container>
       <ProfileHeader>
-        <ProfileImage src='img/1.png' alt='Profile' />
+        <ProfileImage src={memberInfo.memberImageURL} alt='Profile' />
         <div>
-          <Nickname>조용한 가재</Nickname>
+          <Nickname>{memberInfo.nickname}</Nickname>
           <EditLink href='/edit-profile'>개인정보 수정</EditLink>
-          <ToggleButton
-          onClick={() => userService.getBookListByCategory()}
-          >
-            테스트
-          </ToggleButton>
         </div>
       </ProfileHeader>
       <ToggleButtonContainer>

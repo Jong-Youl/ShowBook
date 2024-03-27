@@ -1,30 +1,16 @@
 import {useState,useEffect} from 'react';
-import {UserService} from '../../../api/UserService';
+import { memberState } from '../../../recoil/memberRecoil';
+import { useSetRecoilState } from 'recoil';
+import { useNavigate } from 'react-router';
+import {MemberService} from '../../../api/MemberService';
 
-const userService = new UserService();
+const memberService = new MemberService();
 
 function Proxy() {
-    const [memberId, setMemberId] = useState(null); // null로 초기값 설정
+    const [memberId, setMemberId] = useState(null); 
+    const setMemberInfo = useSetRecoilState(memberState)
 
-    
-    /**
-    useEffect는 컴포넌트가 랜더링 될 때마다 실행되고
-    login함수는 useEffect함수 안에서 실행된다
-
-    이게 useEffect가 실행될 때마다 호출되는 것이 아니라
-    memberId가 변경될 때마다 호출된다
-
-    따라서 useEffect가 실행될 때마다 memberId가 변경되어 
-    이전 요청이 아니라 새로운 요청이 발생하는 것처럼 보일 수 있다.
-
-    useEffect 내부에서 login함수를 호출하는 것 대신 
-    memberId가 변경될 때마다 login함수가 호출되도록 수정해야한다.
-
-    최상위 Directory에 있는  <React.StrictMode>를 지우면 해결된다고 하는데
-    일단 아래와 같이 useEffect를 2번 써서 해결
-
-    미봉책으로 남았으므로 추후 변경필요
-     */
+    const navigate = useNavigate()
 
     useEffect(() => {
         const memberIdFromURL = new URL(document.location).searchParams.get("id")
@@ -33,10 +19,18 @@ function Proxy() {
 
     // memberId가 변하면 실행
     useEffect(() => {
-        if(memberId){
-            userService.login(memberId)
+        const getMemberInfo = async(memberId) => {
+            let memberInfo = await memberService.login(memberId)
+            if(memberInfo){
+                setMemberInfo(memberInfo)
+            }
         }
-    },[memberId])
+
+        if(memberId){
+            getMemberInfo(memberId)
+            navigate("/main")
+        }
+    },[memberId,setMemberInfo,navigate])
 
 }
 

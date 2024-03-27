@@ -1,9 +1,9 @@
 import React from 'react';
 import { ButtonsContainer, Container, ImageContainer,ButtomImg } from './Login.styles';
-import { UserService } from '../../../api/UserService';
+import { MemberService } from '../../../api/MemberService';
 
 
-const userService = new UserService();
+const memberService = new MemberService();
 
 function Login() {
 
@@ -13,10 +13,10 @@ function Login() {
         <img src='/img/BigLogo.png' alt='Welcome' />
       </ImageContainer>
       <ButtonsContainer>
-        <button onClick={() => userService.googleLogin()}>
+        <button onClick={() => memberService.googleLogin()}>
           <ButtomImg src="/img/google_login.png" alt="google"/>
         </button>
-        <button onClick={() => userService.kakaoLogin()}>
+        <button onClick={() => memberService.kakaoLogin()}>
           <ButtomImg src="/img/kakao_login.png" alt="kakao"/>
         </button>
       </ButtonsContainer>
