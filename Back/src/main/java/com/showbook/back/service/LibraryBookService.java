@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,9 +96,10 @@ public class LibraryBookService {
 
 
     @Transactional
-    public void modifyLibrary(Long memberId, LibraryBookUpdateRequestDTO libraryBookUpdateRequestDTO) {
+    public void modifyLibrary(Long memberId, int oldReadStatus, LibraryBookUpdateRequestDTO libraryBookUpdateRequestDTO) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("해당 멤버가 존재하지 않습니다!"));
         List<Long> bookIdList = libraryBookUpdateRequestDTO.getBookIdList();
-        int newReadStatus = libraryBookUpdateRequestDTO.getReadStatus();
+        int newReadStatus = libraryBookUpdateRequestDTO.getNewReadStatus();
         Long libraryId = libraryRepository.findByMemberId(memberId).getLibraryId();
 
         // bookIdList가 비어있다면
@@ -105,19 +107,40 @@ public class LibraryBookService {
             throw new CustomException(ErrorCode.EMPTY_BOOKLIST);
         }
 
+        // oldReadStatus와 newReadStatus가 같다면
+        if(oldReadStatus == newReadStatus) {
+            throw new CustomException(ErrorCode.SAME_READSTATUS);
+        }
+
+        int selectedBooks = bookIdList.size();
+        int totalBooks = member.getReadBookCount();
+
         for(Long bookId : bookIdList) {
             // libraryId, bookId 일치하는 LibraryBook 찾기
             LibraryBook libraryBook = libraryBookRepository.findLibraryBookByLibraryIdAndBookId(libraryId, bookId);
 
             // readStatus 업데이트
             libraryBook.setReadStatus(newReadStatus);
-            // readStatus가 2인 경우 finishedDate도 함께 업데이트
-            if (newReadStatus == 2) {
-                libraryBook.setFinishedDate();
-            }
 
+            // oldReadStatus 혹은 newReadStatus가 2인 경우 finishedDate 업데이트
+            if (newReadStatus == 2) {
+                libraryBook.setFinishedDate(LocalDate.now());
+            } else if (oldReadStatus == 2) {
+                libraryBook.setFinishedDate(null);
+            }
             libraryBookRepository.save(libraryBook);
         }
+
+        // oldReadStatus 혹은 newReadStatus가 2인 경우 readBookCount도 함께 업데이트
+        if (newReadStatus == 2) {
+            totalBooks += selectedBooks;
+        } else if (oldReadStatus == 2) {
+            totalBooks -= selectedBooks;
+        }
+
+        // totalBooks = newReadStatus==2 ? totalBooks + selectedBooks : oldReadStatus==2 ? totalBooks - selectedBooks : totalBooks;
+        member.setReadBookCount(totalBooks);
+        memberRepository.save(member);
     }
 
     public void deleteBook(Long memberId, Long bookId) {

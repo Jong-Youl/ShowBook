@@ -1,6 +1,8 @@
 package com.showbook.back.entity;
 
 
+import java.time.LocalDate;
+
 import com.showbook.back.dto.request.SignupRequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,6 +16,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
@@ -41,6 +45,7 @@ public class  Member {
 	@Column(nullable = false)
 	private int age; // 설문에서 작성
 
+	@Setter
 	@Column(nullable = false)
 	@ColumnDefault("0")
 	private int readBookCount;
