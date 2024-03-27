@@ -32,38 +32,6 @@ def create_app():
     
     app.register_blueprint(recommendation, url_prefix="/ml/api/recommend")
     
-    @app.route("/test/<int:member_id>",methods=["GET"])
-    def test(member_id):
-        print("Test api!")
-        
-        member_ids = [member_id]
-        
-        member_category_list = MemberCategory.query \
-            .filter(MemberCategory.member_id.in_(member_ids)) \
-            .all()
-            
-        response_list = []
-            
-        for result in member_category_list:
-            response = {
-                "member_category_id" : result.member_category_id,
-                "member_id" : result.member_id,
-                "category" : result.category
-            }
-            response_list.append(response)
-            
-            
-            
-        
-        response = {
-            "success" : True,
-            "data" : {
-                "test" : response_list
-            }
-        }
-        
-        return make_response(jsonify(response),200)
-    
     return app
 
 
