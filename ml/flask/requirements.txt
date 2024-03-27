@@ -29,7 +29,6 @@ pybind11==2.11.1
 Pygments==2.17.2
 python-dateutil==2.9.0.post0
 pytz==2024.1
-pywin32==306
 pyzmq==25.1.2
 scipy==1.12.0
 six==1.16.0
