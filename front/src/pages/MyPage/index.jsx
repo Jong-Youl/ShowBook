@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import React, { useEffect, useState } from 'react';
+import { useRecoilValue,useSetRecoilState } from 'recoil';
 import {
   Container,
   Content,
@@ -12,14 +12,40 @@ import {
 } from './MyPage.styles';
 import MyHistory from './MyHistory';
 import MyReview from './MyReview';
-// import { MemberService } from '../../api/MemberService';
-import {memberState } from '../../recoil/memberRecoil';
+import {memberState,readCategoricalState, readMonthlyState } from '../../recoil/memberRecoil';
+import { MemberService } from '../../api/MemberService';
 
-// const memberService = new MemberService();
+
+const memberService = new MemberService()
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('reviews');
   const memberInfo = useRecoilValue(memberState)
+  const setCategoryBookData = useSetRecoilState(readCategoricalState)
+  const setMontlyyBookData = useSetRecoilState(readMonthlyState)
+
+  useEffect(() => {
+    const getCategoryBookData = async() => {
+      let response = await memberService.getBookListByCategory()
+      if (response) {
+        setCategoryBookData(response)
+      }
+    }
+
+    const getMontlyBookData = async(year) => {
+      let response = await memberService.getBookListByMonth(year)
+      if (response) {
+        setMontlyyBookData(response)
+      }
+    }
+
+    if(activeTab == 'records'){
+      getCategoryBookData();
+      getMontlyBookData(2023)
+    }
+  },[activeTab,setCategoryBookData,setMontlyyBookData])
+  
+  
 
   return (
     <Container>
