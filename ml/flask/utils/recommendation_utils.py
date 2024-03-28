@@ -67,8 +67,8 @@ def recommendations(book_id_list):
     # 점수를 기준으로 내림차순 정렬
     sim_scores = sorted(sim_scores, key = lambda x: x[1], reverse = True)
     
-    # 가장 높은 책 5권 추천
-    sim_scores = sim_scores[1:16]
+    # 가장 높은 책 순서대로 추천
+    sim_scores = sim_scores[1:15]
 
     # 가장 유사한 책 5권의 인덱스
     book_indices = [i[0] for i in sim_scores]
