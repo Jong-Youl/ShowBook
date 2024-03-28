@@ -1,5 +1,3 @@
-from models.ShookLike import ShookLike
-
 
 def ShookLikeResponseDTO(shookLike):
     response = {

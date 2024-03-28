@@ -1,9 +1,11 @@
 import pandas as pd
-import logging
 from sqlalchemy import and_
 from sklearn.metrics.pairwise import cosine_similarity
 from models.ShookLike import ShookLike
+from models.Shook import Shook
+from models.Member import Member
 from models.DTO.ShookLikeResponseDTO import ShookLikeResponseDTO
+from models.DTO.ShookResponseDTO import ShookResponseDTO
 
 #========================================================================
 #1. member_id를 받으면 member_id랑 매칭되는 shook_like 정보를 들고 옴
@@ -72,18 +74,38 @@ def get_compare_matrix(similar_list):
 #5. 유사도 가중치가 부여된 값 생성
 def get_similar_summarize(compare_matrix, similar_list):
     similar_summarize = compare_matrix
-
+    
     for idx, weight in enumerate(similar_list):
         similar_summarize.loc[similar_list.index[idx]] *= weight
 
     return similar_summarize
 
-#6. shook_list 반환
-def get_shook_list(similar_summarize):
+#6. shook_id_list 반환
+def get_shook_list(similar_summarize,df_pivoted):
 
     col_sum = similar_summarize[similar_summarize.columns].sum()
     sorted_col_sum = col_sum.sort_values(ascending=False)
-    sorted_index = sorted_col_sum.index
+    sorted_index = sorted_col_sum.index.tolist()
     
-    return sorted_index.tolist()
+    exclude_targets = df_pivoted.columns.tolist()
+    
+    # 748 -> 390
+    sorted_index = [idx for idx in sorted_index if idx not in exclude_targets]
+        
+    return sorted_index
+
+#7. shook 반환
+def get_shooks(shook_ids):
+    
+    shook_ids = shook_ids[:11]
+    
+    shooks = Shook.query.filter(Shook.shook_id.in_(shook_ids)).all()
+    
+    member_ids = [shook.member_id for shook in shooks]
+    members = Member.query.filter(Member.member_id.in_(member_ids)).all()
+    members_nickname = [member.nickname for member in members]
+    
+    shooks_list = [ShookResponseDTO(shooks[i],members_nickname[i]) for i in range(len(shooks))]
+    
+    return shooks_list
 

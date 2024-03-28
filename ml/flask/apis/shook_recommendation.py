@@ -1,7 +1,8 @@
 from flask import Blueprint
 from flask_restx import Api
 from flask import Blueprint, make_response, jsonify
-from utils.shook_util import get_shook_like, get_df,get_user_similarity,get_compare_matrix,get_similar_summarize,get_shook_list
+from utils.shook_util import get_shook_like, get_df,get_user_similarity \
+                            ,get_compare_matrix,get_similar_summarize,get_shook_list, get_shooks
 
 
 shook_recommendation = Blueprint("shook_recommendation",__name__)
@@ -22,15 +23,18 @@ def getShooks(member_id):
     #4. similar_list 받아서 compare matrix 리턴
     compare_matrix = get_compare_matrix(similar_list)
     
-    # #5. 유사도 가중치가 부여된 값 생성
+    #5. 유사도 가중치가 부여된 값 생성
     similar_summarize = get_similar_summarize(compare_matrix, similar_list)
     
-    # #6. shook_list 반환
-    sorted_index = get_shook_list(similar_summarize)
+    #6. 추천할 shook_id_list 반환
+    sorted_index = get_shook_list(similar_summarize,df_pivoted)
+    
+    #7. 추천할 shook 반환
+    shooks_list = get_shooks(sorted_index)
     
     response = {
         "success" : True,
-        "data" : sorted_index
+        "data" : shooks_list
     }
     
     return make_response(jsonify(response),200)
