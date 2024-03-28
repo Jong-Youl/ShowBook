@@ -12,11 +12,20 @@ class BookService {
           },withCredentials: true })
       return res.data;
     } catch (error) {
-      alert('');
       console.error(error);
     }
   }
-
+  async getPurchaseUrl(book_id) {
+    try {
+      const res = await axios.post(`${BASE_URL}/api/book/purchase/${book_id}`, {}
+        ,{headers : {
+            "Authorization" : localStorage.getItem("accessToken")
+          },withCredentials: true })
+      return res.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 
 export {BookService};
