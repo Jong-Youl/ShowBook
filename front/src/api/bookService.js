@@ -1,5 +1,22 @@
-import apiClient from '../api';
+import { localAxios } from '../utils/http-commons';
 
-export const fetchBookRecommendations = ({ authToken, refreshToken }) => {
-    return apiClient.get('/api/book/recommend', { authToken, refreshToken });
-};
+const axios = localAxios();
+const BASE_URL = process.env.REACT_APP_BASE_URL
+
+class BookService {
+  async getBookDetail(book_id) {
+    try {
+      const res = await axios.get(`${BASE_URL}/api/book/${book_id}`,
+        {headers : {
+          "Authorization" : localStorage.getItem("accessToken")
+          },withCredentials: true })
+      return res.data;
+    } catch (error) {
+      alert('');
+      console.error(error);
+    }
+  }
+
+}
+
+export {BookService};
