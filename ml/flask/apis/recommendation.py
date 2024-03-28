@@ -20,8 +20,7 @@ recommendation = Blueprint("recommendation",__name__)
 api = Api(recommendation)
 
 @recommendation.route("/book_recommend/<int:member_id>",methods=["GET"])
-def test(member_id):
-    print("Test api!")
+def getBooks(member_id):
     
     member_ids = [member_id]
     
@@ -29,7 +28,6 @@ def test(member_id):
         .filter(MemberCategory.member_id.in_(member_ids)) \
         .all()
         
-    print(member_category_list)
     category_list = []
         
     for result in member_category_list:
