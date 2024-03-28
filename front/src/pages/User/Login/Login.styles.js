@@ -20,10 +20,11 @@ export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 20px 0;
+  gap: 14px;
+  padding: 20px;
 `;
 
 export const ButtomImg = styled.img`
-height : 9svh;
-`
+  height: 100%;
+  width: 100%;
+`;
