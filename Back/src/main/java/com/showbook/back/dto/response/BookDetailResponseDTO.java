@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 public class BookDetailResponseDTO {
 
+	private final long bookId;
 	private final String title;
 	private final String author;
 	private final String publisher;
@@ -19,6 +20,7 @@ public class BookDetailResponseDTO {
 
 	@Builder
 	public BookDetailResponseDTO(Book book) {
+		this.bookId = book.getBookId();
 		this.title = book.getTitle();
 		this.author = book.getAuthor();
 		this.publisher = book.getPublisher();
