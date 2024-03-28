@@ -14,7 +14,7 @@ export const memberState = atom({
 
 export const loginState = atom({
     key : "login",
-    default : localStorage.getItem("accessToken") ? true : false
+    default : !!localStorage.getItem("accessToken")
 })
 
 export const readCategoricalState = atom({

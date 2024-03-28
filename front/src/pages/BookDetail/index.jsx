@@ -8,12 +8,14 @@ const BookDetail = () => {
   const location = useLocation();
   const book = location.state.book;
   const navigate = useNavigate();
+  const {state} = useLocation();
+  const reviewRating = state.reviewRating.toFixed(1);
   const [bookmarked, setBookmarked] = useState(false);
   const [purchaseUrl, setPurchaseUrl] = useState('');
   const bookService = new BookService();
+  const book = state.book
 
   useEffect(() => {
-    // 프로미스를 이용하여 구매 URL을 가져옵니다.
     bookService.getPurchaseUrl(book.bookId)
       .then((result) => {
         const url = result.url;
@@ -46,11 +48,11 @@ const BookDetail = () => {
         <BookImage src={book.bookImageURL} />
         <BookTitle>{book.title}</BookTitle>
         <BookDesc>{book.description}</BookDesc>
-        <BookEtc>저자 : {book.author}|{book.totalPage}page|출판사 : {book.publisher}</BookEtc>
+        <BookEtc>{book.author}|{book.totalPage}page|{book.publisher}</BookEtc>
       </ContentContainer>
       <ReviewContainer>
-        <StarIcon src={`/img/icon/star.png`} />
-        <ReviewRating>4.2</ReviewRating>
+        <StarIcon src={`/img/icon/star.png`}></StarIcon>
+        <ReviewRating>{reviewRating}</ReviewRating>
       </ReviewContainer>
       <ButtonsContainer>
         <BookMarkImg src={bookmarked ? `/img/icon/bookmarked.png` : `/img/icon/bookmark.png`} onClick={handleClick} />
