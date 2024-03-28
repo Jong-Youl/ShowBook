@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
+import { createBookReviews } from '../../api/ReviewService';
 
 const Review = () => {
   const navigate = useNavigate();
@@ -9,10 +10,23 @@ const Review = () => {
     navigate(-1);
   };
   const [rating, setRating] = useState(0);
+  const [content, setContent] = useState('');
 
   const handleClick = (starIndex) => {
     setRating(starIndex + 1);
   };
+  const onSubmitReview = () => {
+    if (content === '' || rating === 0) {
+      alert('평점과 한줄평을 모두 입력해주세요');
+    } else {
+    createBookReviews({
+      content : content,
+      rating : rating
+    },1);
+  }
+
+  }
+  
   return (
     <div>
       <CloseButton onClick={handleButtonClick}>
@@ -45,9 +59,9 @@ const Review = () => {
       <ReviewContentContainer>
         <ReviewContentTitle>내용</ReviewContentTitle>
       </ReviewContentContainer>
-      <ReviewContent placeholder={'여기에 내용을 입력하세요'}></ReviewContent>
+      <ReviewContent placeholder={'여기에 내용을 입력하세요'} value={content} onChange={(e) => setContent(e.target.value)} ></ReviewContent>
       <SubmitButtonContainer>
-        <SubmitButton>작성</SubmitButton>
+        <SubmitButton onClick={onSubmitReview}>작성</SubmitButton>
       </SubmitButtonContainer>
     </div>
   );
