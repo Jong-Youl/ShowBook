@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { memberState } from '../../../lib/memberRecoil';
 import { useSetRecoilState } from 'recoil';
-import { useNavigate } from 'react-router';
 import { MemberService } from '../../../api/MemberService';
 
 const memberService = new MemberService();
@@ -10,7 +9,6 @@ function Proxy() {
   const [memberId, setMemberId] = useState(null);
   const setMemberInfo = useSetRecoilState(memberState);
 
-  const navigate = useNavigate();
 
   useEffect(() => {
     const memberIdFromURL = new URL(document.location).searchParams.get('id');
@@ -22,15 +20,17 @@ function Proxy() {
     const getMemberInfo = async (memberId) => {
       let memberInfo = await memberService.login(memberId);
       if (memberInfo) {
+        console.log(memberInfo)
         setMemberInfo(memberInfo);
       }
     };
 
+
     if (memberId) {
       getMemberInfo(memberId);
-      navigate('/main');
+      window.location.replace('/main');
     }
-  }, [memberId, setMemberInfo, navigate]);
+  }, [memberId, setMemberInfo]);
 }
 
 export default Proxy;
