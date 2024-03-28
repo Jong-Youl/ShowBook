@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { readMonthlyState } from '../../../../recoil/memberRecoil';
+import { readMonthlyState } from '../../../../lib/memberRecoil';
 import {
   ChartContainer,
   ChartTitle,

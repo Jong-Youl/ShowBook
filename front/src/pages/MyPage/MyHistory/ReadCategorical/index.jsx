@@ -1,6 +1,6 @@
 import React  from 'react';
 import { useRecoilValue } from 'recoil';
-import { readCategoricalState } from '../../../../recoil/memberRecoil';
+import { readCategoricalState } from '../../../../lib/memberRecoil';
 import ReadBookCategoryChart from '../../../../components/ReadBookCategoryChart';
 import toCategoryBookDataList from './ToCategoryBookDataList';
 import {

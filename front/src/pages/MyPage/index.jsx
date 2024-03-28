@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useRecoilValue,useSetRecoilState } from 'recoil';
+import React, { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import {
   Container,
   Content,
@@ -15,8 +15,6 @@ import MyReview from './MyReview';
 // import { MemberService } from '../../api/MemberService';
 import { memberState } from '../../lib/memberRecoil';
 
-
-const memberService = new MemberService()
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('reviews');
