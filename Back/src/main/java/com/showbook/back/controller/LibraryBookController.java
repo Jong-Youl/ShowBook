@@ -5,6 +5,7 @@ import static org.springframework.http.HttpStatus.*;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,9 +33,10 @@ public class LibraryBookController {
 	private final LibraryBookService libraryBookService;
 
 	@PostMapping("/registration/{book_id}")
-	public void createWishBook(@RequestHeader("Authorization") String token, @PathVariable(value = "book_id") Long bookId) {
+	public ResponseEntity createWishBook(@RequestHeader("Authorization") String token, @PathVariable(value = "book_id") Long bookId) {
 		Long memberId = jwtTokenUtil.getMemberId(token);
 		libraryBookService.createWishBook(memberId, bookId);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
 	@GetMapping
@@ -45,14 +47,16 @@ public class LibraryBookController {
 
 
 	@PatchMapping
-	public void modifyLibrary(@RequestHeader("Authorization") String token, @RequestBody LibraryBookUpdateRequestDTO libraryBookUpdateRequestDTO, @RequestParam("read_status") int oldReadStatus) {
+	public ResponseEntity modifyLibrary(@RequestHeader("Authorization") String token, @RequestBody LibraryBookUpdateRequestDTO libraryBookUpdateRequestDTO, @RequestParam("read_status") int oldReadStatus) {
 		Long memberId = jwtTokenUtil.getMemberId(token);
 		libraryBookService.modifyLibrary(memberId, oldReadStatus, libraryBookUpdateRequestDTO);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	@DeleteMapping("/{book_id}")
-	public void deleteBook(@RequestHeader("Authorization") String token, @PathVariable(value = "book_id") Long bookId) {
+	public ResponseEntity deleteBook(@RequestHeader("Authorization") String token, @PathVariable(value = "book_id") Long bookId) {
 		Long memberId = jwtTokenUtil.getMemberId(token);
 		libraryBookService.deleteBook(memberId, bookId);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }
