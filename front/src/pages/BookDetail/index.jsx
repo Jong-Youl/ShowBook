@@ -1,48 +1,43 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom' 	
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
+import { useLocation } from 'react-router-dom';
+import { BookService } from '../../api/bookService';
+
 const BookDetail = () => {
-  
+  const location = useLocation();
+  const book = location.state.book;
   const navigate = useNavigate();
   const {state} = useLocation();
-  console.log(state);
   const reviewRating = state.reviewRating.toFixed(1);
   const [bookmarked, setBookmarked] = useState(false);
-
+  const [purchaseUrl, setPurchaseUrl] = useState('');
+  const bookService = new BookService();
   const book = state.book
-  console.log("여기서 부터는 detail 히히")
-  console.log(book)
+
+  useEffect(() => {
+    bookService.getPurchaseUrl(book.bookId)
+      .then((result) => {
+        const url = result.url;
+        console.log(url);
+        setPurchaseUrl(url); // 상태에 구매 URL을 저장합니다.
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }, []);
 
   const handleClick = () => {
     setBookmarked(prevState => !prevState);
   };
+
   const handleGoBack = () => {
     navigate(-1);
   };
+
   const goReview = () => {
-    navigate('/review')
-  }
-
-  // useEffect(() => {
-
-  //   const fetchReviewRating = async () => {
-  //     try {
-  //       const res = await fetchBookReviewRating(1);
-  //       if (res && res.data) { // 데이터가 존재하는지 확인
-  //         console.log(res);
-  //         setRating(res.data);
-  //       } else {
-  //         console.error("Empty response or missing data.");
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-  
-  //   fetchReviewRating();
-  // }, []); 
-  
+    navigate('/review');
+  };
 
   return (
     <div>
@@ -50,27 +45,26 @@ const BookDetail = () => {
         <CloseButtonImage src='/img/button/icbt_close.png'></CloseButtonImage>
       </CloseButton>
       <ContentContainer>
-        <BookImage src={book.bookImageURL}/>
+        <BookImage src={book.bookImageURL} />
         <BookTitle>{book.title}</BookTitle>
         <BookDesc>{book.description}</BookDesc>
         <BookEtc>{book.author}|{book.totalPage}page|{book.publisher}</BookEtc>
-
       </ContentContainer>
       <ReviewContainer>
         <StarIcon src={`/img/icon/star.png`}></StarIcon>
         <ReviewRating>{reviewRating}</ReviewRating>
       </ReviewContainer>
       <ButtonsContainer>
-        <BookMarkImg src={bookmarked ? `/img/icon/bookmarked.png` : `/img/icon/bookmark.png`}
-        onClick={handleClick}></BookMarkImg>
-        <BuyButton>구매하러가기</BuyButton>
+        <BookMarkImg src={bookmarked ? `/img/icon/bookmarked.png` : `/img/icon/bookmark.png`} onClick={handleClick} />
+        <BuyButton>
+          <a href={purchaseUrl}>구매하러가기</a>
+        </BuyButton>
         <ReviewButton onClick={goReview}>한줄평 작성</ReviewButton>
       </ButtonsContainer>
-
-
     </div>
   );
 }
+
 const CloseButton = styled.button`
   background: var(--bg-beige);
 `;
