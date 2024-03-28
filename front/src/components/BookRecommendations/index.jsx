@@ -1,18 +1,16 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
-import { recommendBookState } from '../../lib/bookRecoil';
 import { StyledSwiper,StyledSwiperSlide } from './BookRecommendations.styles';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
 import { EffectCards } from 'swiper/modules';
-// import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { bookDataPropTypes } from '../../types/recommendedBooksPropTypes';
 import { BookService } from '../../api/bookService';
 
-function BookRecommendations() {
-  const booksJson = useRecoilValue(recommendBookState).recommend
+function BookRecommendations(booksJson) {
 
-  // const navigate = useNavigate();
+  console.log(booksJson.booksJson)
+  const navigate = useNavigate();
   const bookService = new BookService();
 
   //recommend_book의 book_id를 붙여줘야 함
@@ -22,13 +20,13 @@ function BookRecommendations() {
     try {
       const book = await bookService.getBookDetail(book_id);
       console.log(book)
-      // navigate('/book-detail', { state: { book } });
+      navigate('/book-detail', { state: { book } });
     } catch (error) {
       console.error('Error fetching book:', error);
     }
   };
 
-  const booksListWithMap = booksJson.map((book, index) => (
+  const booksListWithMap = booksJson.booksJson.map((book, index) => (
     <StyledSwiperSlide
       key={index}
       style={{

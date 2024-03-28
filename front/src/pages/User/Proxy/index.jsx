@@ -28,6 +28,7 @@ function Proxy() {
 
     if (memberId) {
       getMemberInfo(memberId);
+      alert("ShowBook에 오신걸 환영합니다!")
       window.location.replace('/main');
     }
   }, [memberId, setMemberInfo]);
