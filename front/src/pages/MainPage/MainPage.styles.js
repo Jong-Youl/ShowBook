@@ -23,3 +23,12 @@ export const Heading = styled.span`
   font-size: large;
   padding: 5px;
 `;
+
+
+export const Loading = styled.span`
+  color: ${(props) => props.color || 'var(--font-black)'};
+  font-weight: ${(props) => (props.bold ? '920' : '620')};
+  white-space: pre-wrap;
+  font-size: 32px;
+  padding: 5px;
+`;

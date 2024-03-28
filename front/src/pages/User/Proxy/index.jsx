@@ -3,6 +3,8 @@ import { memberState } from '../../../lib/memberRecoil';
 import { useSetRecoilState } from 'recoil';
 import { MemberService } from '../../../api/MemberService';
 
+import { Container,Loading } from '../../MainPage/MainPage.styles';
+
 const memberService = new MemberService();
 
 function Proxy() {
@@ -28,10 +30,24 @@ function Proxy() {
 
     if (memberId) {
       getMemberInfo(memberId);
-      alert("ShowBook에 오신걸 환영합니다!")
+      setTimeout(function() {
       window.location.replace('/main');
+      }, 5000); // 1초 기다림
     }
   }, [memberId, setMemberInfo]);
+  return (
+    <Container>
+      <Loading>
+        <Loading $bold color='black'>
+            메인화면으로 이동 중입니다!
+        </Loading>
+        <br/>
+        <Loading color='var(--main)'>
+            잠시만 기다려주세요!
+        </Loading>
+      </Loading>
+    </Container>
+  );
 }
 
 export default Proxy;

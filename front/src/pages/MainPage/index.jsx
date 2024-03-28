@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import { useNavigate } from 'react-router';
+// import { useNavigate } from 'react-router';
 import { useRecoilValue } from 'recoil';
 import { memberState } from '../../lib/memberRecoil';
 import BookRecommendations from '../../components/BookRecommendations';
@@ -17,27 +17,27 @@ const bookService = new BookService();
 const MainPage = () => {
   const memberInfo = useRecoilValue(memberState);
   const memberId = jwtDecode(localStorage.getItem("accessToken")).id;
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const [books, setBooks] = useState(null); // 초기값을 null로 설정합니다.
+  const [books, setBooks] = useState(null); 
+
+  const fetchData = async (memberId) => {
+    try {
+      const response = await bookService.getRecommendedBook(memberId);
+      if (response) {
+        setBooks(response.recommend); 
+      }
+    } catch (error) {
+      console.error('Error fetching recommended books:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await bookService.getRecommendedBook(memberId);
-        if (response) {
-          setBooks(response.recommend); 
-        }
-      } catch (error) {
-        console.error('Error fetching recommended books:', error);
-      }
-    };
-
-    fetchData(); 
+    fetchData(memberId); 
   }, [memberId]); 
 
   const handleButtonClick = () => {
-    navigate(0);
+    fetchData(memberId);
   };
 
   return (
