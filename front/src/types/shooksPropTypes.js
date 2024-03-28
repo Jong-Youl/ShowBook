@@ -9,6 +9,7 @@ export const shookDataPropTypes = {
       nickname: PropTypes.string.isRequired,
       shook_id: PropTypes.number.isRequired,
       shook_img_url: PropTypes.string.isRequired,
+      like_status: PropTypes.bool.isRequired,
     }).isRequired,
   ).isRequired,
 };
