@@ -2,21 +2,31 @@ import React, { useEffect, useState } from 'react';
 import {
   StyledSwiper,
   StyledSwiperSlide,
-  CurrentBookTitle,
+  CurrentBookLike,
 } from './ShortForm.styles';
 import 'swiper/css';
 import 'swiper/css/effect-creative';
-import { EffectCreative } from 'swiper/modules';
+import { EffectFlip } from 'swiper/modules';
 import { shookDataPropTypes } from '../../types/shooksPropTypes';
+import LikeButton from '../../pages/Shorts/LikeButton';
+import {
+  Nickname,
+  ProfileHeader,
+  ProfileImage,
+} from '../../pages/MyPage/MyPage.styles';
 
 function ShortForm({ shortsJson }) {
-  const [currentTitle, setCurrentTitle] = useState('');
+  const [currentBook, setCurrentBook] = useState('');
 
   useEffect(() => {
     if (shortsJson.length > 0) {
-      setCurrentTitle(shortsJson[0].title);
+      setCurrentBook(shortsJson[0]);
     }
   }, [shortsJson]);
+
+  const handleSlideChange = (swiper) => {
+    setCurrentBook(shortsJson[swiper.realIndex]);
+  };
 
   const booksListWithMap = shortsJson.map((book, index) => (
     <StyledSwiperSlide
@@ -25,34 +35,30 @@ function ShortForm({ shortsJson }) {
         backgroundImage: `url(${book.shook_img_url})`,
         backgroundSize: 'cover',
       }}
-    >
-      {/* 이미지 위에 내용 표시하는경우 여기다가 추가 */}
-    </StyledSwiperSlide>
+    ></StyledSwiperSlide>
   ));
 
   return (
     <>
-      <CurrentBookTitle>{currentTitle}</CurrentBookTitle>
+      <ProfileHeader>
+        <ProfileImage src={currentBook.member_img_url} alt='Profile' />
+        <div>
+          <Nickname>{currentBook.title}</Nickname>
+          <Nickname>{currentBook.nickname}</Nickname>
+        </div>
+      </ProfileHeader>
+
       <StyledSwiper
-        onSlideChange={(swiper) =>
-          setCurrentTitle(shortsJson[swiper.realIndex].title)
-        }
-        grabCursor
-        effect='creative'
-        creativeEffect={{
-          prev: {
-            shadow: true,
-            translate: ['-120%', 0, -500],
-          },
-          next: {
-            shadow: true,
-            translate: ['120%', 0, -500],
-          },
-        }}
-        modules={[EffectCreative]}
+        onSlideChange={handleSlideChange}
+        effect={'flip'}
+        grabCursor={true}
+        modules={[EffectFlip]}
       >
         {booksListWithMap}
       </StyledSwiper>
+      <CurrentBookLike>
+        <LikeButton bookId={currentBook.book_id} />
+      </CurrentBookLike>
     </>
   );
 }
