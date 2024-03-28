@@ -8,7 +8,7 @@ from utils.shook_util import get_shook_like, get_df,get_user_similarity \
 shook_recommendation = Blueprint("shook_recommendation",__name__)
 api = Api(shook_recommendation)
 
-@shook_recommendation.route("/shook_recommend/<int:member_id>",methods=["GET"])
+@shook_recommendation.route("/recommend/<int:member_id>",methods=["GET"])
 def getShooks(member_id):
     
     #1. member_id를 받으면 member_id랑 매칭되는 shook_like 정보 리턴
