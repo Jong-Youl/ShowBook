@@ -1,53 +1,68 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
 import { useLocation } from 'react-router-dom';
+import { BookService } from '../../api/bookService';
 
 const BookDetail = () => {
   const location = useLocation();
-  const book = location.state.book
+  const book = location.state.book;
   const navigate = useNavigate();
   const [bookmarked, setBookmarked] = useState(false);
+  const [purchaseUrl, setPurchaseUrl] = useState('');
+  const bookService = new BookService();
 
+  useEffect(() => {
+    // 프로미스를 이용하여 구매 URL을 가져옵니다.
+    bookService.getPurchaseUrl(book.bookId)
+      .then((result) => {
+        const url = result.url;
+        console.log(url);
+        setPurchaseUrl(url); // 상태에 구매 URL을 저장합니다.
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }, []);
 
-  console.log("여기서 부터는 detail 히히")
-  console.log(book)
   const handleClick = () => {
     setBookmarked(prevState => !prevState);
   };
+
   const handleGoBack = () => {
     navigate(-1);
   };
+
   const goReview = () => {
-    navigate('/review')
-  }
+    navigate('/review');
+  };
+
   return (
     <div>
       <CloseButton onClick={handleGoBack}>
         <CloseButtonImage src='/img/button/icbt_close.png'></CloseButtonImage>
       </CloseButton>
       <ContentContainer>
-        <BookImage src={book.bookImageURL}/>
+        <BookImage src={book.bookImageURL} />
         <BookTitle>{book.title}</BookTitle>
         <BookDesc>{book.description}</BookDesc>
         <BookEtc>저자 : {book.author}|{book.totalPage}page|출판사 : {book.publisher}</BookEtc>
-
       </ContentContainer>
       <ReviewContainer>
-        <StarIcon src={`/img/icon/star.png`}></StarIcon>
+        <StarIcon src={`/img/icon/star.png`} />
         <ReviewRating>4.2</ReviewRating>
       </ReviewContainer>
       <ButtonsContainer>
-        <BookMarkImg src={bookmarked ? `/img/icon/bookmarked.png` : `/img/icon/bookmark.png`}
-        onClick={handleClick}></BookMarkImg>
-        <BuyButton>구매하러가기</BuyButton>
+        <BookMarkImg src={bookmarked ? `/img/icon/bookmarked.png` : `/img/icon/bookmark.png`} onClick={handleClick} />
+        <BuyButton>
+          <a href={purchaseUrl}>구매하러가기</a>
+        </BuyButton>
         <ReviewButton onClick={goReview}>한줄평 작성</ReviewButton>
       </ButtonsContainer>
-
-
     </div>
   );
 }
+
 const CloseButton = styled.button`
   background: var(--bg-beige);
 `;
