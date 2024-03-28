@@ -32,7 +32,7 @@ function Proxy() {
       getMemberInfo(memberId);
       setTimeout(function() {
       window.location.replace('/main');
-      }, 5000); // 1초 기다림
+      }, 1000); // 1초 기다림
     }
   }, [memberId, setMemberInfo]);
   return (
