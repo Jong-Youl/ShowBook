@@ -14,7 +14,7 @@ const LikeButton = ({ bookId }) => {
   return (
     <StyledLikeButton
       onClick={toggleLike}
-      likeStatus={likeStatus}
+      likestatus={likeStatus.toString()}
     ></StyledLikeButton>
   );
 };
