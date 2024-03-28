@@ -10,7 +10,6 @@ class MemberService {
     async login(memberId) {
         try {
             const res = await local.post(`${BASE_URL}/api/auth/token?memberId=${memberId}`, {}, { withCredentials: true });
-            console.log(res.data);
             return res.data;
         } catch (error) {
             alert("불러오기 실패");
