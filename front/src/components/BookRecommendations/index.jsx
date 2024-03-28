@@ -5,11 +5,19 @@ import 'swiper/css/effect-cards';
 import { EffectCards } from 'swiper/modules';
 import { useNavigate } from 'react-router';
 import { bookDataPropTypes } from '../../types/recommendedBooksPropTypes';
+import { fetchBookReviewRating } from '../../api/ReviewService';
 
 function BookRecommendations({ booksJson }) {
   const navigate = useNavigate();
   const onHandleClick = () => {
-    navigate('/book-detail');
+      fetchBookReviewRating(1)
+      .then(res => {
+        console.log(res);
+        navigate('/book-detail', { state: { reviewRating: res } });
+      })
+      .catch(error => {
+        console.error('Error fetching book:', error);
+      });
   };
   const booksListWithMap = booksJson.map((book, index) => (
     <StyledSwiperSlide
