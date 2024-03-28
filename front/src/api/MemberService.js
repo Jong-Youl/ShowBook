@@ -74,41 +74,32 @@ class MemberService {
                 console.log(res)
                 localStorage.clear()
                 window.location.replace("/user/login");
-                
             })
             .catch((error) => {
                 console.error(error)
             })
     }
 
-    
-
 
     async getBookListByCategory() {
-        local.get(`${BASE_URL}/api/member/reading-logs/category`,
-                {
-                    headers: {
-                        "Authorization" : localStorage.getItem("accessToken")
-                    }
-                })
-            .then((res) => {
-                console.log(res)
-            })
+        try{
+            const res = await local.get(`${BASE_URL}/api/member/reading-logs/category`,
+                {headers: {"Authorization" : localStorage.getItem("accessToken")}})
+            return res.data
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     async getBookListByMonth(year) {
-        local.get(`${BASE_URL}/api/member/reading-logs/monthly?year=${year}`,
-                {
-                    headers: {
-                        "Authorization" : localStorage.getItem("accessToken")
-                    }
-                })
-            .then((res) => {
-                console.log(res)
-            })
+        try{
+            const res = await local.get(`${BASE_URL}/api/member/reading-logs/monthly?year=${year}`,
+                {headers: {"Authorization" : localStorage.getItem("accessToken")}})
+            return res.data
+        } catch (error) {
+            console.error(error)
+        }
     }
-
-
 
 }
 
