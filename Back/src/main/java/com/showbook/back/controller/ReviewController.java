@@ -46,4 +46,9 @@ public class ReviewController {
 	public ResponseEntity<Page<MyReviewResponseDTO>> getMyReviews(Pageable pageable, @RequestHeader("Authorization") String token) {
 		return new ResponseEntity<>(reviewService.getMyReviews(pageable, token), OK);
 	}
+
+	@GetMapping("/rating/{bookId}")
+	public ResponseEntity<Double> getBookReviewRating(@PathVariable("bookId") Long bookId ) {
+		return new ResponseEntity<>(reviewService.getBookReviewRating(bookId),OK);
+	}
 }
