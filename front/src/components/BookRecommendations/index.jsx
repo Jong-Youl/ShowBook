@@ -5,18 +5,18 @@ import 'swiper/css/effect-cards';
 import { EffectCards } from 'swiper/modules';
 import { useNavigate } from 'react-router';
 import { bookDataPropTypes } from '../../types/recommendedBooksPropTypes';
-
 import { fetchBookReviewRating } from '../../api/ReviewService';
 import { BookService } from '../../api/bookService';
+
 function BookRecommendations({ booksJson }) {
   const navigate = useNavigate();
   const bookService = new BookService();
   const onHandleClick = async () => {
     try {
       
-      const book = await bookService.getBookDetail(dummyNum);
+      const book = await bookService.getBookDetail(1);
       const rating = await fetchBookReviewRating(1);
-      navigate('/book-detail', { state: { book : book, reviewRating, rating} });
+      navigate('/book-detail', { state: { book : book, reviewRating: rating} });
     } catch (error) {
       console.error('Error fetching book:', error);
     }
@@ -36,7 +36,7 @@ function BookRecommendations({ booksJson }) {
         backgroundImage: `url(${book.book_image_url})`,
         backgroundSize: 'cover',
       }}
-      onClick={() => onHandleClick(dummyNum)}
+      onClick={() => onHandleClick()}
     />
   ));
 
