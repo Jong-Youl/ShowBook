@@ -13,4 +13,4 @@ class ShookLike(db.Model) :
     
     shook_id = db.Column(db.Integer,db.ForeignKey("shook.shook_id"),nullable = False)
     member_id = db.Column(db.Integer,db.ForeignKey("member.member_id"),nullable = False)
-    like_status = db.Column(db.Integer, nullable = False)
+    like_status = db.Column(db.Float, nullable = False)
