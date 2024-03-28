@@ -31,9 +31,9 @@ public class ReviewService {
 	private final MemberRepository memberRepository;
 	private final JwtTokenUtil jwtTokenUtil;
 	public void createReview(ReviewRequestDTO reviewRequestDTO, Long bookId, String token) {
-		Member member = memberRepository.getReferenceById(getMemberId(token));
+		Member member = memberRepository.findById(jwtTokenUtil.getMemberId(token)).orElseThrow();
 		Book book = bookRepository.findById(bookId).orElseThrow();
-		Review review = Review.builder().content(reviewRequestDTO.getContent())
+		Review review = Review.builder().content(reviewRequestDTO.getContent()).rating(reviewRequestDTO.getRating())
 			.createdAt(LocalDate.now()).book(book).member(member).build();
 		reviewRepository.save(review);
 	}
@@ -66,6 +66,11 @@ public class ReviewService {
 		// }
 		return new PageImpl<>(myReviewResponseDTOList,reviewList.getPageable(),reviewList.getTotalElements());
 		// return myReviewResponseDTOList;
+	}
+
+	public double getBookReviewRating(Long bookId) {
+		double avgRating = reviewRepository.getBookAverageRating(bookId);
+		return avgRating;
 	}
 	public Long getMemberId(String token) {
 		if (token == null) return null;

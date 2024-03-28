@@ -22,7 +22,6 @@ public class Review {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long reviewId;
 
-
 	@Column(nullable = false)
 	private String content;
 
@@ -33,7 +32,7 @@ public class Review {
 	private LocalDate updatedAt;
 
 	@Column(nullable = false)
-	private Integer rating;
+	private int rating;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="member_id")
