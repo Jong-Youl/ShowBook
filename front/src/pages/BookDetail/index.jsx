@@ -14,7 +14,6 @@ const BookDetail = () => {
   const [bookmarked, setBookmarked] = useState(false);
   const [purchaseUrl, setPurchaseUrl] = useState('');
   const bookService = new BookService();
-  const book = state.book
 
   useEffect(() => {
     bookService.getPurchaseUrl(book.bookId)
