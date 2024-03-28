@@ -100,12 +100,8 @@ def get_shooks(shook_ids):
     shook_ids = shook_ids[:11]
     
     shooks = Shook.query.filter(Shook.shook_id.in_(shook_ids)).all()
-    
-    member_ids = [shook.member_id for shook in shooks]
-    members = Member.query.filter(Member.member_id.in_(member_ids)).all()
-    members_nickname = [member.nickname for member in members]
-    
-    shooks_list = [ShookResponseDTO(shooks[i],members_nickname[i]) for i in range(len(shooks))]
+        
+    shooks_list = [ShookResponseDTO(shook) for shook in shooks]
     
     return shooks_list
 
