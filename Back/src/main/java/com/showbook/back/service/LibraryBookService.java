@@ -79,6 +79,7 @@ public class LibraryBookService {
         // libraryBook 에 있으면 readStatus 변경
         LibraryBook libraryBook = LibraryBook.builder().readStatus(0).library(library).book(book).build();
         libraryBookRepository.save(libraryBook);
+        System.out.println("추가된 책 id : " + libraryBook.getBook().getBookId());
     }
 
     public List<LibraryBookResponseDTO> getAllBooks(Long memberId, int readStatus) {
