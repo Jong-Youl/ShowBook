@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom' 	
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
-
 const BookDetail = () => {
   
   const navigate = useNavigate();
@@ -10,6 +9,11 @@ const BookDetail = () => {
   console.log(state);
   const reviewRating = state.reviewRating.toFixed(1);
   const [bookmarked, setBookmarked] = useState(false);
+
+  const book = state.book
+  console.log("여기서 부터는 detail 히히")
+  console.log(book)
+
   const handleClick = () => {
     setBookmarked(prevState => !prevState);
   };
@@ -46,10 +50,10 @@ const BookDetail = () => {
         <CloseButtonImage src='/img/button/icbt_close.png'></CloseButtonImage>
       </CloseButton>
       <ContentContainer>
-        <BookImage src='https://contents.kyobobook.co.kr/sih/fit-in/300x0/pdt/9788954683371.jpg'/>
-        <BookTitle>곰돌이 푸, 행복한 일은 매일 있어</BookTitle>
-        <BookDesc>아직 행복을 기다리는 우리에게</BookDesc>
-        <BookEtc>곰돌이 푸|240쪽|알에이치코리(RHK)</BookEtc>
+        <BookImage src={book.bookImageURL}/>
+        <BookTitle>{book.title}</BookTitle>
+        <BookDesc>{book.description}</BookDesc>
+        <BookEtc>저자 : {book.author}|{book.totalPage}page|출판사 : {book.publisher}</BookEtc>
 
       </ContentContainer>
       <ReviewContainer>

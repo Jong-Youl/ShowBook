@@ -5,20 +5,30 @@ import 'swiper/css/effect-cards';
 import { EffectCards } from 'swiper/modules';
 import { useNavigate } from 'react-router';
 import { bookDataPropTypes } from '../../types/recommendedBooksPropTypes';
-import { fetchBookReviewRating } from '../../api/ReviewService';
 
+import { fetchBookReviewRating } from '../../api/ReviewService';
+import { BookService } from '../../api/bookService';
 function BookRecommendations({ booksJson }) {
   const navigate = useNavigate();
-  const onHandleClick = () => {
-      fetchBookReviewRating(1)
-      .then(res => {
-        console.log(res);
-        navigate('/book-detail', { state: { reviewRating: res } });
-      })
-      .catch(error => {
-        console.error('Error fetching book:', error);
-      });
-  };
+  const bookService = new BookService();
+  const onHandleClick = async () => {
+    try {
+      
+      const book = await bookService.getBookDetail(dummyNum);
+      const rating = await fetchBookReviewRating(1);
+      navigate('/book-detail', { state: { book : book, reviewRating, rating} });
+    } catch (error) {
+      console.error('Error fetching book:', error);
+    }
+      // fetchBookReviewRating(1)
+      // .then(res => {
+      //   console.log(res);
+      //   navigate('/book-detail', { state: { reviewRating: res } });
+      // })
+      // .catch(error => {
+      //   console.error('Error fetching book:', error);
+      // });
+    }
   const booksListWithMap = booksJson.map((book, index) => (
     <StyledSwiperSlide
       key={index}
@@ -26,7 +36,7 @@ function BookRecommendations({ booksJson }) {
         backgroundImage: `url(${book.book_image_url})`,
         backgroundSize: 'cover',
       }}
-      onClick={onHandleClick}
+      onClick={() => onHandleClick(dummyNum)}
     />
   ));
 

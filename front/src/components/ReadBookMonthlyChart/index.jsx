@@ -12,7 +12,7 @@ const ReadBookMonthlyChart = ({ readMonthlyJson }) => {
     labels: readMonthlyJson.map((data) => data.month),
     datasets: [
       {
-        label: 'Books Read',
+        label: '읽은 책',
         data: readMonthlyJson.map((data) => data.count),
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgb(210,86,120)',
