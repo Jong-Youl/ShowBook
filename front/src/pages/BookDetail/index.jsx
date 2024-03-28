@@ -53,7 +53,7 @@ const BookDetail = () => {
         <BookImage src={book.bookImageURL}/>
         <BookTitle>{book.title}</BookTitle>
         <BookDesc>{book.description}</BookDesc>
-        <BookEtc>저자 : {book.author}|{book.totalPage}page|출판사 : {book.publisher}</BookEtc>
+        <BookEtc>{book.author}|{book.totalPage}page|{book.publisher}</BookEtc>
 
       </ContentContainer>
       <ReviewContainer>
