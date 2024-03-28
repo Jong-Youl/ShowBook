@@ -8,11 +8,23 @@ const {persistAtom} = recoilPersist({
 
 export const memberState = atom({
     key : "member",
-    default : {email : '', name:''},
+    default : {},
     effects_UNSTABLE : [persistAtom]
 })
 
 export const loginState = atom({
     key : "login",
     default : localStorage.getItem("accessToken") ? true : false
+})
+
+export const readCategoricalState = atom({
+    key : "readCategorical",
+    default : {},
+    effects_UNSTABLE : [persistAtom]
+})
+
+export const readMonthlyState = atom({
+    key : "readMonthly",
+    default : {},
+    effects_UNSTABLE : [persistAtom]
 })
