@@ -7,9 +7,7 @@ import { useNavigate } from 'react-router';
 import { bookDataPropTypes } from '../../types/recommendedBooksPropTypes';
 import { BookService } from '../../api/bookService';
 
-function BookRecommendations(booksJson) {
-
-  console.log(booksJson.booksJson)
+function BookRecommendations({booksJson}) {
   const navigate = useNavigate();
   const bookService = new BookService();
 
@@ -26,7 +24,7 @@ function BookRecommendations(booksJson) {
     }
   };
 
-  const booksListWithMap = booksJson.booksJson.map((book, index) => (
+  const booksListWithMap = booksJson.map((book, index) => (
     <StyledSwiperSlide
       key={index}
       style={{
