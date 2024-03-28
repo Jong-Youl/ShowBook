@@ -1,7 +1,17 @@
 import styled from 'styled-components';
 import { scrollbarStyles } from '../../components/common/styles/ScrollbarStyles';
 
+export const HeadingContainer = styled.span``;
+
 export const Heading = styled.span`
+  color: ${(props) => props.color || 'var(--font-black)'};
+  font-weight: ${(props) => (props.bold ? '920' : '620')};
+  white-space: pre-wrap;
+  font-size: large;
+  padding: 5px 5px 5px 10px;
+`;
+
+export const HeadingRight = styled.span`
   color: ${(props) => props.color || 'var(--font-black)'};
   font-weight: ${(props) => (props.bold ? '920' : '620')};
   white-space: pre-wrap;
