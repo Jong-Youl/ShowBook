@@ -1,5 +1,3 @@
-from models.Book import Book
-
 
 def BookResponseDTO(book):
     response = {
