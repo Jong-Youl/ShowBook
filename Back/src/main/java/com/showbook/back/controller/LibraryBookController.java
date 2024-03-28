@@ -32,8 +32,9 @@ public class LibraryBookController {
 	private final JwtTokenUtil jwtTokenUtil;
 	private final LibraryBookService libraryBookService;
 
-	@PostMapping("/registration/{book_id}")
-	public ResponseEntity createWishBook(@RequestHeader("Authorization") String token, @PathVariable(value = "book_id") Long bookId) {
+	@PostMapping("/registration")
+	public ResponseEntity createWishBook(@RequestHeader("Authorization") String token, @RequestParam("book_id") Long bookId) {
+		System.out.println(token);
 		Long memberId = jwtTokenUtil.getMemberId(token);
 		libraryBookService.createWishBook(memberId, bookId);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
