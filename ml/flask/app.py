@@ -29,7 +29,7 @@ def create_app():
     # cors 설정
     cors = CORS(app, resources={r"/*": {"origins": "*"}})
     
-    app.register_blueprint(recommendation, url_prefix="/ml/api/recommend")
+    app.register_blueprint(recommendation, url_prefix="/ml/api/book")
     app.register_blueprint(shook_recommendation, url_prefix="/ml/api/shook")
     
     return app

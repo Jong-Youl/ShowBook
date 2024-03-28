@@ -75,6 +75,8 @@ def recommendations(book_id_list):
 
     # 전체 데이터프레임에서 해당 인덱스의 행만 추출. 5개의 행을 가진다.
     recommend = books.iloc[book_indices].reset_index(drop=True)
+    
+    recommend = recommend[['book_id','book_image_url']]
 
     return recommend
 
@@ -90,7 +92,6 @@ def random_recommendations():
         response = BookResponseDTO(row)
         book_list.append(response)
     
-    print("random_Recommendations")
     return book_list
 
 def recommend_by_category(category_list):
@@ -99,17 +100,12 @@ def recommend_by_category(category_list):
     
     # 카테고리 별로 책을 랜덤으로 5개 추천
     for category in category_list:
-        temp = []
         books = Book.query.filter(Book.category.in_([category])).order_by(func.random()).limit(5).all()
         
         for book in books :
             response = BookResponseDTO(book)
-            temp.append(response)
+            book_list.append(response)
             
-        book_list.append({
-            category : temp
-        })
-        
     return book_list
     
 def get_book_ids(member_id) : # member_id는 list형식으로 넣어줘야한다

@@ -1,8 +1,7 @@
 from flask import Blueprint, make_response, jsonify
-from flask_restx import Api, Resource
-from sqlalchemy import func
+from flask_restx import Api
 
-from utils.recommendation_utils import get_book_ids, random_recommendations, recommend_by_category, recommendations
+from utils.recommendation_utils import get_book_ids, recommend_by_category, recommendations
 
 from models.MemberCategory import MemberCategory
 
@@ -19,7 +18,7 @@ jsonify -> Json 응답 생성
 recommendation = Blueprint("recommendation",__name__)
 api = Api(recommendation)
 
-@recommendation.route("/book_recommend/<int:member_id>",methods=["GET"])
+@recommendation.route("/recommend/<int:member_id>",methods=["GET"])
 def getBooks(member_id):
     
     member_ids = [member_id]
@@ -38,19 +37,19 @@ def getBooks(member_id):
     
     response_book_list = []
     
-    random_books = random_recommendations()
     random_books_by_category = recommend_by_category(category_list)    
     recommended_books =  recommendations(book_ids).to_dict(orient="records") # 데이터 프레임의 리스트 -> 딕셔너리로 반환    
-    
+        
     if (len(book_ids) == 0):
         response_book_list = random_books_by_category
     else:
         response_book_list = recommended_books
+        
     
     response = {
         "success" : True,
         "data" : {
-            "메인 화면 추천 책" : response_book_list
+            "recommend" : response_book_list
         }
     }
     
