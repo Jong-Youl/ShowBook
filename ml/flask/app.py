@@ -20,14 +20,15 @@ def create_app():
     # app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:showbook0405@j10a206.p.ssafy.io:3306/showbook2?charset=utf8mb4"
     app.config.from_object(dbConfig)
     app.config['SQLALCHEMY_DATABASE_URI'] = dbConfig.DB_URL
-    
+    app.config['CORS_SUPPORTS_CREDENTIALS'] = True
+
     db.init_app(app)
     with app.app_context():
-        db.create_all()
+        db.create_all() 
         db.session.commit()
     
     # cors 설정
-    cors = CORS(app, resources={r"/*": {"origins": "*"}})
+    cors = CORS(app, resources={r"/*": {"origins": "*"}},supports_credentials=True)
     
     app.register_blueprint(recommendation, url_prefix="/ml/api/book")
     app.register_blueprint(shook_recommendation, url_prefix="/ml/api/shook")
