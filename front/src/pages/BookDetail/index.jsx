@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom' 	
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
-import { useLocation } from 'react-router-dom';
-
 const BookDetail = () => {
-  const location = useLocation();
-  const book = location.state.book
+  
   const navigate = useNavigate();
+  const {state} = useLocation();
+  console.log(state);
+  const reviewRating = state.reviewRating.toFixed(1);
   const [bookmarked, setBookmarked] = useState(false);
 
-
+  const book = state.book
   console.log("여기서 부터는 detail 히히")
   console.log(book)
+
   const handleClick = () => {
     setBookmarked(prevState => !prevState);
   };
@@ -21,6 +23,27 @@ const BookDetail = () => {
   const goReview = () => {
     navigate('/review')
   }
+
+  // useEffect(() => {
+
+  //   const fetchReviewRating = async () => {
+  //     try {
+  //       const res = await fetchBookReviewRating(1);
+  //       if (res && res.data) { // 데이터가 존재하는지 확인
+  //         console.log(res);
+  //         setRating(res.data);
+  //       } else {
+  //         console.error("Empty response or missing data.");
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  
+  //   fetchReviewRating();
+  // }, []); 
+  
+
   return (
     <div>
       <CloseButton onClick={handleGoBack}>
@@ -30,12 +53,12 @@ const BookDetail = () => {
         <BookImage src={book.bookImageURL}/>
         <BookTitle>{book.title}</BookTitle>
         <BookDesc>{book.description}</BookDesc>
-        <BookEtc>저자 : {book.author}|{book.totalPage}page|출판사 : {book.publisher}</BookEtc>
+        <BookEtc>{book.author}|{book.totalPage}page|{book.publisher}</BookEtc>
 
       </ContentContainer>
       <ReviewContainer>
         <StarIcon src={`/img/icon/star.png`}></StarIcon>
-        <ReviewRating>4.2</ReviewRating>
+        <ReviewRating>{reviewRating}</ReviewRating>
       </ReviewContainer>
       <ButtonsContainer>
         <BookMarkImg src={bookmarked ? `/img/icon/bookmarked.png` : `/img/icon/bookmark.png`}
