@@ -5,6 +5,7 @@ from utils.recommendation_utils import get_book_ids, recommend_by_category, reco
 
 from models.MemberCategory import MemberCategory
 
+import random
 
 
 '''
@@ -43,7 +44,7 @@ def getBooks(member_id):
     if (len(book_ids) == 0):
         response_book_list = random_books_by_category
     else:
-        response_book_list = recommended_books
+        response_book_list = random.sample(recommended_books, k=min(8, len(recommended_books)))
         
     
     response = {
