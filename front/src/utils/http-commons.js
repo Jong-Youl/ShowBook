@@ -23,7 +23,8 @@ function localAxios() {
         },
         (error) => {
             // refreshToken 만료시 로그아웃
-            if(error.response.status === 400 && error.response.data.message ==="RELOGIN") {
+            if(localStorage.getItem("accessToken") == null || 
+                (error.response.status === 400 && error.response.data.message ==="RELOGIN")) {
                 localStorage.clear()
                 alert("자동 로그아웃!")
                 window.location.replace("/user/login")
