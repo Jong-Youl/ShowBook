@@ -41,6 +41,7 @@ const MainPage = () => {
   };
 
   return (
+    // {books == null}
     <Container>
       <Heading>
         <Heading $bold color='black'>
