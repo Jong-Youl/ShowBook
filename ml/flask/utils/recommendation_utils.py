@@ -75,9 +75,8 @@ def recommendations(book_id_list):
 
     # 전체 데이터프레임에서 해당 인덱스의 행만 추출. 5개의 행을 가진다.
     recommend = books.iloc[book_indices].reset_index(drop=True)
-    
-    recommend = recommend[['book_id','book_imageurl']]
-
+    recommend = recommend.rename(columns={"book_imageurl":"book_image_url"})
+    recommend = recommend[['book_id','book_image_url']]
     return recommend
 
 def random_recommendations():
