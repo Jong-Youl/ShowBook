@@ -3,12 +3,13 @@ import Navbar from '../../components/common/Navbar';
 import React, { useState } from 'react';
 import LibrarySelectedResult from './LibrarySelectedResult';
 import { BookListProvider } from '../../context/BookListContext';
-import { booksBeforeReadJson } from '../../etc/booksBeforeReadJson';
 import { Heading, HeadingContainer, HeadingRight } from './Library.styles';
+import { memberState } from "../../lib/memberRecoil";
+import { useRecoilValue} from 'recoil';
 
 function Library() {
   const [isEditMode, setIsEditMode] = useState(false);
-
+  const memberInfo = useRecoilValue(memberState);
   const toggleEditMode = () => {
     setIsEditMode(!isEditMode);
   };
@@ -16,7 +17,7 @@ function Library() {
     <>
       <HeadingContainer>
         <Heading $bold color='var(--main)'>
-          조용한 수달
+          {memberInfo.nickname}
         </Heading>
         <Heading>님의 서재</Heading>
         <HeadingRight onClick={toggleEditMode}>
@@ -24,7 +25,7 @@ function Library() {
         </HeadingRight>
       </HeadingContainer>
       <Navbar />
-      <BookListProvider bookList={booksBeforeReadJson}>
+      <BookListProvider bookList={LibrarySelectedResult}>
         <Routes>
           <Route index element={<Navigate replace to='before' />} />
           <Route
