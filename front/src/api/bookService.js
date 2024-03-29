@@ -2,6 +2,7 @@ import { localAxios } from '../utils/http-commons';
 
 const axios = localAxios();
 const BASE_URL = process.env.REACT_APP_BASE_URL
+const RECOM_URL = process.env.REACT_APP_RECOM_URL
 
 class BookService {
   async getBookDetail(book_id) {
@@ -15,6 +16,16 @@ class BookService {
       console.error(error);
     }
   }
+
+  async getRecommendedBook(memberId) {
+    try {
+      const res = await axios.get(`${RECOM_URL}/ml/api/book/recommend/${memberId}`)
+      return res.data.data;
+    } catch (error){
+      console.error(error)
+    }
+  }
+
   async getPurchaseUrl(book_id) {
     try {
       const res = await axios.post(`${BASE_URL}/api/book/purchase/${book_id}`, {}

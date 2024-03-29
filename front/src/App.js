@@ -32,6 +32,7 @@ function App() {
               <Route path='login' element={<Login />} />
               <Route path='signup' element={<Signup />} />
               <Route path='category-servey' element={<SelectCategory />} />
+              <Route path='proxy' element={<Proxy />} />
             </Route>
             <Route path='/' element={<MobileLayout />}>
               <Route path='main' element={<MainPage />} />
@@ -52,7 +53,6 @@ function App() {
               <Route path='review' element={<Review />} />
               <Route path='book-detail' element={<BookDetail />} />
             </Route>
-            <Route path='proxy' element={<Proxy />} />
           </Routes>
           <BottomNav />
         </BrowserRouter>
