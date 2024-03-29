@@ -4,19 +4,27 @@ import { useNavigate } from 'react-router';
 import { scrollbarStyles } from '../../components/common/styles/ScrollbarStyles';
 import { useLocation } from 'react-router-dom';
 import { BookService } from '../../api/bookService';
+import { fetchBookReviewRating } from '../../api/ReviewService';
+// import { fetchBookReviewRating } from '../../api/ReviewService';
 
 const BookDetail = () => {
   const location = useLocation();
   const book = location.state.book;
   const navigate = useNavigate();
   const {state} = useLocation();
-  const reviewRating = state.reviewRating?state.reviewRating.toFixed(1):0;
+  const reviewRating = state.reviewRating?state.reviewRating.toFixed(1):0.0;
   const [bookmarked, setBookmarked] = useState(false);
   const [purchaseUrl, setPurchaseUrl] = useState('');
+  const [rating, setRating] = useState(0.0);
   const bookService = new BookService();
 
   useEffect(() => {
     console.log(book)
+    const getRatingFunction = async () => {
+      const rating = await fetchBookReviewRating(book.bookId)
+      rating !== undefined ?  setRating(rating) : setRating(0.0);
+    }
+    getRatingFunction();
     bookService.getPurchaseUrl(book.bookId)
       .then((result) => {
         const url = result.url;
@@ -37,7 +45,7 @@ const BookDetail = () => {
   };
 
   const goReview = () => {
-    navigate('/review')
+    navigate('/review', { state: { book : book}});
   }
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -65,7 +73,7 @@ const BookDetail = () => {
       </ContentContainer>
       <ReviewContainer>
         <StarIcon src={`/img/icon/star.png`}></StarIcon>
-        <ReviewRating>{reviewRating}</ReviewRating>
+        <ReviewRating>{rating % 1 === 0 ? rating + '.0' : rating}</ReviewRating>
       </ReviewContainer>
       <ButtonsContainer>
         <BookMarkImg src={bookmarked ? `/img/icon/bookmarked.png` : `/img/icon/bookmark.png`} onClick={handleClick} />
