@@ -16,6 +16,7 @@ import {
 } from '../../pages/MyPage/MyPage.styles';
 
 var page = 0;
+const empty_profile = process.env.REACT_APP_EMPTY_PROFILE;
 
 function ShortForm({ shortsJson }) {
   const [currentBook, setCurrentBook] = useState([]);
@@ -46,7 +47,14 @@ function ShortForm({ shortsJson }) {
   return (
     <>
       <ProfileHeader>
-        <ProfileImage src={currentBook.memberImageUrl} alt='Profile' />
+        <ProfileImage
+          src={
+            currentBook.memberImageUrl === null
+              ? empty_profile
+              : currentBook.memberImageUrl
+          }
+          alt='Profile'
+        />
         <div>
           <Nickname>{currentBook.title}</Nickname>
           <Nickname>{currentBook.nickname}</Nickname>
