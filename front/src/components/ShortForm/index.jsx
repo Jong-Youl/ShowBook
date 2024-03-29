@@ -13,10 +13,11 @@ import LikeButton from '../../pages/Shorts/LikeButton';
 import {
   Nickname,
   ProfileHeader,
-  // ProfileImage,
+  ProfileImage,
 } from '../../pages/MyPage/MyPage.styles';
 
 var page = 0;
+const empty_profile = process.env.REACT_APP_EMPTY_PROFILE;
 
 function ShortForm( {shortsJson} ) {
 
@@ -64,7 +65,14 @@ function ShortForm( {shortsJson} ) {
       ) : (
       <>
       <ProfileHeader>
-        {/* <ProfileImage src={currentBook.memberImageUrl} alt='Profile' /> */}
+        <ProfileImage
+          src={
+            currentBook.memberImageUrl == null
+              ? empty_profile
+              : currentBook.memberImageUrl
+          }
+          alt='Profile'
+        />
         <div>
           <Nickname>{currentBook.book_title}</Nickname>
           <Nickname>{currentBook.writer}</Nickname>

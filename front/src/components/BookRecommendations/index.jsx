@@ -21,14 +21,6 @@ function BookRecommendations({booksJson}) {
     } catch (error) {
       console.error('Error fetching book:', error);
     }
-      // fetchBookReviewRating(1)
-      // .then(res => {
-      //   console.log(res);
-      //   navigate('/book-detail', { state: { reviewRating: res } });
-      // })
-      // .catch(error => {
-      //   console.error('Error fetching book:', error);
-      // });
     }
   const booksListWithMap = booksJson.map((book, index) => (
     <StyledSwiperSlide
