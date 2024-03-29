@@ -30,25 +30,6 @@ const BookDetail = () => {
   const toggleExpand = () => {
       setIsExpanded(!isExpanded);
   };
-  // useEffect(() => {
-
-  //   const fetchReviewRating = async () => {
-  //     try {
-  //       const res = await fetchBookReviewRating(1);
-  //       if (res && res.data) { // 데이터가 존재하는지 확인
-  //         console.log(res);
-  //         setRating(res.data);
-  //       } else {
-  //         console.error("Empty response or missing data.");
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-  
-  //   fetchReviewRating();
-  // }, []); 
-  
 
   return (
     <div>
@@ -129,11 +110,6 @@ const ToggleButton = styled.button`
     color: var(--main);
     cursor: pointer;
 `;
-// const DescDiv =styled.div`
-// height: calc(85vh - 500px);
-// overflow-y:auto;
-// ${scrollbarStyles}
-// `
 const BookEtc = styled.h2`
     white-space: nowrap;
     font-weight: bold;
