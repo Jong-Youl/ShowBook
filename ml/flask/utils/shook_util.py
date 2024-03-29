@@ -47,12 +47,10 @@ def get_user_similarity(df_pivoted, user_id):
     
     #유사도 측정
     user_similarity = cosine_similarity(df_pivoted)
-    # print(user_similarity)
     #행렬 만들기
     user_based_collabor = pd.DataFrame(data = user_similarity, index=df_pivoted.index, columns=df_pivoted.index)
     #자기 자신 제외 상위 5명 (이건 앞으로 개선 가능)
-    similar_list = user_based_collabor.iloc[user_id-1].sort_values(ascending=False)[1:6]
-
+    similar_list = user_based_collabor.loc[user_id].sort_values(ascending=False)[1:6]
     # print(similar_list.index.tolist())
     return similar_list
 
