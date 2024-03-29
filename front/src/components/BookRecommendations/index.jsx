@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Heading } from '../../pages/MainPage/MainPage.styles';
 import { StyledSwiper, StyledSwiperSlide } from './BookRecommendations.styles';
 import 'swiper/css';
@@ -9,9 +9,24 @@ import { bookDataPropTypes } from '../../types/recommendedBooksPropTypes';
 import { fetchBookReviewRating } from '../../api/ReviewService';
 import { BookService } from '../../api/bookService';
 
+var page = 0;
+
 function BookRecommendations({ booksJson, setSwiperInstance }) {
   const navigate = useNavigate();
   const bookService = new BookService();
+
+  const [currentBook, setCurrentBook] = useState({})
+
+  useEffect(() => {
+    if (booksJson){
+      setCurrentBook(booksJson[page])
+    }
+  },[currentBook,booksJson])
+
+  const handleSlideChange = (swiper) =>{
+    page = swiper.realIndex;
+    setCurrentBook(booksJson[swiper.realIndex])
+  }
 
   const onHandleClick = async (book_id) => {
     try {
@@ -36,18 +51,19 @@ function BookRecommendations({ booksJson, setSwiperInstance }) {
 
   return (
     <div>
-      <Heading color='var(--main)'>ShookBook</Heading>
+      <Heading color='var(--main)'>{currentBook.title}</Heading>
       <br/>
-      <Heading>추천 책을 읽고 슈욱 해보세요</Heading>
       <StyledSwiper
+        onSlideChange={handleSlideChange}
         effect='cards'
         grabCursor
         modules={[EffectCards]}
         className='mySwiper'
         onSwiper={setSwiperInstance} // Swiper 인스턴스를 상위 컴포넌트로 전달
-      >
+        >
         <div>{booksListWithMap}</div>
       </StyledSwiper>
+        <Heading>추천 책을 읽고 슈욱 해보아요</Heading>
     </div>
   );
 }
