@@ -12,7 +12,7 @@ function LibrarySelectedResult({ isEditMode }) {
   const { category } = useParams();
   const [bookList, setBookList] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedBookTitle, setSelectedBookTitle] = useState('');
+  const [selectedBookId, setSelectedBookId] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,9 +31,9 @@ function LibrarySelectedResult({ isEditMode }) {
     }
   }, [category]);
 
-  const handleBookItemClick = (bookTitle) => {
+  const handleBookItemClick = (bookId) => {
     if (isEditMode) {
-      setSelectedBookTitle(bookTitle);
+      setSelectedBookId(bookId);
       setIsModalVisible(true);
     } else {
       // 편집 모드가 아닐 때 다른 페이지로 이동
@@ -51,7 +51,7 @@ function LibrarySelectedResult({ isEditMode }) {
         {bookList.map((book) => (
           <BookItem
             key={book.book_id}
-            onClick={() => handleBookItemClick(book.title)}
+            onClick={() => handleBookItemClick(book.book_id)}
           >
             <img src={book.book_img_url} alt='Book' />
           </BookItem>
@@ -60,7 +60,7 @@ function LibrarySelectedResult({ isEditMode }) {
 
       {isModalVisible && (
         <CategoryChangeModal onClose={closeModal}>
-          <p>{selectedBookTitle}</p>
+          <p>book id: {selectedBookId}</p>
         </CategoryChangeModal>
       )}
     </>
