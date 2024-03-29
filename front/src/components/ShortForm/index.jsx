@@ -15,33 +15,38 @@ import {
   ProfileImage,
 } from '../../pages/MyPage/MyPage.styles';
 
-function ShortForm({ shortsJson }) {
-  const [currentBook, setCurrentBook] = useState('');
+var page = 0;
 
+function ShortForm({ shortsJson }) {
+  const [currentBook, setCurrentBook] = useState([]);
   useEffect(() => {
     if (shortsJson.length > 0) {
-      setCurrentBook(shortsJson[0]);
+      setCurrentBook(shortsJson[page]);
     }
   }, [shortsJson]);
 
   const handleSlideChange = (swiper) => {
+    page = swiper.realIndex;
+    console.log('swiper ' + swiper.realIndex);
     setCurrentBook(shortsJson[swiper.realIndex]);
   };
 
-  const booksListWithMap = shortsJson.map((book, index) => (
-    <StyledSwiperSlide
-      key={index}
-      style={{
-        backgroundImage: `url(${book.shook_img_url})`,
-        backgroundSize: 'cover',
-      }}
-    ></StyledSwiperSlide>
-  ));
+  const booksListWithMap =
+    shortsJson &&
+    shortsJson.map((book, index) => (
+      <StyledSwiperSlide
+        key={index}
+        style={{
+          backgroundImage: `url(${book.shookImageUrl})`,
+          backgroundSize: 'cover',
+        }}
+      ></StyledSwiperSlide>
+    ));
 
   return (
     <>
       <ProfileHeader>
-        <ProfileImage src={currentBook.member_img_url} alt='Profile' />
+        <ProfileImage src={currentBook.memberImageUrl} alt='Profile' />
         <div>
           <Nickname>{currentBook.title}</Nickname>
           <Nickname>{currentBook.nickname}</Nickname>
