@@ -1,102 +1,18 @@
 import { localAxios } from '../utils/http-commons';
+import { multiAxios } from '../utils/multipart-common';
 import { jwtDecode } from 'jwt-decode';
-// import { shookDataPropTypes } from '../types/shooksPropTypes';
-// import { multiAxios } from '../utils/multipart-common';
-
-const local = localAxios();
-// const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 const RECOM_URL = process.env.REACT_APP_RECOM_URL;
 
-// class ShookService {
-//   async fetchShookList() {
-//     try {
-//       const res = await local.get(`${BASE_URL}/api/shook`, {
-//         headers: {
-//           'Authorization': localStorage.getItem('accessToken'),
-//         },
-//         withCredentials: true,
-//       });
-//       return res.data;
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   }
-// }
-//
-// export { ShookService };
-
-// export class ShookService {
-//   fetchShook() {
-//     console.log('GET SHOOK TRY');
-//     local
-//       .get(
-//         `/api/shook`,
-//         {
-//           headers: {
-//             'Authorization': localStorage.getItem('accessToken'),
-//           },
-//         },
-//         { withCredentials: true },
-//       )
-//       .then((res) => {
-//         console.log('GET SHOOK SUCCESS');
-//         console.log(res.data);
-//         return res.data;
-//       })
-//       .catch((error) => {
-//         console.log('GET SHOOK ERROR');
-//         console.error(error);
-//       });
-//   }
-// }
-// const multi = multiAxios();
-
-// export const likeShook = ({ authToken, refreshToken }) => {
-//   local
-//     .post(
-//       `/api/shook/likes/${shookId}`,
-//       {
-//         headers: {
-//           'Authorization': localStorage.getItem('accessToken'),
-//         },
-//       },
-//       { withCredentials: true },
-//     )
-//     .then((res) => {
-//       console.log(res);
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     });
-// };
-
-// TODO : Flask 서버로 바꿈
-// export const fetchShook = () => {
-//   console.log('GET SHOOK TRY');
-//   local
-//     .get(
-//       `/api/shook`,
-//       {
-//         headers: {
-//           'Authorization': localStorage.getItem('accessToken'),
-//         },
-//       },
-//       { withCredentials: true },
-//     )
-//     .then((res) => {
-//       console.log('GET SHOOK SUCCESS');
-//       console.log(res.data);
-//       return res.data;
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//     });
-// };
+const local = localAxios();
+const multi = multiAxios();
 
 export const fetchShook = async () => {
   try {
-    const memberId = jwtDecode(localStorage.getItem("accessToken")).id;
-    const response = await local.get(`${RECOM_URL}/ml/api/shook/recommend/${memberId}`);
+    const memberId = jwtDecode(localStorage.getItem('accessToken')).id;
+    const response = await local.get(
+      `${RECOM_URL}/ml/api/shook/recommend/${memberId}`,
+    );
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -104,21 +20,41 @@ export const fetchShook = async () => {
     throw error;
   }
 };
-// export const postShook = () => {
-//   multi
-//     .post(
-//       `/api/shook`,
-//       {
-//         headers: {
-//           'Authorization': localStorage.getItem('accessToken'),
-//         },
-//       },
-//       { withCredentials: true },
-//     )
-//     .then((res) => {
-//       console.log(res);
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//     });
-// };
+
+export const likeShook = ({ shookId }) => {
+  try {
+    local.post(
+      `${BASE_URL}/api/shook/likes/${shookId}`,
+      {},
+      {
+        headers: {
+          'Authorization': localStorage.getItem('accessToken'),
+        },
+      },
+    );
+    return true;
+  } catch (error) {
+    console.error('ERROR posting shook like: ', error);
+    throw error;
+  }
+};
+
+export const postShook = async ({ data, image }) => {
+  try {
+    const requestData = new FormData();
+    requestData.append(
+      'data',
+      new Blob([JSON.stringify(data)], { type: 'application/json' }),
+    );
+    requestData.append('image', image);
+    await multi.post(`${BASE_URL}/api/shook`, requestData, {
+      headers: {
+        'Authorization': localStorage.getItem('accessToken'),
+      },
+    });
+    return true;
+  } catch (error) {
+    console.error('ERROR posting shook: ', error);
+    throw error;
+  }
+};

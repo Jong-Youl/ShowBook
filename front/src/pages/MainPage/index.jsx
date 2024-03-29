@@ -15,9 +15,9 @@ import { BookService } from '../../api/bookService';
 const bookService = new BookService();
 
 const MainPage = () => {
+  const memberId = jwtDecode(localStorage.getItem('accessToken')).id;
   const memberInfo = useRecoilValue(memberState);
   const books = useRecoilValue(recommendBookState)
-  const memberId = jwtDecode(localStorage.getItem('accessToken')).id;
   
   const setRecommendBooks = useSetRecoilState(recommendBookState)
 
