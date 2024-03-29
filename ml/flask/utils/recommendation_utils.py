@@ -68,7 +68,7 @@ def recommendations(book_id_list):
     sim_scores = sorted(sim_scores, key = lambda x: x[1], reverse = True)
     
     # 가장 높은 책 순서대로 추천
-    sim_scores = sim_scores[1:15]
+    sim_scores = sim_scores[1:20]
 
     # 가장 유사한 책 5권의 인덱스
     book_indices = [i[0] for i in sim_scores]
@@ -76,7 +76,7 @@ def recommendations(book_id_list):
     # 전체 데이터프레임에서 해당 인덱스의 행만 추출. 5개의 행을 가진다.
     recommend = books.iloc[book_indices].reset_index(drop=True)
     recommend = recommend.rename(columns={"book_imageurl":"book_image_url"})
-    recommend = recommend[['book_id','book_image_url']]
+    recommend = recommend[['book_id','book_image_url','title']]
     return recommend
 
 def random_recommendations():

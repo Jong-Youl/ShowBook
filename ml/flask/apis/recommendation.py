@@ -42,9 +42,9 @@ def getBooks(member_id):
     recommended_books =  recommendations(book_ids).to_dict(orient="records") # 데이터 프레임의 리스트 -> 딕셔너리로 반환    
         
     if (len(book_ids) == 0):
-        response_book_list = random_books_by_category
+        response_book_list = random.sample(random_books_by_category,k=10)
     else:
-        response_book_list = random.sample(recommended_books, k=min(8, len(recommended_books)))
+        response_book_list = random.sample(recommended_books, k=10)
         
     
     response = {
