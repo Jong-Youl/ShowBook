@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 // import { useNavigate } from 'react-router';
@@ -16,16 +17,17 @@ const bookService = new BookService();
 
 const MainPage = () => {
   const memberInfo = useRecoilValue(memberState);
-  const memberId = jwtDecode(localStorage.getItem("accessToken")).id;
+  const memberId = jwtDecode(localStorage.getItem('accessToken')).id;
   // const navigate = useNavigate();
 
-  const [books, setBooks] = useState(null); 
+  const [books, setBooks] = useState(null);
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
   const fetchData = async (memberId) => {
     try {
       const response = await bookService.getRecommendedBook(memberId);
       if (response) {
-        setBooks(response.recommend); 
+        setBooks(response.recommend);
       }
     } catch (error) {
       console.error('Error fetching recommended books:', error);
@@ -33,11 +35,14 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    fetchData(memberId); 
-  }, [memberId]); 
+    fetchData(memberId);
+  }, [memberId]);
 
   const handleButtonClick = () => {
     fetchData(memberId);
+    if (swiperInstance) {
+      swiperInstance.slideTo(0); // Swiper의 인덱스를 맨 처음으로 변경
+    }
   };
 
   return (
@@ -54,7 +59,10 @@ const MainPage = () => {
 
       {/* books가 null이 아닌 경우에만 BookRecommendations 컴포넌트를 렌더링합니다. */}
       {books != null && (
-        <BookRecommendations booksJson={books} />
+        <BookRecommendations
+          booksJson={books}
+          setSwiperInstance={setSwiperInstance}
+        />
       )}
 
       <RightAlignedButtonContainer>
