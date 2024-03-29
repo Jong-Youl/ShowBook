@@ -32,7 +32,7 @@ function ShortForm( {shortsJson} ) {
 
   const handleSlideChange = (swiper) => {
     page = swiper.realIndex;
-    console.log('swiper ' + swiper.realIndex);
+    // console.log('swiper ' + swiper.realIndex);
     setCurrentBook(shook_list[swiper.realIndex]);
   };
 

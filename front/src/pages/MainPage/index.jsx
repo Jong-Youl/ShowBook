@@ -1,9 +1,8 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
-// import { useNavigate } from 'react-router';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue,useSetRecoilState } from 'recoil';
 import { memberState } from '../../lib/memberRecoil';
+import { recommendBookState } from '../../lib/bookRecoil';
 import BookRecommendations from '../../components/BookRecommendations';
 import RefreshButton from '../../components/common/Link/RefreshButton';
 import {
@@ -17,26 +16,23 @@ const bookService = new BookService();
 
 const MainPage = () => {
   const memberInfo = useRecoilValue(memberState);
+  const books = useRecoilValue(recommendBookState)
   const memberId = jwtDecode(localStorage.getItem('accessToken')).id;
-  // const navigate = useNavigate();
+  
+  const setRecommendBooks = useSetRecoilState(recommendBookState)
 
-  const [books, setBooks] = useState(null);
   const [swiperInstance, setSwiperInstance] = useState(null);
 
   const fetchData = async (memberId) => {
     try {
       const response = await bookService.getRecommendedBook(memberId);
       if (response) {
-        setBooks(response.recommend);
+        setRecommendBooks(response.recommend);
       }
     } catch (error) {
       console.error('Error fetching recommended books:', error);
     }
   };
-
-  useEffect(() => {
-    fetchData(memberId);
-  }, [memberId]);
 
   const handleButtonClick = () => {
     fetchData(memberId);
@@ -46,7 +42,6 @@ const MainPage = () => {
   };
 
   return (
-    // {books == null}
     <Container>
       <Heading>
         <Heading $bold color='black'>
@@ -54,8 +49,6 @@ const MainPage = () => {
         </Heading>
         님
       </Heading>
-      <Heading color='var(--main)'>너만 모르는 엔딩</Heading>
-      <Heading>읽고 슈욱 해보세요</Heading>
 
       {/* books가 null이 아닌 경우에만 BookRecommendations 컴포넌트를 렌더링합니다. */}
       {books != null && (
