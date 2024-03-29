@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import {  useLocation } from 'react-router-dom';
 import {
   CategoryButton,
   Button,
@@ -18,7 +18,6 @@ const memberService = new MemberService();
 function SelectCategory() {
   const location = useLocation();
   
-  let navigate = useNavigate();
   const [selectedCategories, setSelectedCategories] = useState([]);
 
   const toggleCategory = (category) => {
@@ -34,7 +33,6 @@ function SelectCategory() {
   };
 
   const handleSubmit = () => {
-    navigate('/main');
     // 선택된 카테고리를 처리하는 로직
     const memberInfo = {...location.state, categories : selectedCategories}
     console.log("member의 정보")

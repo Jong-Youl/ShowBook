@@ -54,7 +54,7 @@ class MemberService {
                 if (res.status == 201){
                     alert("회원가입 완료!")
                     const memberId = res.data
-                    this.login(memberId) // 회원가입 즉시 로그인
+                    window.location.replace(`/user/proxy?id=${memberId}`)
                 }
             })
             .catch((error) => {
