@@ -7,7 +7,7 @@ const StyledLikeButton = styled.button`
 
   background-color: var(--bg-beige);
   background-image: url(${(props) =>
-    props.likeStatus
+    props.likestatus === 'true'
       ? '/img/icon/heartSelected.png'
       : '/img/icon/heartDeselected.png'});
   background-size: cover;
