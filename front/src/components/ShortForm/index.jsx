@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Container,Loading } from '../../pages/Shorts/shorts.styles';
 import {
   StyledSwiper,
   StyledSwiperSlide,
@@ -12,32 +13,35 @@ import LikeButton from '../../pages/Shorts/LikeButton';
 import {
   Nickname,
   ProfileHeader,
-  ProfileImage,
+  // ProfileImage,
 } from '../../pages/MyPage/MyPage.styles';
 
 var page = 0;
 
-function ShortForm({ shortsJson }) {
-  const [currentBook, setCurrentBook] = useState([]);
+function ShortForm( {shortsJson} ) {
+
+  const shook_list = shortsJson.data
+  const [currentBook, setCurrentBook] = useState({});
+
   useEffect(() => {
-    if (shortsJson.length > 0) {
-      setCurrentBook(shortsJson[page]);
+    if (shook_list) {
+      setCurrentBook(shook_list[page]);
     }
-  }, [shortsJson]);
+  }, [shook_list, shortsJson.length]);
 
   const handleSlideChange = (swiper) => {
     page = swiper.realIndex;
     console.log('swiper ' + swiper.realIndex);
-    setCurrentBook(shortsJson[swiper.realIndex]);
+    setCurrentBook(shook_list[swiper.realIndex]);
   };
 
   const booksListWithMap =
-    shortsJson &&
-    shortsJson.map((book, index) => (
+    shook_list &&
+    shook_list.map((book, index) => (
       <StyledSwiperSlide
         key={index}
         style={{
-          backgroundImage: `url(${book.shookImageUrl})`,
+          backgroundImage: `url(${book.shook_image_url})`,
           backgroundSize: 'cover',
         }}
       ></StyledSwiperSlide>
@@ -45,11 +49,25 @@ function ShortForm({ shortsJson }) {
 
   return (
     <>
+      {shook_list == null ? (
+        <Container>
+        <Loading>
+          <Loading $bold color='black'>
+              로딩 중입니다.
+          </Loading>
+          <br/>
+          <Loading color='var(--main)'>
+              잠시만 기다려주세요!
+          </Loading>
+        </Loading>
+      </Container>
+      ) : (
+      <>
       <ProfileHeader>
-        <ProfileImage src={currentBook.memberImageUrl} alt='Profile' />
+        {/* <ProfileImage src={currentBook.memberImageUrl} alt='Profile' /> */}
         <div>
-          <Nickname>{currentBook.title}</Nickname>
-          <Nickname>{currentBook.nickname}</Nickname>
+          <Nickname>{currentBook.book_title}</Nickname>
+          <Nickname>{currentBook.writer}</Nickname>
         </div>
       </ProfileHeader>
 
@@ -64,6 +82,8 @@ function ShortForm({ shortsJson }) {
       <CurrentBookLike>
         <LikeButton bookId={currentBook.book_id} />
       </CurrentBookLike>
+      </>
+      )}
     </>
   );
 }
