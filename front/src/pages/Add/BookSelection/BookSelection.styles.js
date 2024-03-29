@@ -20,7 +20,8 @@ export const BookItem = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-
+  cursor: pointer;
+  margin-left: auto;
   img {
     width: auto;
     max-width: 100%;
