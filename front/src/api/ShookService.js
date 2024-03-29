@@ -1,12 +1,11 @@
 import { localAxios } from '../utils/http-commons';
-// import { multiAxios } from '../utils/multipart-common';
+import { multiAxios } from '../utils/multipart-common';
 import { jwtDecode } from 'jwt-decode';
-// import { bool } from 'prop-types';
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const RECOM_URL = process.env.REACT_APP_RECOM_URL;
 
 const local = localAxios();
-// const multi = multiAxios();
+const multi = multiAxios();
 
 export const fetchShook = async () => {
   try {
@@ -40,15 +39,22 @@ export const likeShook = ({ shookId }) => {
   }
 };
 
-// export const postShook = async () => {
-//   try {
-//     await multi.post(`${BASE_URL}/api/shook`, {
-//       headers: {
-//         'Authorization': localStorage.getItem('accessToken'),
-//       },
-//     });
-//   } catch (error) {
-//     console.error('ERROR posting shook: ', error);
-//     throw error;
-//   }
-// };
+export const postShook = async ({ data, image }) => {
+  try {
+    const requestData = new FormData();
+    requestData.append(
+      'data',
+      new Blob([JSON.stringify(data)], { type: 'application/json' }),
+    );
+    requestData.append('image', image);
+    await multi.post(`${BASE_URL}/api/shook`, requestData, {
+      headers: {
+        'Authorization': localStorage.getItem('accessToken'),
+      },
+    });
+    return true;
+  } catch (error) {
+    console.error('ERROR posting shook: ', error);
+    throw error;
+  }
+};
