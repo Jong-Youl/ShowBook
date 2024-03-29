@@ -1,4 +1,5 @@
 import React from 'react';
+import { Heading } from '../../pages/MainPage/MainPage.styles';
 import { StyledSwiper, StyledSwiperSlide } from './BookRecommendations.styles';
 import 'swiper/css';
 import 'swiper/css/effect-cards';
@@ -21,6 +22,7 @@ function BookRecommendations({ booksJson, setSwiperInstance }) {
       console.error('Error fetching book:', error);
     }
   };
+
   const booksListWithMap = booksJson.map((book, index) => (
     <StyledSwiperSlide
       key={index}
@@ -29,11 +31,14 @@ function BookRecommendations({ booksJson, setSwiperInstance }) {
         backgroundSize: 'cover',
       }}
       onClick={() => onHandleClick(book.book_id)}
-    />
+      />
   ));
 
   return (
     <div>
+      <Heading color='var(--main)'>ShookBook</Heading>
+      <br/>
+      <Heading>추천 책을 읽고 슈욱 해보세요</Heading>
       <StyledSwiper
         effect='cards'
         grabCursor
