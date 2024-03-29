@@ -10,12 +10,13 @@ const BookDetail = () => {
   const book = location.state.book;
   const navigate = useNavigate();
   const {state} = useLocation();
-  const reviewRating = state.reviewRating.toFixed(1);
+  const reviewRating = state.reviewRating?state.reviewRating.toFixed(1):0;
   const [bookmarked, setBookmarked] = useState(false);
   const [purchaseUrl, setPurchaseUrl] = useState('');
   const bookService = new BookService();
 
   useEffect(() => {
+    console.log(book)
     bookService.getPurchaseUrl(book.bookId)
       .then((result) => {
         const url = result.url;
