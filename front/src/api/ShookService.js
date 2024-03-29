@@ -1,9 +1,11 @@
 import { localAxios } from '../utils/http-commons';
+import { jwtDecode } from 'jwt-decode';
 // import { shookDataPropTypes } from '../types/shooksPropTypes';
 // import { multiAxios } from '../utils/multipart-common';
 
 const local = localAxios();
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+// const BASE_URL = process.env.REACT_APP_BASE_URL;
+const RECOM_URL = process.env.REACT_APP_RECOM_URL;
 
 // class ShookService {
 //   async fetchShookList() {
@@ -93,13 +95,8 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const fetchShook = async () => {
   try {
-    const response = await local.get(`${BASE_URL}/api/shook`, {
-      headers: {
-        'Authorization': localStorage.getItem('accessToken'),
-      },
-    });
-    console.log('FETCH ');
-    console.log(response);
+    const memberId = jwtDecode(localStorage.getItem("accessToken")).id;
+    const response = await local.get(`${RECOM_URL}/ml/api/shook/recommend/${memberId}`);
     console.log(response.data);
     return response.data;
   } catch (error) {

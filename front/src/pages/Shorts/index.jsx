@@ -4,7 +4,6 @@ import { fetchShook } from '../../api/ShookService';
 import { useEffect, useState } from 'react';
 
 function Shorts() {
-  console.log('SHORTS BEFORE \n\n\n');
 
   const [shookList, setshookList] = useState([]);
   const shook = async () => {
@@ -18,7 +17,9 @@ function Shorts() {
 
   return (
     <Container>
-      <ShortForm shortsJson={shookList} />
+      {shookList != null && (
+        <ShortForm shortsJson={shookList} />
+      )}
     </Container>
   );
 }
