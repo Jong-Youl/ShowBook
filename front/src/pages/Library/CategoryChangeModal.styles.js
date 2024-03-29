@@ -29,4 +29,43 @@ export const CloseButton = styled.button`
   position: absolute;
   top: 10px;
   right: 10px;
+  background-color: var(--bg-beige);
+  font-size: 30px;
+  padding-right: 12px;
+`;
+
+export const BookStatusChangeButton = styled.button`
+  padding: 30px 20px;
+  font-size: large;
+  margin: 5px;
+  margin-top: 20px;
+  background-color: ${(props) =>
+    props.isSelected ? 'var(--main)' : 'var(--bg-beige)'};
+  color: ${(props) => (props.isSelected ? '#ffffff' : 'var(--main)')};
+  border: 2px solid var(--main);
+  border-radius: 15px;
+  cursor: pointer;
+
+  width: 120px;
+  flex-grow: 1;
+`;
+
+export const BookDeleteButton = styled.button`
+  padding: 10px;
+  font-size: large;
+  margin: 10px 5px 5px;
+  background-color: #a47c7c;
+  border-radius: 15px;
+  cursor: pointer;
+
+  width: 120px;
+  flex-grow: 1;
+  color: var(--pure-white);
+`;
+
+export const BookStatusButtonContainer = styled.button`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  background-color: var(--bg-beige);
 `;

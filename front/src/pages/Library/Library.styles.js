@@ -1,24 +1,28 @@
 import styled from 'styled-components';
 import { scrollbarStyles } from '../../components/common/styles/ScrollbarStyles';
 
-export const HeadingContainer = styled.span``;
+export const HeadingContainer = styled.span`
+  display: flex;
+  padding: 5px 25px;
+`;
 
 export const Heading = styled.span`
   color: ${(props) => props.color || 'var(--font-black)'};
   font-weight: ${(props) => (props.bold ? '920' : '620')};
   white-space: pre-wrap;
   font-size: large;
-  padding: 5px 5px 5px 10px;
 `;
 
 export const HeadingRight = styled.span`
   color: ${(props) => props.color || 'var(--font-black)'};
-  font-weight: ${(props) => (props.bold ? '920' : '620')};
+
   white-space: pre-wrap;
   font-size: large;
-  padding: 5px 5px 5px 10px;
+  font-weight: normal;
+  user-select: none;
+  cursor: pointer;
+  margin-left: auto;
 `;
-
 export const BookGrid = styled.div`
   ${scrollbarStyles};
   display: grid;
@@ -38,6 +42,8 @@ export const BookItem = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
+  cursor: pointer;
+  margin-left: auto;
 
   img {
     width: auto;
