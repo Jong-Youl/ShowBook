@@ -5,10 +5,10 @@ export const shookDataPropTypes = {
     PropTypes.shape({
       book_id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      member_img_url: PropTypes.string.isRequired,
+      memberImageUrl: PropTypes.string.isRequired,
       nickname: PropTypes.string.isRequired,
       shook_id: PropTypes.number.isRequired,
-      shook_img_url: PropTypes.string.isRequired,
+      shookImageUrl: PropTypes.string.isRequired,
       like_status: PropTypes.bool.isRequired,
     }).isRequired,
   ).isRequired,
