@@ -12,6 +12,8 @@ import { BookService } from '../../api/bookService';
 var page = 0;
 
 function BookRecommendations({ booksJson, setSwiperInstance }) {
+  console.log("BookRecommendations")
+  console.log(booksJson)
   const navigate = useNavigate();
   const bookService = new BookService();
 
