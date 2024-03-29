@@ -1,10 +1,9 @@
+/*eslint-disable */
 // LibrarySelectedResult 컴포넌트 수정
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { BookGrid, BookItem } from './Library.styles';
-import { booksBeforeReadJson } from '../../etc/booksBeforeReadJson';
-import { booksNowReadJson } from '../../etc/booksNowReadJson';
-import { booksAfterReadJson } from '../../etc/booksAfterReadJson';
+import { getAllbooks } from '../../api/LibraryService';
 import CategoryChangeModal from './CategoryChangeModal';
 import { useNavigate } from 'react-router';
 
@@ -15,16 +14,25 @@ function LibrarySelectedResult({ isEditMode }) {
   const [selectedBookId, setSelectedBookId] = useState('');
   const navigate = useNavigate();
 
+  const library = async (x) => {
+    const books = await getAllbooks(x);
+    setBookList(books);
+  };
+
   useEffect(() => {
     switch (category) {
       case 'before':
-        setBookList(booksBeforeReadJson);
+        //setBookList(getAllbooks(0));
+        const res0 = library(0);
+        console.log('bookList 타입 확인 : ' + typeof bookList);
+        // console.log(' 넘어온 res 타입 확인: ' + typeof res);
+        // console.log('데이터 넘어왔다: ' + res);
         break;
       case 'now':
-        setBookList(booksNowReadJson);
+        const res1 = library(1);
         break;
       case 'after':
-        setBookList(booksAfterReadJson);
+        const res2 = library(2);
         break;
       default:
         setBookList([]);
@@ -50,10 +58,10 @@ function LibrarySelectedResult({ isEditMode }) {
       <BookGrid>
         {bookList.map((book) => (
           <BookItem
-            key={book.book_id}
-            onClick={() => handleBookItemClick(book.book_id)}
+            key={book.bookId}
+            onClick={() => handleBookItemClick(book.bookId)}
           >
-            <img src={book.book_img_url} alt='Book' />
+            <img src={book.bookImgURL} alt='Book' />
           </BookItem>
         ))}
       </BookGrid>
