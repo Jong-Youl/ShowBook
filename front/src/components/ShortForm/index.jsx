@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container,Loading } from '../../pages/Shorts/shorts.styles';
+import { Container, Loading } from '../../pages/Shorts/shorts.styles';
 import {
   StyledSwiper,
   StyledSwiperSlide,
@@ -19,9 +19,8 @@ import {
 var page = 0;
 const empty_profile = process.env.REACT_APP_EMPTY_PROFILE;
 
-function ShortForm( {shortsJson} ) {
-
-  const shook_list = shortsJson.data
+function ShortForm({ shortsJson }) {
+  const shook_list = shortsJson.data;
   const [currentBook, setCurrentBook] = useState({});
 
   useEffect(() => {
@@ -52,45 +51,43 @@ function ShortForm( {shortsJson} ) {
     <>
       {shook_list == null ? (
         <Container>
-        <Loading>
-          <Loading $bold color='black'>
+          <Loading>
+            <Loading $bold color='black'>
               로딩 중입니다.
+            </Loading>
+            <br />
+            <Loading color='var(--main)'>잠시만 기다려주세요!</Loading>
           </Loading>
-          <br/>
-          <Loading color='var(--main)'>
-              잠시만 기다려주세요!
-          </Loading>
-        </Loading>
-      </Container>
+        </Container>
       ) : (
-      <>
-      <ProfileHeader>
-        <ProfileImage
-          src={
-            currentBook.memberImageUrl == null
-              ? empty_profile
-              : currentBook.memberImageUrl
-          }
-          alt='Profile'
-        />
-        <div>
-          <Nickname>{currentBook.book_title}</Nickname>
-          <Nickname>{currentBook.writer}</Nickname>
-        </div>
-      </ProfileHeader>
+        <>
+          <ProfileHeader>
+            <ProfileImage
+              src={
+                currentBook.memberImageUrl == null
+                  ? empty_profile
+                  : currentBook.memberImageUrl
+              }
+              alt='Profile'
+            />
+            <div>
+              <Nickname>{currentBook.book_title}</Nickname>
+              <Nickname>{currentBook.writer}</Nickname>
+            </div>
+          </ProfileHeader>
 
-      <StyledSwiper
-        onSlideChange={handleSlideChange}
-        effect={'flip'}
-        grabCursor={true}
-        modules={[EffectFlip]}
-      >
-        {booksListWithMap}
-      </StyledSwiper>
-      <CurrentBookLike>
-        <LikeButton bookId={currentBook.book_id} />
-      </CurrentBookLike>
-      </>
+          <StyledSwiper
+            onSlideChange={handleSlideChange}
+            effect={'flip'}
+            grabCursor={true}
+            modules={[EffectFlip]}
+          >
+            {booksListWithMap}
+          </StyledSwiper>
+          <CurrentBookLike>
+            <LikeButton shookId={currentBook.shook_id} />
+          </CurrentBookLike>
+        </>
       )}
     </>
   );
