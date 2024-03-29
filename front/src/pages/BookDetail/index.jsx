@@ -11,8 +11,6 @@ const BookDetail = () => {
   const location = useLocation();
   const book = location.state.book;
   const navigate = useNavigate();
-  const {state} = useLocation();
-  const reviewRating = state.reviewRating?state.reviewRating.toFixed(1):0.0;
   const [bookmarked, setBookmarked] = useState(false);
   const [purchaseUrl, setPurchaseUrl] = useState('');
   const [rating, setRating] = useState(0.0);
