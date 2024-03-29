@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
 import { memberState } from '../../../lib/memberRecoil';
+import { recommendBookState } from '../../../lib/bookRecoil';
 import { useSetRecoilState } from 'recoil';
 import { MemberService } from '../../../api/MemberService';
-
+import { BookService } from '../../../api/bookService';
 import { Container,Loading } from '../../MainPage/MainPage.styles';
 
 const memberService = new MemberService();
+const bookService = new BookService();
 
 function Proxy() {
   const [memberId, setMemberId] = useState(null);
   const setMemberInfo = useSetRecoilState(memberState);
-
+  const setRecommendBooks = useSetRecoilState(recommendBookState)
 
   useEffect(() => {
     const memberIdFromURL = new URL(document.location).searchParams.get('id');
@@ -27,14 +29,22 @@ function Proxy() {
       }
     };
 
+    const getRecommendedBooks = async (memberId) => {
+      let recommendedBooks = await bookService.getRecommendedBook(memberId);
+      if (recommendedBooks) {
+        setRecommendBooks(recommendedBooks.recommend)
+      }
+    }
+
 
     if (memberId) {
       getMemberInfo(memberId);
+      getRecommendedBooks(memberId);
       setTimeout(function() {
       window.location.replace('/main');
       }, 1000); // 1초 기다림
     }
-  }, [memberId, setMemberInfo]);
+  }, [memberId, setMemberInfo,setRecommendBooks]);
   return (
     <Container>
       <Loading>
