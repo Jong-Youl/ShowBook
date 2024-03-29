@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { createBookReviews } from '../../api/ReviewService';
 
 const Review = () => {
   const navigate = useNavigate();
-
+  const {state} = useLocation();
+  const book = state.book;
   const handleButtonClick = () => {
     navigate(-1);
   };
@@ -15,16 +16,19 @@ const Review = () => {
   const handleClick = (starIndex) => {
     setRating(starIndex + 1);
   };
-  const onSubmitReview = () => {
+  const onSubmitReview = async () => {
     if (content === '' || rating === 0) {
       alert('평점과 한줄평을 모두 입력해주세요');
     } else {
-    createBookReviews({
-      content : content,
-      rating : rating
-    },1);
-  }
+      // const rating = await fetchBookReviewRating(book.book_id);
+      // console.log(rating)
+      createBookReviews({
+        content : content,
+        rating : rating
+      },book.bookId);
 
+  }
+  
   }
   
   return (
@@ -35,12 +39,11 @@ const Review = () => {
       <PageTitle>한줄평 작성</PageTitle>
       <ContentContainer>
         <BookImgContainer>
-          <BookImage src='https://contents.kyobobook.co.kr/sih/fit-in/300x0/pdt/9788954683371.jpg' />
+          <BookImage src={book.bookImageURL} />
         </BookImgContainer>
         <InfoContainer>
-          <BookTitle>곰돌이 푸, 행복한 일은 매일 있어</BookTitle>
-          <BookDesc>아직 행복을 기다리는 우리에게</BookDesc>
-          <BookDetail>곰돌이 푸|240쪽|알에이치코리(RHK)</BookDetail>
+          <BookTitle>{book.title}</BookTitle>
+          <BookDetail>{book.author}|{book.totalPage}쪽|{book.publisher}</BookDetail>
         </InfoContainer>
       </ContentContainer>
       <ReviewContainer>
@@ -154,12 +157,6 @@ const BookTitle = styled.h2`
   font-weight: bold;
 `;
 
-const BookDesc = styled.h2`
-  color: black;
-  margin-bottom: 8%;
-  font-weight: bold;
-`;
-
 const BookDetail = styled.h2`
   white-space: nowrap;
   font-weight: bold;
@@ -178,5 +175,4 @@ const SubmitButton = styled.button`
   height: 5svh;
   background: var(--main);
 `;
-// const B
 export default Review;
