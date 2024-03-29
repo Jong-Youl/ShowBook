@@ -3,12 +3,15 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 import { likeStatusState } from '../../lib/shortsRecoil';
 import StyledLikeButton from './LikeButton.styles';
+import { likeShook } from '../../api/ShookService';
 
-const LikeButton = ({ bookId }) => {
-  const [likeStatus, setLikeStatus] = useRecoilState(likeStatusState(bookId));
+const LikeButton = ({ shookId }) => {
+  const [likeStatus, setLikeStatus] = useRecoilState(likeStatusState(shookId));
 
   const toggleLike = () => {
-    setLikeStatus(!likeStatus);
+    if (likeShook({ shookId })) {
+      setLikeStatus(!likeStatus);
+    }
   };
 
   return (
