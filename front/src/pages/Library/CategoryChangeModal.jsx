@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Backdrop,
   BookDeleteButton,
@@ -7,12 +7,27 @@ import {
   CloseButton,
   ModalWrapper,
 } from './CategoryChangeModal.styles';
+import { useParams } from 'react-router-dom';
 
 const CategoryChangeModal = ({ onClose, children }) => {
+  const { category } = useParams();
   const [selectedButton, setSelectedButton] = useState(null);
+
+  const categoryToButtonText = {
+    before: '읽고 싶은',
+    now: '읽고 있는',
+    after: '읽은',
+  };
+
+  useEffect(() => {
+    if (category && categoryToButtonText[category]) {
+      setSelectedButton(categoryToButtonText[category]);
+    }
+  }, [category]);
 
   const handleButtonClick = (buttonId) => {
     setSelectedButton(buttonId);
+    //api 연동
   };
   return (
     <>
@@ -21,13 +36,13 @@ const CategoryChangeModal = ({ onClose, children }) => {
         <CloseButton onClick={onClose}>✖</CloseButton>
         {children}
         <BookStatusButtonContainer>
-          {['읽고 싶은', '읽고 있는', '읽은'].map((buttonId) => (
+          {Object.entries(categoryToButtonText).map(([key, text]) => (
             <BookStatusChangeButton
-              key={buttonId}
-              isSelected={selectedButton === buttonId}
-              onClick={() => handleButtonClick(buttonId)}
+              key={key}
+              isSelected={selectedButton === text}
+              onClick={() => handleButtonClick(text)}
             >
-              {buttonId}
+              {text}
             </BookStatusChangeButton>
           ))}
         </BookStatusButtonContainer>
