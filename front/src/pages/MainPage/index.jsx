@@ -50,7 +50,6 @@ const MainPage = () => {
         님
       </Heading>
 
-      {/* books가 null이 아닌 경우에만 BookRecommendations 컴포넌트를 렌더링합니다. */}
       {books != null && (
         <BookRecommendations
           booksJson={books}
