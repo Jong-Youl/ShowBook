@@ -1,4 +1,3 @@
-from flask_sqlalchemy import SQLAlchemy
 from config.dbConfig import db
 
 class Member(db.Model):

@@ -11,9 +11,9 @@ from models.LibraryBook import LibraryBook
 from models.DTO.BookResponseDTO import BookResponseDTO
 
 
-books = pd.read_csv("data/book_data.csv",encoding="utf-8")
+books = pd.read_csv("data/book_data_final.csv",encoding="utf-8")
 
-book_embedding_list = np.load("data/fastText_updated_01.npy")
+book_embedding_list = np.load("data/fastText_embedding_final.npy")
 
 cosine_similarities = cosine_similarity(book_embedding_list, book_embedding_list)
 
@@ -76,7 +76,7 @@ def recommendations(book_id_list):
     # 전체 데이터프레임에서 해당 인덱스의 행만 추출. 5개의 행을 가진다.
     recommend = books.iloc[book_indices].reset_index(drop=True)
     
-    recommend = recommend[['book_id','book_image_url']]
+    recommend = recommend[['book_id','book_imageurl']]
 
     return recommend
 
