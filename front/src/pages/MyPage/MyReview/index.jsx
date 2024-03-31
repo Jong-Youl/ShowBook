@@ -2,12 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import ReviewService from '../../../api/ReviewService';
 import { Container } from './MyReview.styles';
+import ReviewCard from './ReviewCard';
 
 const fetchMyReviews = async ({ pageParam = 0 }) => {
   const response = await ReviewService.getMyReviews({
     page: pageParam,
     size: 10,
   });
+  console.log(response.data);
   return response.data;
 };
 
@@ -50,9 +52,7 @@ const MyReview = () => {
       {data?.pages.map((page, i) => (
         <div key={i}>
           {page.content.map((review, index) => (
-            <p key={index}>
-              {review.content} <br />- <br /> 평점: {review.rating}
-            </p>
+            <ReviewCard key={index} review={review} />
           ))}
         </div>
       ))}
