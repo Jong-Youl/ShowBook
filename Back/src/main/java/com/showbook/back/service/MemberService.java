@@ -4,7 +4,6 @@ package com.showbook.back.service;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.showbook.back.common.constants.ErrorCode;
-import com.showbook.back.common.constants.FileUploadPath;
 import com.showbook.back.common.exception.CustomException;
 import com.showbook.back.common.util.ImageUtil;
 import com.showbook.back.common.util.S3Uploader;
@@ -29,8 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Optional;
 
-import static com.showbook.back.common.constants.ErrorCode.IMAGE_DELETE_ERROR;
-import static com.showbook.back.common.constants.ErrorCode.MEMBER_NOT_FOUND;
+import static com.showbook.back.common.constants.ErrorCode.*;
 import static com.showbook.back.common.constants.FileUploadPath.*;
 
 @Slf4j
@@ -125,7 +123,7 @@ public class MemberService {
 
         // s3에 있는 이미지 파일 불러오기
         MemberImage memberImage = memberImageRepository.findById(memberImageId)
-                .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(MEMBER_IMAGE_NOT_FOUND));
 
         // 지우기 전 필요한 정보 추출
         String originalImageName = memberImage.getOriginalImageName();
