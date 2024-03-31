@@ -11,6 +11,8 @@ import {
   ImageUploadContainer,
 } from './ShookImageUpload.styles';
 
+import { postShook } from '../../../api/ShookService';
+
 const ShookImageUpload = () => {
   const [image, setImage] = useState(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
@@ -39,8 +41,19 @@ const ShookImageUpload = () => {
       return;
     }
 
+    // TODO : 넘겨받은 BOOK 정보로 수정
+    const data = {
+      bookId: 7,
+      bookTitle: '사막 고래',
+    };
+
     // 이미지와 함께 API 요청 로직
-    navigate('/main');
+    if (postShook({ data, image })) {
+      navigate('/main');
+    } else {
+      setErrorMessage('슈욱 등록에 실패했습니다');
+      return;
+    }
   };
 
   return (
