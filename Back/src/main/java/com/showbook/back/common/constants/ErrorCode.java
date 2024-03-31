@@ -24,6 +24,7 @@ public enum ErrorCode {
     /* 404 NOT FOUND: 리소스가 없음  */
     TOKEN_NOT_FOUND(NOT_FOUND,"토큰을 찾을 수 없습니다!"),
     MEMBER_NOT_FOUND(NOT_FOUND, "유저를 찾을 수 없습니다!"),
+    MEMBER_IMAGE_NOT_FOUND(NOT_FOUND,"해당 유저의 이미지를 찾을 수 없습니다!"),
 
     /**
      * BOOK
@@ -39,7 +40,8 @@ public enum ErrorCode {
      * UTIL
      */
     INVALID_FILE_TYPE(BAD_REQUEST, "잘못된 형식의 파일입니다."),
-    IMAGE_UPLOAD_ERROR(INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다");
+    IMAGE_UPLOAD_ERROR(INTERNAL_SERVER_ERROR, "이미지 업로드에 실패했습니다"),
+    IMAGE_DELETE_ERROR(INTERNAL_SERVER_ERROR, "이미지 삭제에 실패했습니다");
 
     private final HttpStatus status;
     private final String message;
