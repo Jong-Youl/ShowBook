@@ -17,6 +17,7 @@ export const ProfileImage = styled.img`
   margin-right: 5%;
   margin-left: 5%;
   border: 1px solid var(--bg-gray);
+  cursor : pointer;
 `;
 
 export const Nickname = styled.div`
@@ -53,3 +54,12 @@ export const Content = styled.div`
   text-align: center;
   margin-top: 20px;
 `;
+
+export const LogoutButton = styled.button`
+  background-color: var(--bg-gray);
+  color: var(--pure-white);
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-left:30%;
+`

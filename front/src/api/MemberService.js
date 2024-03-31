@@ -1,9 +1,11 @@
 import { localAxios } from '../utils/http-commons';
+import { multiAxios} from '../utils/multipart-common';
 
 
 const BASE_URL = process.env.REACT_APP_BASE_URL
 
 const local = localAxios();
+const multi = multiAxios()
 
 class MemberService {
     
@@ -68,7 +70,7 @@ class MemberService {
             .delete(`${BASE_URL}/api/auth/logout`,
                     {headers : {
                         "Authorization" : localStorage.getItem("accessToken")
-                    }},{withCredentials: true})
+                    }})
             .then((res) => {
                 console.log(res)
                 localStorage.clear()
@@ -77,6 +79,16 @@ class MemberService {
             .catch((error) => {
                 console.error(error)
             })
+    }
+
+    async getMemberInfo() {
+        try{
+            const res = await local.get(`${BASE_URL}/api/member/memberInfo`,
+            {headers: {"Authorization" : localStorage.getItem("accessToken")}})
+            return res.data
+        } catch (error) {
+            console.error(error)
+        }
     }
 
 
@@ -98,6 +110,43 @@ class MemberService {
         } catch (error) {
             console.error(error)
         }
+    }
+
+    // async updateProfileImage(formData) {
+    //     multi.put(
+    //             `${BASE_URL}/api/member/change-profile`,
+    //             formData,
+    //             {
+    //                 headers: {
+    //                     'Authorization': localStorage.getItem("accessToken"),
+    //                 }})
+    //         .then((res) => {
+    //             console.log(res)
+    //             if(res.status == 200){
+    //                 alert("변경 완료!")
+    //                 return res.data;
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             console.error(err)
+    //             alert("변경 실패!")
+    //         })
+
+    // }
+
+    async updateProfileImage(formData) {
+        try {
+            const res = await multi.put(`${BASE_URL}/api/member/change-profile`, 
+                    formData, { headers: {'Authorization': localStorage.getItem("accessToken")}});
+            if (res.status == 200) {
+                alert("변경 완료!")
+                return res.data;
+            }
+        } catch (error) {
+            alert("변경 실패");
+            console.error(error);
+        }
+
     }
 
 }
