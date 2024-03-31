@@ -15,12 +15,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Month;
 import java.util.Map;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -58,14 +60,13 @@ public class MemberController {
         return new ResponseEntity<>(readingLogs,OK);
     }
 
-    @PutMapping("/change-profile")
+    @PutMapping(value = "/change-profile", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> changeProfile(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                                           @RequestBody ProfileUpdateRequestDTO request) {
+                                           @RequestPart(value="file", required = true)MultipartFile file) {
         log.info("MemberController - changeProfile");
-//        Long memberId = jwtTokenUtil.getMemberId(accessToken);
-        memberService.updateMemberProfile(principalDetails, request);
+        MemberInfoResponseDTO response = memberService.updateMemberProfile(principalDetails, file);
 
-        return new ResponseEntity<>("프로필 사진이 수정되었습니다", HttpStatus.OK);
+        return ResponseEntity.ok().body(response);
     }
 
 
