@@ -14,12 +14,15 @@ import MyHistory from './MyHistory';
 import MyReview from './MyReview';
 import { MemberService } from '../../api/MemberService';
 import { memberState,readCategoricalState, readMonthlyState } from '../../lib/memberRecoil';
+import MemberImageModal from './MemberImageChangeModal';
+import { ProfileImageInModal } from './MemberImageChangeModal.styles';
 
 
 const memberService = new MemberService()
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('reviews');
+  const [isModalVisible, setIsModalVisible] = useState(false)
   const memberInfo = useRecoilValue(memberState);
   const setCategoryBookData = useSetRecoilState(readCategoricalState)
   const setMontlyyBookData = useSetRecoilState(readMonthlyState)
@@ -45,10 +48,12 @@ const MyPage = () => {
     }
   },[activeTab,setCategoryBookData,setMontlyyBookData])
 
+
   return (
-    <Container>
+
+    <Container> 
       <ProfileHeader>
-        <ProfileImage src={memberInfo.memberImageURL} alt='Profile' />
+        <ProfileImage src={memberInfo.memberImageURL} alt='Profile' onClick={() => setIsModalVisible(true)}/>
         <div>
           <Nickname>{memberInfo.nickname}</Nickname>
           <EditLink href='/edit-profile'>개인정보 수정</EditLink>
@@ -71,6 +76,11 @@ const MyPage = () => {
       <Content>
         {activeTab === 'reviews' ? <MyReview /> : <MyHistory />}
       </Content>
+      {isModalVisible && (
+        <MemberImageModal onClose = {() => setIsModalVisible(false)}>
+           <ProfileImageInModal src={memberInfo.memberImageURL} alt='Profile'/>
+        </MemberImageModal>
+      )}
     </Container>
   );
 };

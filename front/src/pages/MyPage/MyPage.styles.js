@@ -17,6 +17,7 @@ export const ProfileImage = styled.img`
   margin-right: 5%;
   margin-left: 5%;
   border: 1px solid var(--bg-gray);
+  cursor : pointer;
 `;
 
 export const Nickname = styled.div`
