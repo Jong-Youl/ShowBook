@@ -54,3 +54,12 @@ export const Content = styled.div`
   text-align: center;
   margin-top: 20px;
 `;
+
+export const LogoutButton = styled.button`
+  background-color: var(--bg-gray);
+  color: var(--pure-white);
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-left:30%;
+`

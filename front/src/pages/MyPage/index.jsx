@@ -3,12 +3,13 @@ import { useRecoilValue,useSetRecoilState } from 'recoil';
 import {
   Container,
   Content,
-  EditLink,
+  // EditLink,
   Nickname,
   ProfileHeader,
   ProfileImage,
   ToggleButton,
   ToggleButtonContainer,
+  LogoutButton
 } from './MyPage.styles';
 import MyHistory from './MyHistory';
 import MyReview from './MyReview';
@@ -56,8 +57,9 @@ const MyPage = () => {
         <ProfileImage src={memberInfo.memberImageURL} alt='Profile' onClick={() => setIsModalVisible(true)}/>
         <div>
           <Nickname>{memberInfo.nickname}</Nickname>
-          <EditLink href='/edit-profile'>개인정보 수정</EditLink>
+          {/* <EditLink href='/edit-profile'>개인정보 수정</EditLink> */}
         </div>
+        <LogoutButton onClick={()=>memberService.logout()}>로그아웃</LogoutButton>
       </ProfileHeader>
       <ToggleButtonContainer>
         <ToggleButton
