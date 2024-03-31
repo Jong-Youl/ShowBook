@@ -22,6 +22,7 @@ const MemberImageModal = ({onClose,children}) => {
         const memberInfo = await memberService.updateProfileImage(formData)
         if(memberInfo) {
             setMemberInfo(memberInfo);
+            onClose()
         }
         
     }
