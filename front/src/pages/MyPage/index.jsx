@@ -20,6 +20,7 @@ import { ProfileImageInModal } from './MemberImageChangeModal.styles';
 
 
 const memberService = new MemberService()
+const BASIC_IMG_PATH = "https://showbookbucket.s3.ap-northeast-2.amazonaws.com/user-image/images+(2).png"
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('reviews');
@@ -54,7 +55,7 @@ const MyPage = () => {
 
     <Container> 
       <ProfileHeader>
-        <ProfileImage src={memberInfo.memberImageURL} alt='Profile' onClick={() => setIsModalVisible(true)}/>
+        <ProfileImage src={memberInfo.memberImageURL || `${BASIC_IMG_PATH}`} alt='Profile' onClick={() => setIsModalVisible(true)}/>
         <div>
           <Nickname>{memberInfo.nickname}</Nickname>
           {/* <EditLink href='/edit-profile'>개인정보 수정</EditLink> */}
