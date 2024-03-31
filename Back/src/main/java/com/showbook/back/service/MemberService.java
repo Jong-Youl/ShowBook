@@ -123,14 +123,15 @@ public class MemberService {
         Member member = principalDetails.getMember();
         Long memberImageId = member.getMemberImage().getId();
 
-        // s3에 있는거 기존 파일 지우기
+        // s3에 있는 이미지 파일 불러오기
         MemberImage memberImage = memberImageRepository.findById(memberImageId)
                 .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
+        // 지우기 전 필요한 정보 추출
         String originalImageName = memberImage.getOriginalImageName();
         String currentMemberImageUrl = memberImage.getImageUrl();
 
-        log.info("currentMemberImageUrl - {}", currentMemberImageUrl);
+        // s3에 있는 이미지 삭제
         deleteMemberImage(currentMemberImageUrl);
 
         // s3에 새로운 이미지 저장
@@ -144,15 +145,14 @@ public class MemberService {
                         .imageUrl(newMemberImageUrl)
                         .build();
 
-        log.info("새로운 프로필 사진 = {}",newMemberImage.getImageUrl());
-
         memberImageRepository.save(newMemberImage);
+        log.info("MemberService - updateMemberProfile - 업데이트 완료!");
         return getMemberInfo(member.getId());
     }
 
     public void deleteMemberImage(String imageUrl){
         try {
-            amazonS3.deleteObject(bucket,imageUrl.split("/")[4]);
+            amazonS3.deleteObject(bucket,MEMBER_IMAGE_UPLOAD.path + "/" + imageUrl.split("/")[4]);
             log.info("deleteMemberImage - {}",imageUrl.split("/")[4]);
         } catch (AmazonServiceException e) {
             log.error(e.getErrorMessage());
