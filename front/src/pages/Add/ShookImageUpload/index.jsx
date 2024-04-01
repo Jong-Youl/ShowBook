@@ -41,14 +41,15 @@ const ShookImageUpload = () => {
       return;
     }
 
-    // TODO : 넘겨받은 BOOK 정보로 수정
     const data = {
-      bookId: 7,
-      bookTitle: '사막 고래',
+      bookId: localStorage.getItem('newShookBookId'),
+      bookTitle: localStorage.getItem('newShookBookTitle'),
     };
 
     // 이미지와 함께 API 요청 로직
     if (postShook({ data, image })) {
+      localStorage.removeItem('newShookBookId');
+      localStorage.removeItem('newShookBookTitle');
       navigate('/main');
     } else {
       setErrorMessage('슈욱 등록에 실패했습니다');
