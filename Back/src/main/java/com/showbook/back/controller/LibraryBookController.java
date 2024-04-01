@@ -67,8 +67,8 @@ public class LibraryBookController {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
-	@DeleteMapping("/{book_id}")
-	public ResponseEntity deleteBook(@RequestHeader("Authorization") String token, @PathVariable(value = "book_id") Long bookId) {
+	@DeleteMapping
+	public ResponseEntity deleteBook(@RequestHeader("Authorization") String token, @RequestParam("book_id") Long bookId) {
 		Long memberId = jwtTokenUtil.getMemberId(token);
 		libraryBookService.deleteBook(memberId, bookId);
 		return ResponseEntity.status(HttpStatus.OK).build();
