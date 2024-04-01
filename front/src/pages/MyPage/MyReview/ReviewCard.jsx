@@ -97,10 +97,7 @@ const ReviewCard = ({ review }) => {
   };
 
   function handleBookItemClick(bookId) {
-    alert('bookId: ' + bookId + '\nbookId ReviewResponseDTO에 추가要!!!');
-
-    // onHandleClick(bookId);
-    onHandleClick(2);
+    onHandleClick(bookId);
   }
 
   return (

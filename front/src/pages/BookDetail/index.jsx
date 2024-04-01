@@ -18,7 +18,6 @@ const makeFetchBookReviews =
       page: pageParam,
       size: 10,
     });
-    console.log(response.data);
     return response.data;
   };
 
@@ -145,7 +144,7 @@ const BookDetail = () => {
           <ReviewButton onClick={goReview}>한줄평 작성</ReviewButton>
         </ButtonsContainer>
 
-        <divs>
+        <div>
           {data?.pages.map((page, i) => (
             <div key={i}>
               {page.content.map((review, index) => (
@@ -155,7 +154,7 @@ const BookDetail = () => {
           ))}
           {hasNextPage && <div>리뷰 로딩 중...</div>}
           <ReviewEnd>모든 리뷰를 불러왔습니다.</ReviewEnd>
-        </divs>
+        </div>
       </Container>
     </div>
   );
