@@ -18,19 +18,19 @@ const Navbar = () => {
   return (
     <StyledNav>
       <CustomNavLink
-        to='before'
+        to='0'
         className={({ isActive }) => (isActive ? 'active' : undefined)}
       >
         읽고 싶은
       </CustomNavLink>
       <CustomNavLink
-        to='now'
+        to='1'
         className={({ isActive }) => (isActive ? 'active' : undefined)}
       >
         읽고 있는
       </CustomNavLink>
       <CustomNavLink
-        to='after'
+        to='2'
         className={({ isActive }) => (isActive ? 'active' : undefined)}
       >
         읽은
