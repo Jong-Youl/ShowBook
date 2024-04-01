@@ -12,7 +12,7 @@ export const StyledSwiperSlide = styled(SwiperSlide)`
 `;
 
 export const StyledSwiper = styled(Swiper)`
-  aspect-ratio: 3 / 4.43;
+  aspect-ratio: 3 / 3;
 
   width: 90svw;
   max-width: 100%;
@@ -35,4 +35,36 @@ export const CurrentBookLike = styled.div`
   max-width: 456px;
   font-size: 24px;
   padding-left: 150px;
+`;
+
+export const ProfileHeader = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+`;
+
+export const ProfileImage = styled.img`
+  aspect-ratio: 1;
+  width: 20%;
+  border-radius: 100%;
+  margin-right: 5%;
+  margin-left: 5%;
+  border: 1px solid var(--bg-gray);
+  cursor: pointer;
+`;
+
+export const Information = styled.div`
+  margin-top: 20px;
+`;
+
+export const BookTitle = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
+  color: #000000;
+`;
+export const Nickname = styled.div`
+  font-size: 16px;
+  font-weight: normal;
+  text-align: left;
+  color: #535353;
 `;

@@ -13,10 +13,12 @@ import LikeButton from '../../pages/Shorts/LikeButton';
 import Lottie from 'lottie-react';
 import loadingAnimation from './loading.json';
 import {
+  BookTitle,
+  Information,
   Nickname,
   ProfileHeader,
   ProfileImage,
-} from '../../pages/MyPage/MyPage.styles';
+} from './ShortForm.styles';
 
 var page = 0;
 const empty_profile = process.env.REACT_APP_EMPTY_PROFILE;
@@ -78,10 +80,10 @@ function ShortForm({ shortsJson }) {
               }
               alt='Profile'
             />
-            <div>
-              <Nickname>{currentBook.book_title}</Nickname>
+            <Information>
+              <BookTitle>{currentBook.book_title}</BookTitle>
               <Nickname>{currentBook.writer}</Nickname>
-            </div>
+            </Information>
           </ProfileHeader>
 
           <StyledSwiper
