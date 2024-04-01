@@ -5,7 +5,6 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 function localAxios() {
   const instance = axios.create({
     baseURL: BASE_URL,
-    withCredentials: true,
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
