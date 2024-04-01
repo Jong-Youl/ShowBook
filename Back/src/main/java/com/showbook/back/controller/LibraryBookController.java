@@ -3,10 +3,13 @@ package com.showbook.back.controller;
 
 import static org.springframework.http.HttpStatus.*;
 
+import com.showbook.back.security.model.PrincipalDetails;
 import java.util.List;
 
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -40,12 +43,22 @@ public class LibraryBookController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
+	@GetMapping("/all")
+	public ResponseEntity<List<LibraryBookResponseDTO>> getAllLibraryBooks(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+		return ResponseEntity.ok(libraryBookService.getAllLibraryBooks(principalDetails.getMember().getId()));
+	}
+
+	@GetMapping("/search")
+	public ResponseEntity<List<LibraryBookResponseDTO>> getAllLibraryBooksByQuery(@AuthenticationPrincipal PrincipalDetails principalDetails,
+			@RequestParam(value = "query", required = true) String query) {
+		return ResponseEntity.ok(libraryBookService.getAllLibraryBooksByQuery(principalDetails.getMember().getId(), query));
+	}
+
 	@GetMapping
 	public ResponseEntity<List<LibraryBookResponseDTO>> getAllBooks(@RequestHeader("Authorization") String token, @RequestParam("read_status") int readStatus) {
 		Long memberId = jwtTokenUtil.getMemberId(token);
 		return new ResponseEntity<>(libraryBookService.getAllBooks(memberId, readStatus), OK);
 	}
-
 
 	@PatchMapping
 	public ResponseEntity modifyLibrary(@RequestHeader("Authorization") String token, @RequestBody LibraryBookUpdateRequestDTO libraryBookUpdateRequestDTO, @RequestParam("read_status") int oldReadStatus) {

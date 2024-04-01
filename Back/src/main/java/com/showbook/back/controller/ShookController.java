@@ -41,10 +41,11 @@ public class ShookController {
     }
 
     @PostMapping("/likes/{shook_id}")
-    public ResponseEntity likeShook(
+    public ResponseEntity<?> likeShook(
             @AuthenticationPrincipal PrincipalDetails principalDetails,
             @PathVariable("shook_id") Long shookId) {
         shookService.likeShook(principalDetails.getMember(), shookId);
-        return ResponseEntity.ok().build();
+        System.out.println("SHOOK LIKED !! " + principalDetails.getMember().getId() + " by " + shookId);
+        return ResponseEntity.ok(true);
     }
 }
