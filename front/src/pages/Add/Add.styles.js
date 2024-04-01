@@ -27,3 +27,22 @@ export const ErrorMessage = styled.div`
   right: 0; // 오른쪽 정렬
   z-index: 10; // 다른 요소 위에 오버레이
 `;
+
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  height: 80vh;
+  padding-left: 14px;
+  padding-right: 14px;
+`;
+
+export const Loading = styled.span`
+  color: ${(props) => props.color || 'var(--font-black)'};
+  font-weight: ${(props) => (props.bold ? '920' : '620')};
+  white-space: pre-wrap;
+  font-size: 16px;
+  padding: 5px;
+  align-content: center;
+`;

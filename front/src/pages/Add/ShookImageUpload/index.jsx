@@ -50,7 +50,7 @@ const ShookImageUpload = () => {
     if (postShook({ data, image })) {
       localStorage.removeItem('newShookBookId');
       localStorage.removeItem('newShookBookTitle');
-      navigate('/main');
+      navigate('/add/shook-created');
     } else {
       setErrorMessage('슈욱 등록에 실패했습니다');
       return;
