@@ -3,23 +3,28 @@ import { useRecoilValue,useSetRecoilState } from 'recoil';
 import {
   Container,
   Content,
-  EditLink,
+  // EditLink,
   Nickname,
   ProfileHeader,
   ProfileImage,
   ToggleButton,
   ToggleButtonContainer,
+  LogoutButton
 } from './MyPage.styles';
 import MyHistory from './MyHistory';
 import MyReview from './MyReview';
 import { MemberService } from '../../api/MemberService';
 import { memberState,readCategoricalState, readMonthlyState } from '../../lib/memberRecoil';
+import MemberImageModal from './MemberImageChangeModal';
+import { ProfileImageInModal } from './MemberImageChangeModal.styles';
 
 
 const memberService = new MemberService()
+const BASIC_IMG_PATH = "https://showbookbucket.s3.ap-northeast-2.amazonaws.com/user-image/images+(2).png"
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState('reviews');
+  const [isModalVisible, setIsModalVisible] = useState(false)
   const memberInfo = useRecoilValue(memberState);
   const setCategoryBookData = useSetRecoilState(readCategoricalState)
   const setMontlyyBookData = useSetRecoilState(readMonthlyState)
@@ -45,14 +50,17 @@ const MyPage = () => {
     }
   },[activeTab,setCategoryBookData,setMontlyyBookData])
 
+
   return (
-    <Container>
+
+    <Container> 
       <ProfileHeader>
-        <ProfileImage src={memberInfo.memberImageURL} alt='Profile' />
+        <ProfileImage src={memberInfo.memberImageURL || `${BASIC_IMG_PATH}`} alt='Profile' onClick={() => setIsModalVisible(true)}/>
         <div>
           <Nickname>{memberInfo.nickname}</Nickname>
-          <EditLink href='/edit-profile'>개인정보 수정</EditLink>
+          {/* <EditLink href='/edit-profile'>개인정보 수정</EditLink> */}
         </div>
+        <LogoutButton onClick={()=>memberService.logout()}>로그아웃</LogoutButton>
       </ProfileHeader>
       <ToggleButtonContainer>
         <ToggleButton
@@ -71,6 +79,11 @@ const MyPage = () => {
       <Content>
         {activeTab === 'reviews' ? <MyReview /> : <MyHistory />}
       </Content>
+      {isModalVisible && (
+        <MemberImageModal onClose = {() => setIsModalVisible(false)}>
+           <ProfileImageInModal src={memberInfo.memberImageURL} alt='Profile'/>
+        </MemberImageModal>
+      )}
     </Container>
   );
 };
