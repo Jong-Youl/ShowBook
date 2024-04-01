@@ -12,8 +12,8 @@ import java.util.Optional;
 @Repository
 public interface LibraryRepository extends JpaRepository<Library, Long> {
 
-    Library findByMember (Member member);
+    Library findByMember(Member member);
 
-    Library findByMemberId(Long memberId);
+    Optional<Library> findByMemberId(Long memberId);
 
 }
