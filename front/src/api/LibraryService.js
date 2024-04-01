@@ -4,23 +4,6 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 // 읽고 싶은 책 등록
 export const createWishBook = (bookId) => {
-  // axios
-  //   .post(
-  //     `/api/library/registration`,
-  //     { withCredentials: true },
-  //     {
-  //       params: { book_id: bookId },
-  //       headers: {
-  //         'Authorization': localStorage.getItem('accessToken'),
-  //       },
-  //     },
-  //   )
-  //   .then((res) => {
-  //     console.log(res.data);
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
   try {
     axios.post(
       `${BASE_URL}/api/library/registration`,
@@ -83,25 +66,14 @@ export const moveBooks = (readStatus) => {
 };
 
 // 서재 내 책 삭제
-// export const deleteBook = (readStatus) => {
-//   axios
-//     .patch(
-//       `/api/library?read_status=${readStatus}`,
-//       {
-//         headers: {
-//           'Authorization': localStorage.getItem('accessToken'),
-//         },
-//         body: {},
-//       },
-//       { withCredentials: true },
-//     )
-//     .then((res) => {
-//       console.log(res.data);
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//     });
-// };
+export const deleteBook = (bookId) => {
+  axios.delete(`${BASE_URL}/api/library`, {
+    params: { book_id: bookId },
+    headers: {
+      'Authorization': localStorage.getItem('accessToken'),
+    },
+  });
+};
 
 export const fetchAllLibrary = async () => {
   try {

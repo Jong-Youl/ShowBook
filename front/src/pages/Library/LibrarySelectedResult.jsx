@@ -16,7 +16,7 @@ function LibrarySelectedResult({ isEditMode }) {
   const [selectedBookId, setSelectedBookId] = useState('');
   const bookService = new BookService();
   const navigate = useNavigate();
-  //const BASE_URL = process.env.REACT_APP_BASE_URL;
+  //const BASE_URL = process.env.REACT_APP_BASE_URL
 
   const library = async (x) => {
     const books = await getAllbooks(x);
@@ -35,17 +35,18 @@ function LibrarySelectedResult({ isEditMode }) {
 
   useEffect(() => {
     switch (category) {
-      case 'before':
+      // 0:before, 1:now, 2:after
+      case '0':
         //setBookList(getAllbooks(0));
         const res0 = library(0);
         console.log('bookList 타입 확인 : ' + typeof bookList);
         // console.log(' 넘어온 res 타입 확인: ' + typeof res);
         // console.log('데이터 넘어왔다: ' + res);
         break;
-      case 'now':
+      case '1':
         const res1 = library(1);
         break;
-      case 'after':
+      case '2':
         const res2 = library(2);
         break;
       default:
@@ -82,7 +83,10 @@ function LibrarySelectedResult({ isEditMode }) {
       </BookGrid>
 
       {isModalVisible && (
-        <CategoryChangeModal onClose={closeModal}>
+        <CategoryChangeModal
+          onClose={closeModal}
+          selectedBookId={selectedBookId}
+        >
           <p>book id: {selectedBookId}</p>
         </CategoryChangeModal>
       )}
