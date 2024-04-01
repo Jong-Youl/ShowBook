@@ -10,11 +10,11 @@ export const Container = styled.div`
   padding-right: 14px;
 `;
 
-
 export const Loading = styled.span`
   color: ${(props) => props.color || 'var(--font-black)'};
   font-weight: ${(props) => (props.bold ? '920' : '620')};
   white-space: pre-wrap;
-  font-size: 32px;
+  font-size: 16px;
   padding: 5px;
+  align-content: center;
 `;
