@@ -15,10 +15,11 @@ public class ReviewResponseDTO {
 	private final int rating;
 	private final String nickname;
 	private final String memberImageUrl;
+	private final Long bookId;
 
 	@Builder
 	public ReviewResponseDTO(String title, String content, LocalDate createdAt, LocalDate updatedAt, int rating,
-		String nickname, String memberImageUrl) {
+                             String nickname, String memberImageUrl, Long bookId) {
 		this.title = title;
 		this.content = content;
 		this.createdAt = createdAt;
@@ -26,5 +27,6 @@ public class ReviewResponseDTO {
 		this.rating = rating;
 		this.nickname = nickname;
 		this.memberImageUrl = memberImageUrl;
-	}
+        this.bookId = bookId;
+    }
 }
