@@ -42,9 +42,11 @@ vcalculate_score = np.vectorize(calculate_score)
 def recommendations(book_id_list):    
 
     # 책의 id 입력하면 해당 id의 인덱스를 리턴받아 idx에 저장.
-    indices = pd.Series(books.index, index = books['title']).drop_duplicates()    
+    indices = pd.Series(books.index, index = books['book_id']).drop_duplicates()    
+    
+    
     # 입력받은 책 인덱스 저장
-    book_indices = [indices[book_id] for book_id in book_id_list]
+    book_indices = [indices.loc[book_id] for book_id in book_id_list]
     
     sim_scores = [[i,0] for i in range(len(book_embedding_list))]
     tmp_sim_scores = np.zeros(len(book_embedding_list))
