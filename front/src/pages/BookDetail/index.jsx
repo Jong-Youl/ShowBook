@@ -1,13 +1,26 @@
 /**eslint-disabled */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
 import { scrollbarStyles } from '../../components/common/styles/ScrollbarStyles';
 import { useLocation } from 'react-router-dom';
 import { BookService } from '../../api/bookService';
-import { fetchBookReviewRating } from '../../api/ReviewService';
+import ReviewService, { fetchBookReviewRating } from '../../api/ReviewService';
 // import { fetchBookReviewRating } from '../../api/ReviewService';
 import { createWishBook } from '../../api/LibraryService';
+import { useInfiniteQuery } from 'react-query';
+import ReviewCard from './ReviewCard';
+
+const makeFetchBookReviews =
+  (bookId) =>
+  async ({ pageParam = 0 }) => {
+    const response = await ReviewService.getBookReviews(bookId, {
+      page: pageParam,
+      size: 10,
+    });
+    console.log(response.data);
+    return response.data;
+  };
 
 const BookDetail = () => {
   const location = useLocation();
@@ -17,6 +30,29 @@ const BookDetail = () => {
   const [purchaseUrl, setPurchaseUrl] = useState('');
   const [rating, setRating] = useState(0.0);
   const bookService = new BookService();
+
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
+    ['bookReviews', book.bookId], // 쿼리 키에 bookId를 포함시킴
+    makeFetchBookReviews(book.bookId),
+    {
+      getNextPageParam: (lastPage) => {
+        const nextPage = lastPage.number + 1;
+        return nextPage >= lastPage.totalPages ? undefined : nextPage;
+      },
+    },
+  );
+
+  const containerRef = useRef(null);
+
+  const handleScroll = () => {
+    // containerRef.current가 null이 아니라면 스크롤 위치 계산
+    if (containerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+      if (scrollTop + clientHeight >= scrollHeight) {
+        fetchNextPage();
+      }
+    }
+  };
 
   useEffect(() => {
     console.log(book);
@@ -36,6 +72,14 @@ const BookDetail = () => {
         console.error('Error:', error);
       });
   }, []);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener('scroll', handleScroll);
+      return () => container.removeEventListener('scroll', handleScroll);
+    }
+  }, [handleScroll]);
 
   const handleClick = () => {
     setBookmarked((prevState) => !prevState);
@@ -57,7 +101,7 @@ const BookDetail = () => {
 
   return (
     <div>
-      <Container>
+      <Container ref={containerRef}>
         <CloseButton onClick={handleGoBack}>
           <CloseButtonImage src='/img/button/icbt_close.png'></CloseButtonImage>
         </CloseButton>
@@ -78,7 +122,8 @@ const BookDetail = () => {
             )}
           </BookDesc>
           <BookEtc>
-            {book.author}|{book.totalPage}page|{book.publisher}
+            {book.author}&nbsp;|&nbsp;{book.totalPage}page&nbsp;|&nbsp;
+            {book.publisher}
           </BookEtc>
         </ContentContainer>
         <ReviewContainer>
@@ -90,7 +135,7 @@ const BookDetail = () => {
         <ButtonsContainer>
           <BookMarkImg
             src={
-              bookmarked ? `/img/icon/bookmarked.png` : `/img/icon/bookmark.png`
+              bookmarked ? `/img/icon/bookmark.png` : `/img/icon/bookmarked.png`
             }
             onClick={handleClick}
           />
@@ -99,6 +144,18 @@ const BookDetail = () => {
           </BuyButton>
           <ReviewButton onClick={goReview}>한줄평 작성</ReviewButton>
         </ButtonsContainer>
+
+        <divs>
+          {data?.pages.map((page, i) => (
+            <div key={i}>
+              {page.content.map((review, index) => (
+                <ReviewCard key={index} review={review} />
+              ))}
+            </div>
+          ))}
+          {hasNextPage && <div>리뷰 로딩 중...</div>}
+          <ReviewEnd>모든 리뷰를 불러왔습니다.</ReviewEnd>
+        </divs>
       </Container>
     </div>
   );
@@ -204,5 +261,10 @@ const ReviewButton = styled.button`
   height: 5vh;
   background: var(--bg-beige);
   color: var(--main);
+`;
+
+const ReviewEnd = styled.span`
+  display: block;
+  text-align: center;
 `;
 export default BookDetail;
