@@ -74,14 +74,24 @@ public class LibraryBookService {
 
     // 읽고 싶은 책 등록
     public void createWishBook(Long memberId, Long bookId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("해당 멤버가 존재하지 않습니다!"));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         Library library = libraryRepository.findByMember(member);
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new NoSuchElementException(("해당 책이 존재하지 않습니다!")));
+        Long libraryId = library.getLibraryId();
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
 
+        Optional libraryBook = libraryBookRepository.findLibraryBookByLibraryIdAndBookId(libraryId, bookId);
         // libraryBook 에 없으면 -> library book 생성해서 추가
-        // libraryBook 에 있으면 readStatus 변경
-        LibraryBook libraryBook = LibraryBook.builder().readStatus(0).library(library).book(book).build();
-        libraryBookRepository.save(libraryBook);
+        // libraryBook 에 있으면 등록x
+        if(libraryBook.isEmpty()) {
+            LibraryBook newLibraryBook = LibraryBook.builder().readStatus(0).library(library).book(book).build();
+            libraryBookRepository.save(newLibraryBook);
+        } else {
+            throw new CustomException(ErrorCode.LIBRARY_BOOK_DUPLICATED);
+        }
+    }
+
+    public void addBook() {
+
     }
 
     public List<LibraryBookResponseDTO> getAllBooks(Long memberId, int readStatus) {
