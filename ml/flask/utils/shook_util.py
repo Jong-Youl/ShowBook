@@ -1,11 +1,12 @@
 import pandas as pd
-from sqlalchemy import and_
+from sqlalchemy import and_, func
 from sklearn.metrics.pairwise import cosine_similarity
 from models.ShookLike import ShookLike
 from models.Shook import Shook
 from models.Member import Member
 from models.DTO.ShookLikeResponseDTO import ShookLikeResponseDTO
 from models.DTO.ShookResponseDTO import ShookResponseDTO
+from config.dbConfig import db
 
 #========================================================================
 #1. member_id를 받으면 member_id랑 매칭되는 shook_like 정보를 들고 옴
@@ -102,4 +103,47 @@ def get_shooks(shook_ids):
     shooks_list = [ShookResponseDTO(shook) for shook in shooks]
     
     return shooks_list
+
+
+def get_random_shooks(page):
+
+    results = []
+
+    start = (page - 1) * 10
+    cnt = 10
+    
+
+    """
+        select a.shook_id, a.book_title, a.shook_image_url, a.book_id, a.member_id 
+        from shook a join shook_like b on a.shook_id = b.shook_id
+        group by a.shook_id, a.book_title, a.shook_image_url, a.book_id, a.member_id
+        order by sum(b.like_status) desc
+        limit %s, %s
+        ;
+    """
+    
+    results = db.session.query(
+        Shook.shook_id,
+        Shook.book_title,
+        Shook.shook_image_url,
+        Shook.book_id,
+        Shook.member_id,
+        func.sum(ShookLike.like_status).label('total_likes')
+    ).join(
+        ShookLike, Shook.shook_id == ShookLike.shook_id
+    ).group_by(
+        Shook.shook_id, Shook.book_title, Shook.shook_image_url, Shook.book_id,Shook.member_id
+    ).order_by(
+        func.sum(ShookLike.like_status).desc()
+    ).offset(start).limit(cnt).all()
+    
+    shook_list = [ShookResponseDTO(shook) for shook in results]
+    
+    return shook_list
+    
+    
+    
+    
+
+
 
