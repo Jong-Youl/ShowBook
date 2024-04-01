@@ -14,14 +14,17 @@ public class MyReviewResponseDTO {
 	private final LocalDate createdAt;
 	private final int rating;
 	private final String bookImageUrl;
+	private final Long bookId;
+
 
 	@Builder
 
-	public MyReviewResponseDTO(String title, String content, LocalDate createdAt, int rating, String bookImageUrl) {
+	public MyReviewResponseDTO(String title, String content, LocalDate createdAt, int rating, String bookImageUrl,Long bookId) {
 		this.title = title;
 		this.content = content;
 		this.createdAt = createdAt;
 		this.rating = rating;
 		this.bookImageUrl = bookImageUrl;
-	}
+        this.bookId = bookId;
+    }
 }

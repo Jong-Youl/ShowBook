@@ -78,13 +78,13 @@ public class ReviewService {
 	}
 
 	private ReviewResponseDTO toReviewResponseDTO(Review review,Book book,Member member) {
-		return ReviewResponseDTO.builder().title(book.getTitle())
+		return ReviewResponseDTO.builder().title(book.getTitle()).bookId(book.getBookId())
 			.content(review.getContent()).createdAt(review.getCreatedAt()).nickname(member.getNickname()).memberImageUrl(member.getMemberImage().getImageUrl()).build();
 
 	}
 
 	private MyReviewResponseDTO toMyReviewResponseDTO(Review review) {
-		return MyReviewResponseDTO.builder().title(review.getBook().getTitle())
+		return MyReviewResponseDTO.builder().title(review.getBook().getTitle()).bookId(review.getBook().getBookId())
 				.bookImageUrl(review.getBook().getBookImageURL()).createdAt(review.getCreatedAt()).rating(review.getRating())
 				.content(review.getContent()).build();
 	}
