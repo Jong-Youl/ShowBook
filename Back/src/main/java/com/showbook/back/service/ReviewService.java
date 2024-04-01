@@ -78,7 +78,7 @@ public class ReviewService {
 	}
 
 	private ReviewResponseDTO toReviewResponseDTO(Review review,Book book,Member member) {
-		return ReviewResponseDTO.builder().title(book.getTitle()).bookId(book.getBookId())
+		return ReviewResponseDTO.builder().title(book.getTitle()).bookId(book.getBookId()).rating(review.getRating())
 			.content(review.getContent()).createdAt(review.getCreatedAt()).nickname(member.getNickname()).memberImageUrl(member.getMemberImage().getImageUrl()).build();
 
 	}
