@@ -1,6 +1,7 @@
 package com.showbook.back.repository;
 
 import com.showbook.back.entity.LibraryBook;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -35,11 +36,14 @@ public interface LibraryBookRepository extends JpaRepository<LibraryBook,Long> {
         + "AND lb.readStatus = :readStatus ")
     List<LibraryBook> findLibraryBooksByLibraryIdAndReadStatus(Long libraryId, int readStatus);
 
-    @Query("SELECT lb "
+            @Query("SELECT lb "
         + "FROM LibraryBook lb "
         + "JOIN FETCH lb.library l "
         + "JOIN FETCH lb.book b "
         + "WHERE l.libraryId = :libraryId "
         + "AND b.bookId = :bookId ")
-    LibraryBook findLibraryBookByLibraryIdAndBookId(Long libraryId, Long bookId);
+    Optional<LibraryBook> findLibraryBookByLibraryIdAndBookId(Long libraryId, Long bookId);
+
+    List<LibraryBook> findAllByLibrary_LibraryId(Long libraryId);
+    List<LibraryBook> findAllByLibrary_LibraryIdAndBook_TitleContaining(Long libraryId, String title);
 }

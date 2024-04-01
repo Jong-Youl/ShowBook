@@ -5,12 +5,14 @@ import com.showbook.back.common.exception.CustomException;
 import com.showbook.back.dto.request.LibraryBookUpdateRequestDTO;
 import com.showbook.back.dto.response.LibraryBookResponseDTO;
 import com.showbook.back.entity.*;
+import com.showbook.back.mapper.LibraryBookMapper;
 import com.showbook.back.repository.BookRepository;
 import com.showbook.back.repository.LibraryBookRepository;
 import com.showbook.back.repository.LibraryRepository;
 import com.showbook.back.repository.MemberRepository;
 import com.showbook.back.security.model.PrincipalDetails;
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,7 @@ public class LibraryBookService {
     private final LibraryBookRepository libraryBookRepository;
     private final LibraryRepository libraryRepository;
     private final BookRepository bookRepository;
+    private final LibraryBookMapper libraryBookMapper;
 
     public Map<Month,Integer> findReadingLogByYear(PrincipalDetails principalDetails, int year) {
         Long memberId = principalDetails.getMember().getId();
@@ -83,12 +86,12 @@ public class LibraryBookService {
 
     public List<LibraryBookResponseDTO> getAllBooks(Long memberId, int readStatus) {
         // memberId -> libraryId -> libraryId & readStatus 가 일치하는 책 목록 조회
-        Long libraryId = libraryRepository.findByMemberId(memberId).getLibraryId();
+        Library library = libraryRepository.findByMemberId(memberId).orElseThrow(() -> new CustomException(ErrorCode.LIBRARY_NOT_FOUND));
+        Long libraryId = library.getLibraryId();
         List<LibraryBook> libraryBookList = libraryBookRepository.findLibraryBooksByLibraryIdAndReadStatus(libraryId, readStatus);
         List<LibraryBookResponseDTO> libraryBookResponseDTOList = new ArrayList<>();
         for(LibraryBook lb : libraryBookList) {
-            Book book = lb.getBook();
-            LibraryBookResponseDTO libraryBookResponseDTO = LibraryBookResponseDTO.builder().book(book).build();
+            LibraryBookResponseDTO libraryBookResponseDTO = libraryBookMapper.libraryBookToLibraryBookResponseDTO(lb);
             libraryBookResponseDTOList.add(libraryBookResponseDTO);
         }
         return libraryBookResponseDTOList;
@@ -100,7 +103,9 @@ public class LibraryBookService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("해당 멤버가 존재하지 않습니다!"));
         List<Long> bookIdList = libraryBookUpdateRequestDTO.getBookIdList();
         int newReadStatus = libraryBookUpdateRequestDTO.getNewReadStatus();
-        Long libraryId = libraryRepository.findByMemberId(memberId).getLibraryId();
+        Library library = libraryRepository.findByMemberId(memberId).orElseThrow(() -> new CustomException(ErrorCode.LIBRARY_NOT_FOUND));
+        Long libraryId = library.getLibraryId();
+
 
         // bookIdList가 비어있다면
         if(bookIdList.isEmpty()) {
@@ -117,7 +122,7 @@ public class LibraryBookService {
 
         for(Long bookId : bookIdList) {
             // libraryId, bookId 일치하는 LibraryBook 찾기
-            LibraryBook libraryBook = libraryBookRepository.findLibraryBookByLibraryIdAndBookId(libraryId, bookId);
+            LibraryBook libraryBook = libraryBookRepository.findLibraryBookByLibraryIdAndBookId(libraryId, bookId).orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
 
             // readStatus 업데이트
             libraryBook.setReadStatus(newReadStatus);
@@ -144,9 +149,28 @@ public class LibraryBookService {
     }
 
     public void deleteBook(Long memberId, Long bookId) {
-        Long libraryId = libraryRepository.findByMemberId(memberId).getLibraryId();
+        Library library = libraryRepository.findByMemberId(memberId).orElseThrow(()-> new CustomException(ErrorCode.LIBRARY_NOT_FOUND));
         // libraryId, bookId 일치하는 LibraryBook 찾기
-        Long libraryBookId = libraryBookRepository.findLibraryBookByLibraryIdAndBookId(libraryId, bookId).getLibraryBookId();
-        libraryBookRepository.deleteById(libraryBookId);
+        LibraryBook libraryBook = libraryBookRepository.findLibraryBookByLibraryIdAndBookId(library.getLibraryId(), bookId)
+                .orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
+        libraryBookRepository.deleteById(libraryBook.getLibraryBookId());
+    }
+
+    public List<LibraryBookResponseDTO> getAllLibraryBooks(Long memberId) {
+        Library library = libraryRepository.findByMemberId(memberId).orElseThrow(()-> new CustomException(ErrorCode.LIBRARY_NOT_FOUND));
+        List<LibraryBook> libraryBookList = libraryBookRepository.findAllByLibrary_LibraryId(library.getLibraryId());
+        List<LibraryBookResponseDTO> libraryBookResponse = new ArrayList<>();
+        libraryBookList.stream().forEach(libraryBook ->
+                libraryBookResponse.add(libraryBookMapper.libraryBookToLibraryBookResponseDTO(libraryBook)));
+        return libraryBookResponse;
+    }
+
+    public List<LibraryBookResponseDTO> getAllLibraryBooksByQuery(Long memberId, String query) {
+        Library library = libraryRepository.findByMemberId(memberId).orElseThrow(()-> new CustomException(ErrorCode.LIBRARY_NOT_FOUND));
+        List<LibraryBook> libraryBookList = libraryBookRepository.findAllByLibrary_LibraryIdAndBook_TitleContaining(library.getLibraryId(),query);
+        List<LibraryBookResponseDTO> libraryBookResponse = new ArrayList<>();
+        libraryBookList.stream().forEach(libraryBook ->
+                libraryBookResponse.add(libraryBookMapper.libraryBookToLibraryBookResponseDTO(libraryBook)));
+        return libraryBookResponse;
     }
 }

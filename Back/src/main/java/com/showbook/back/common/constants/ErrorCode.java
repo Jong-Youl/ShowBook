@@ -15,6 +15,7 @@ public enum ErrorCode {
     /**
      * LIBRARY BOOK
      */
+    LIBRARY_NOT_FOUND(BAD_REQUEST, "서재가 존재하지 않습니다."),
     EMPTY_BOOKLIST(BAD_REQUEST, "선택된 책이 없습니다."),
     SAME_READSTATUS(BAD_REQUEST, "동일한 서재로 이동할 수 없습니다."),
 
