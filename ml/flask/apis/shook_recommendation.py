@@ -13,7 +13,7 @@ api = Api(shook_recommendation)
 @shook_recommendation.route("/recommend",methods=["GET"])
 def getShooks():
     member_id = int(request.args.get('member_id'))
-    page = int(request.args.get('page'))
+    page = request.args.get('page', default=1, type=int)
     
     shooks_list = []
     
@@ -23,11 +23,11 @@ def getShooks():
     if (len(member_df) < 30):
         # member의 shook_like 개수가 30개 미만인 경우 
         # 인기 순으로 슈욱을 들고 온다
-        print("====================get_random_shook====================")
+        print("====================1. get_random_shook====================")
         shooks_list = get_random_shooks(page)
 
     else: 
-        print("====================get 좋아요한 shook과 유사한 shook====================")
+        print("====================2. get 좋아요한 shook과 유사한 shook====================")
         #2. 1의 결과를 바탕으로 shook 행렬 반환
         df_pivoted = get_df(member_df,member_id)
         
