@@ -15,9 +15,10 @@ public enum ErrorCode {
     /**
      * LIBRARY BOOK
      */
-    LIBRARY_NOT_FOUND(BAD_REQUEST, "서재가 존재하지 않습니다."),
+    LIBRARY_NOT_FOUND(NOT_FOUND, "서재가 존재하지 않습니다."),
     EMPTY_BOOKLIST(BAD_REQUEST, "선택된 책이 없습니다."),
     SAME_READSTATUS(BAD_REQUEST, "동일한 서재로 이동할 수 없습니다."),
+    LIBRARY_BOOK_DUPLICATED(BAD_REQUEST, "이미 서재에 추가된 책입니다."),
 
     /* 401 UNAUTHORIZED: 인증 실패 */
     UNAUTHORIZED_USER(UNAUTHORIZED, "만료되었거나 잘못된 토큰입니다. 토큰을 확인해주세요."),
