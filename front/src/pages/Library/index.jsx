@@ -27,7 +27,7 @@ function Library() {
       <Navbar />
       <BookListProvider bookList={LibrarySelectedResult}>
         <Routes>
-          <Route index element={<Navigate replace to='before' />} />
+          <Route index element={<Navigate replace to='0' />} />
           <Route
             path='/:category'
             element={<LibrarySelectedResult isEditMode={isEditMode} />}
