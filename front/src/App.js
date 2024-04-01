@@ -18,6 +18,7 @@ import Signup from './pages/User/Signup';
 import SelectCategory from './pages/User/CategoryServey';
 import { FullScreenLayout } from './layouts/FullScreenLayout';
 import Proxy from './pages/User/Proxy';
+import ShookCreated from './pages/Add/ShookCreated';
 import ShookImageUpload from './pages/Add/ShookImageUpload';
 import { Outlet } from 'react-router';
 
@@ -43,6 +44,7 @@ function App() {
                   element={<Navigate replace to='/add/book-selection' />}
                 />
                 <Route path='book-selection' element={<BookSelection />} />
+                <Route path='shook-created' element={<ShookCreated />} />
                 <Route path='image-selection' element={<ShookImageUpload />} />
               </Route>
               <Route path='library/*' element={<Library />}>

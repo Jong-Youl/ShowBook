@@ -102,3 +102,36 @@ export const moveBooks = (readStatus) => {
 //       console.error(error);
 //     });
 // };
+
+export const fetchAllLibrary = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/api/library/all`, {
+      headers: {
+        'Authorization': localStorage.getItem('accessToken'),
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all library:', error);
+    throw error;
+  }
+};
+
+export const fetchAllLibraryByQuery = async (query) => {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/api/library/search?query=${query}`,
+      {
+        headers: {
+          'Authorization': localStorage.getItem('accessToken'),
+        },
+      },
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all library by query:', error);
+    throw error;
+  }
+};
