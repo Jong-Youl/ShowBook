@@ -10,6 +10,8 @@ import 'swiper/css/effect-creative';
 import { EffectFlip } from 'swiper/modules';
 import { shookDataPropTypes } from '../../types/shooksPropTypes';
 import LikeButton from '../../pages/Shorts/LikeButton';
+import Lottie from 'lottie-react';
+import loadingAnimation from './loading.json';
 import {
   Nickname,
   ProfileHeader,
@@ -51,12 +53,18 @@ function ShortForm({ shortsJson }) {
     <>
       {shook_list == null ? (
         <Container>
+          <Lottie
+            animationData={loadingAnimation}
+            style={{
+              alignItems: 'center',
+              height: '40%',
+            }}
+          ></Lottie>
           <Loading>
             <Loading $bold color='black'>
-              로딩 중입니다.
+              메인화면으로 이동 중입니다!
             </Loading>
             <br />
-            <Loading color='var(--main)'>잠시만 기다려주세요!</Loading>
           </Loading>
         </Container>
       ) : (

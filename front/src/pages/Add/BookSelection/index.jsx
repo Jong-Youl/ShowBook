@@ -1,25 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from '../../../components/common/SearchBar';
-import { booksBeforeReadJson } from '../../../etc/booksBeforeReadJson';
 import { SmallButton } from '../../../components/common/styles/CommonStyles';
 import { BookGrid, BookItem, SelectedOverlay } from './BookSelection.styles';
 import { ErrorMessage, Title, TitleContainer } from '../Add.styles';
+import {
+  fetchAllLibrary,
+  fetchAllLibraryByQuery,
+} from '../../../api/LibraryService';
 
 const BookSelection = () => {
   const [bookList, setBookList] = useState([]);
   const [selectedBookId, setSelectedBookId] = useState(null);
+  const [selectedBookTitle, setSelectedBookTitle] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSearch = async (searchTerm) => {
-    console.log(searchTerm);
-    setBookList(booksBeforeReadJson);
+    setBookList(await fetchAllLibraryByQuery(searchTerm));
     setErrorMessage('');
   };
 
-  const handleSelectBook = (bookId) => {
+  const handleSelectBook = (bookId, bookTitle) => {
     setSelectedBookId(selectedBookId === bookId ? null : bookId);
+    setSelectedBookTitle(selectedBookTitle === bookTitle ? null : bookId);
+    localStorage.setItem('newShookBookId', bookId);
+    localStorage.setItem('newShookBookTitle', bookTitle);
     setErrorMessage('');
   };
 
@@ -30,6 +36,13 @@ const BookSelection = () => {
     }
     navigate('/add/image-selection');
   };
+  const book = async () => {
+    setBookList(await fetchAllLibrary());
+  };
+
+  useEffect(() => {
+    book().then((r) => console.log(r));
+  }, []);
 
   return (
     <div>
@@ -44,11 +57,11 @@ const BookSelection = () => {
       <BookGrid>
         {bookList.map((book) => (
           <BookItem
-            key={book.book_id}
-            onClick={() => handleSelectBook(book.book_id)}
+            key={book.bookId}
+            onClick={() => handleSelectBook(book.bookId, book.title)}
           >
-            <SelectedOverlay $isSelected={selectedBookId === book.book_id} />
-            <img src={book.book_img_url} alt='Book' />
+            <SelectedOverlay $isSelected={selectedBookId === book.bookId} />
+            <img src={book.bookImgURL} alt='Book' />
           </BookItem>
         ))}
       </BookGrid>
