@@ -111,14 +111,14 @@ public class LibraryBookService {
     @Transactional
     public void modifyLibrary(Long memberId, int oldReadStatus, LibraryBookUpdateRequestDTO libraryBookUpdateRequestDTO) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("해당 멤버가 존재하지 않습니다!"));
-        List<Long> bookIdList = libraryBookUpdateRequestDTO.getBookIdList();
+        Long bookId = libraryBookUpdateRequestDTO.getBookId();
         int newReadStatus = libraryBookUpdateRequestDTO.getNewReadStatus();
         Library library = libraryRepository.findByMemberId(memberId).orElseThrow(() -> new CustomException(ErrorCode.LIBRARY_NOT_FOUND));
         Long libraryId = library.getLibraryId();
 
 
         // bookIdList가 비어있다면
-        if(bookIdList.isEmpty()) {
+        if(bookId == null) {
             throw new CustomException(ErrorCode.EMPTY_BOOKLIST);
         }
 
@@ -127,30 +127,32 @@ public class LibraryBookService {
             throw new CustomException(ErrorCode.SAME_READSTATUS);
         }
 
-        int selectedBooks = bookIdList.size();
+        // int selectedBooks = bookIdList.size();
         int totalBooks = member.getReadBookCount();
 
-        for(Long bookId : bookIdList) {
-            // libraryId, bookId 일치하는 LibraryBook 찾기
-            LibraryBook libraryBook = libraryBookRepository.findLibraryBookByLibraryIdAndBookId(libraryId, bookId).orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
 
-            // readStatus 업데이트
-            libraryBook.setReadStatus(newReadStatus);
+        // libraryId, bookId 일치하는 LibraryBook 찾기
+        LibraryBook libraryBook = libraryBookRepository.findLibraryBookByLibraryIdAndBookId(libraryId, bookId).orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
 
-            // oldReadStatus 혹은 newReadStatus가 2인 경우 finishedDate 업데이트
-            if (newReadStatus == 2) {
-                libraryBook.setFinishedDate(LocalDate.now());
-            } else if (oldReadStatus == 2) {
-                libraryBook.setFinishedDate(null);
-            }
-            libraryBookRepository.save(libraryBook);
+        // readStatus 업데이트
+        libraryBook.setReadStatus(newReadStatus);
+
+        // oldReadStatus 혹은 newReadStatus가 2인 경우 finishedDate 업데이트
+        if (newReadStatus == 2) {
+            libraryBook.setFinishedDate(LocalDate.now());
+        } else if (oldReadStatus == 2) {
+            libraryBook.setFinishedDate(null);
         }
+        libraryBookRepository.save(libraryBook);
+
 
         // oldReadStatus 혹은 newReadStatus가 2인 경우 readBookCount도 함께 업데이트
         if (newReadStatus == 2) {
-            totalBooks += selectedBooks;
+            //totalBooks += selectedBooks;
+            totalBooks += 1;
         } else if (oldReadStatus == 2) {
-            totalBooks -= selectedBooks;
+            //totalBooks -= selectedBooks;
+            totalBooks -= 1;
         }
 
         // totalBooks = newReadStatus==2 ? totalBooks + selectedBooks : oldReadStatus==2 ? totalBooks - selectedBooks : totalBooks;
