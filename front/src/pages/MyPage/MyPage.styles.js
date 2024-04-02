@@ -21,7 +21,7 @@ export const ProfileImage = styled.img`
 `;
 
 export const Nickname = styled.div`
-  font-size: 20px;
+  font-size: 15px;
   font-weight: bold;
   margin-right: auto;
 `;
@@ -61,5 +61,5 @@ export const LogoutButton = styled.button`
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  margin-left:30%;
+  margin-left:60px;
 `

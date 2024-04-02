@@ -31,17 +31,19 @@ function Signup() {
     }
     
   // 회원가입 처리 로직
-    navigate('/user/category-servey',{
-      state : {
-        email : email,
-        roleName : role,
-        memberImageUrl : picture,
-        name : name,
-        age : age,
-        gender: gender === "male"? 0 : 1,
-        nickname : nickname
-      }
-    });
+    if (confirm("한 번 지정하신 회원 정보는 바꾸실 수 없습니다.\n진행하시겠습니까?") == true){
+      navigate('/user/category-servey',{
+        state : {
+          email : email,
+          roleName : role,
+          memberImageUrl : picture,
+          name : name,
+          age : age,
+          gender: gender === "male"? 0 : 1,
+          nickname : nickname
+        }
+      });
+    }
 
   };
 
