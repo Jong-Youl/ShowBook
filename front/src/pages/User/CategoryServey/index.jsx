@@ -34,9 +34,11 @@ function SelectCategory() {
 
   const handleSubmit = () => {
     // 선택된 카테고리를 처리하는 로직
+    if (selectedCategories.length < 1){
+      alert("카테고리는 반드시 1개 이상 고르셔야 합니다!")
+      return;
+    }
     const memberInfo = {...location.state, categories : selectedCategories}
-    console.log("member의 정보")
-    console.log(memberInfo.categories)
     memberService.signup(memberInfo);
   };
 
