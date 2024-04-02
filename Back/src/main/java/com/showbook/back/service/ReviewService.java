@@ -30,8 +30,8 @@ public class ReviewService {
 	private final BookRepository bookRepository;
 	private final MemberRepository memberRepository;
 	private final JwtTokenUtil jwtTokenUtil;
-	public void createReview(ReviewRequestDTO reviewRequestDTO, Long bookId, String token) {
-		Member member = memberRepository.findById(jwtTokenUtil.getMemberId(token)).orElseThrow();
+	public void createReview(ReviewRequestDTO reviewRequestDTO, Long bookId, Long memberId) {
+		Member member = memberRepository.findById(memberId).orElseThrow();
 		Book book = bookRepository.findById(bookId).orElseThrow();
 		Review review = Review.builder().content(reviewRequestDTO.getContent()).rating(reviewRequestDTO.getRating())
 			.createdAt(LocalDate.now()).book(book).member(member).build();
@@ -53,8 +53,7 @@ public class ReviewService {
 		return new PageImpl<>(reviewResponseDTOList, reviewList.getPageable(), reviewList.getTotalElements());
 	}
 
-	public Page<MyReviewResponseDTO> getMyReviews(Pageable pageable, String token) {
-		Long memberId = getMemberId(token);
+	public Page<MyReviewResponseDTO> getMyReviews(Pageable pageable, Long memberId) {
 		Page<Review> reviewList = reviewCustomRepository.findReviewsByMemberId(pageable, memberId);
 		List<MyReviewResponseDTO> myReviewResponseDTOList = reviewList.stream()
 			.map(this::toMyReviewResponseDTO).toList();
@@ -72,10 +71,10 @@ public class ReviewService {
 		double avgRating = reviewRepository.getBookAverageRating(bookId);
 		return avgRating;
 	}
-	public Long getMemberId(String token) {
-		if (token == null) return null;
-		return jwtTokenUtil.getMemberId(token);
-	}
+//	public Long getMemberId(String token) {
+//		if (token == null) return null;
+//		return jwtTokenUtil.getMemberId(token);
+//	}
 
 	private ReviewResponseDTO toReviewResponseDTO(Review review,Book book,Member member) {
 		return ReviewResponseDTO.builder().title(book.getTitle()).bookId(book.getBookId()).rating(review.getRating())

@@ -68,9 +68,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String refreshToken = refreshTokenService.findRefreshTokenByAccessToken(accessToken).getRefreshToken();
 
             // refresh 토큰 만료시간 검증
+            log.info("========refresh토큰 만료시간 검증===========");
             boolean validateRefreshToken = jwtTokenUtil.isTokenValid(refreshToken);
 
             log.info("validateRefreshToken - {}", validateRefreshToken);
+
+            log.info("기존의 accessToken으로 refreshToken을 잘 찾나? - {}",refreshTokenService.findRefreshTokenByAccessToken(accessToken).getRefreshToken());
 
             if (validateRefreshToken) {
                 log.info("refreshToken으로 accessToken 재발급!");
@@ -84,10 +87,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 existedRefreshToken.updateAccessToken(newAccessToken);
                 refreshTokenService.saveTokenInfo(existedRefreshToken);
 
+                log.info("새 accessToken으로 refreshToken을 잘 찾나? - {}",refreshTokenService.findRefreshTokenByAccessToken(newAccessToken).getRefreshToken());
+
+
                 log.info("새로 발급 받은 AccessToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken).getAccessToken());
                 log.info("기존의 RefreshToken -> {}", refreshTokenService.findRefreshTokenByAccessToken(newAccessToken).getRefreshToken());
 
                 response.setHeader(HttpHeaders.AUTHORIZATION,newAccessToken);
+
 
                 log.info("재발급 로직 완료!");
                 this.setAuthentication(newAccessToken);

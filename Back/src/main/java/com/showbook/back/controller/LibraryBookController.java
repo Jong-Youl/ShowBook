@@ -36,9 +36,10 @@ public class LibraryBookController {
 	private final LibraryBookService libraryBookService;
 
 	@PostMapping("/registration")
-	public ResponseEntity createWishBook(@RequestHeader("Authorization") String token, @RequestParam("book_id") Long bookId) {
-		System.out.println(token);
-		Long memberId = jwtTokenUtil.getMemberId(token);
+	public ResponseEntity createWishBook(@AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam("book_id") Long bookId) {
+//		System.out.println(token);
+//		Long memberId = jwtTokenUtil.getMemberId(token);
+		Long memberId = principalDetails.getMember().getId();
 		libraryBookService.createWishBook(memberId, bookId);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
@@ -55,21 +56,21 @@ public class LibraryBookController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<LibraryBookResponseDTO>> getAllBooks(@RequestHeader("Authorization") String token, @RequestParam("read_status") int readStatus) {
-		Long memberId = jwtTokenUtil.getMemberId(token);
+	public ResponseEntity<List<LibraryBookResponseDTO>> getAllBooks(@AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam("read_status") int readStatus) {
+		Long memberId = principalDetails.getMember().getId();
 		return new ResponseEntity<>(libraryBookService.getAllBooks(memberId, readStatus), OK);
 	}
 
 	@PatchMapping
-	public ResponseEntity modifyLibrary(@RequestHeader("Authorization") String token, @RequestBody LibraryBookUpdateRequestDTO libraryBookUpdateRequestDTO, @RequestParam("read_status") int oldReadStatus) {
-		Long memberId = jwtTokenUtil.getMemberId(token);
+	public ResponseEntity modifyLibrary(@AuthenticationPrincipal PrincipalDetails principalDetails, @RequestBody LibraryBookUpdateRequestDTO libraryBookUpdateRequestDTO, @RequestParam("read_status") int oldReadStatus) {
+		Long memberId = principalDetails.getMember().getId();
 		libraryBookService.modifyLibrary(memberId, oldReadStatus, libraryBookUpdateRequestDTO);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	@DeleteMapping
-	public ResponseEntity deleteBook(@RequestHeader("Authorization") String token, @RequestParam("book_id") Long bookId) {
-		Long memberId = jwtTokenUtil.getMemberId(token);
+	public ResponseEntity deleteBook(@AuthenticationPrincipal PrincipalDetails principalDetails, @RequestParam("book_id") Long bookId) {
+		Long memberId = principalDetails.getMember().getId();
 		libraryBookService.deleteBook(memberId, bookId);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
