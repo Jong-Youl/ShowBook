@@ -18,7 +18,6 @@ import { memberState,readCategoricalState, readMonthlyState } from '../../lib/me
 import MemberImageModal from './MemberImageChangeModal';
 import { ProfileImageInModal } from './MemberImageChangeModal.styles';
 
-
 const memberService = new MemberService()
 const BASIC_IMG_PATH = "https://showbookbucket.s3.ap-northeast-2.amazonaws.com/user-image/images+(2).png"
 
@@ -37,16 +36,9 @@ const MyPage = () => {
       }
     }
 
-    const getMontlyBookData = async(year) => {
-      let response = await memberService.getBookListByMonth(year)
-      if (response) {
-        setMontlyyBookData(response)
-      }
-    }
 
     if(activeTab == 'records'){
       getCategoryBookData();
-      getMontlyBookData(2023)
     }
   },[activeTab,setCategoryBookData,setMontlyyBookData])
 
