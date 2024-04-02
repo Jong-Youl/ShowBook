@@ -12,7 +12,7 @@ export const StyledSwiperSlide = styled(SwiperSlide)`
 `;
 
 export const StyledSwiper = styled(Swiper)`
-  aspect-ratio: 3 / 3;
+  aspect-ratio: 3 / 5;
 
   width: 90svw;
   max-width: 100%;
@@ -29,7 +29,7 @@ export const CurrentBookTitle = styled.div`
 
 export const CurrentBookLike = styled.div`
   position: absolute;
-  bottom: 2vh;
+  top: 6vh;
   left: 50%;
   transform: translateX(0);
   max-width: 456px;
@@ -58,6 +58,12 @@ export const Information = styled.div`
 `;
 
 export const BookTitle = styled.div`
+  width: 100%;
+  max-width: 225px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
   font-size: 20px;
   font-weight: bold;
   text-align: left;
