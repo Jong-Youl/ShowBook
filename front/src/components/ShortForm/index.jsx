@@ -46,7 +46,10 @@ function ShortForm({ shortsJson }) {
         key={index}
         style={{
           backgroundImage: `url(${book.shook_image_url})`,
-          backgroundSize: 'cover',
+          backgroundSize: 'contain',
+          backgroundPosition: 'center',
+          backgroundColor: 'var(--bg-baige)',
+          backgroundRepeat: 'no-repeat',
         }}
       ></StyledSwiperSlide>
     ));
@@ -64,7 +67,7 @@ function ShortForm({ shortsJson }) {
           ></Lottie>
           <Loading>
             <Loading $bold color='black'>
-              메인화면으로 이동 중입니다!
+              슈욱으로 이동 중입니다!
             </Loading>
             <br />
           </Loading>
@@ -83,6 +86,9 @@ function ShortForm({ shortsJson }) {
             <Information>
               <BookTitle>{currentBook.book_title}</BookTitle>
               <Nickname>{currentBook.writer}</Nickname>
+              <CurrentBookLike>
+                <LikeButton shookId={currentBook.shook_id} />
+              </CurrentBookLike>
             </Information>
           </ProfileHeader>
 
@@ -93,10 +99,6 @@ function ShortForm({ shortsJson }) {
             modules={[EffectFlip]}
           >
             {booksListWithMap}
-
-            <CurrentBookLike>
-              <LikeButton shookId={currentBook.shook_id} />
-            </CurrentBookLike>
           </StyledSwiper>
         </>
       )}
