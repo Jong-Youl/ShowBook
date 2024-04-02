@@ -12,7 +12,8 @@ export function MobileLayout() {
 
 const DefaultLayout = styled.div`
   width: 100%;
-  height: 100%
+  height: -webkit-fill-available;
+  height: fill-available;
   min-height: 90svh;
   max-width: 456px;
   margin: 0 auto;
@@ -20,5 +21,4 @@ const DefaultLayout = styled.div`
   background-color: var(--bg-beige);
   display: flex;
   flex-direction: column;
-  //gap: 24px;
 `;

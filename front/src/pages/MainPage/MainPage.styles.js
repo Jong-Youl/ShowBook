@@ -14,6 +14,7 @@ export const RightAlignedButtonContainer = styled.div`
   justify-content: flex-end;
   width: 100%;
   padding-right: 10px;
+  margin-top: 3%;
 `;
 
 export const Heading = styled.span`
