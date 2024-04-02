@@ -17,6 +17,8 @@ function LibrarySelectedResult({ isEditMode }) {
   const bookService = new BookService();
   const navigate = useNavigate();
   //const BASE_URL = process.env.REACT_APP_BASE_URL
+  const [readStatus, setReadStatus] = useState('');
+
 
   const library = async (x) => {
     const books = await getAllbooks(x);
@@ -40,6 +42,7 @@ function LibrarySelectedResult({ isEditMode }) {
         //setBookList(getAllbooks(0));
         const res0 = library(0);
         console.log('bookList 타입 확인 : ' + typeof bookList);
+        setReadStatus(0);
         // console.log(' 넘어온 res 타입 확인: ' + typeof res);
         // console.log('데이터 넘어왔다: ' + res);
         break;
@@ -86,6 +89,7 @@ function LibrarySelectedResult({ isEditMode }) {
         <CategoryChangeModal
           onClose={closeModal}
           selectedBookId={selectedBookId}
+          readStatus={readStatus}
         >
           <p>book id: {selectedBookId}</p>
         </CategoryChangeModal>
