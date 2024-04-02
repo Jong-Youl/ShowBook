@@ -40,18 +40,17 @@ def calculate_score(similarity):
 vcalculate_score = np.vectorize(calculate_score)
 
 def recommendations(book_id_list):    
+    
+    print("=======================================book_id_list=======================================")
+    print(book_id_list)
+    print("===========================================================================================")
 
-    # 책의 id 입력하면 해당 id의 인덱스를 리턴받아 idx에 저장.
-    indices = pd.Series(books.index, index = books['book_id']).drop_duplicates()    
-    
-    
-    # 입력받은 책 인덱스 저장
-    book_indices = [indices.loc[book_id] for book_id in book_id_list]
-    
     sim_scores = [[i,0] for i in range(len(book_embedding_list))]
     tmp_sim_scores = np.zeros(len(book_embedding_list))
     
-    for idx in book_indices:
+    print(len(book_embedding_list))
+    
+    for idx in book_id_list:
         # 해당 책과 다른 책들의 cosine similarity 계산
         cos_similarity = cosine_similarity(
             [book_embedding_list[idx]],book_embedding_list)
@@ -74,14 +73,22 @@ def recommendations(book_id_list):
 
     book_indices = [i[0] for i in sim_scores]
     
+    
+    print("=======================================book_indices========================================")
+    print(book_indices)
+    
     for book_id in book_indices:
-        if book_id in book_id_list:
+        if (book_id in book_id_list):
             book_indices.remove(book_id)
-            
-    recommend = books.iloc[book_indices].reset_index(drop=True)
+    print(book_indices)
+    print("===========================================================================================")
+    recommend = books.loc[book_indices]
     recommend = recommend.rename(columns={"book_imageurl":"book_image_url"})
     recommend = recommend[['book_id','book_image_url','title']]
     
+    print("=================================book_recommended=======================================")
+    print(recommend["book_id"])
+    print("===========================================================================================")
     return recommend
 
 def random_recommendations():
