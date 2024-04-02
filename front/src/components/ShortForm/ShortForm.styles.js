@@ -29,12 +29,13 @@ export const CurrentBookTitle = styled.div`
 
 export const CurrentBookLike = styled.div`
   position: absolute;
-  bottom: 11vh;
+  bottom: 2vh;
   left: 50%;
   transform: translateX(0);
   max-width: 456px;
   font-size: 24px;
   padding-left: 150px;
+  z-index: 1000;
 `;
 
 export const ProfileHeader = styled.div`
