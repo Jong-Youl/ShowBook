@@ -19,24 +19,34 @@ import {
   ProfileHeader,
   ProfileImage,
 } from './ShortForm.styles';
+import { fetchShook } from '../../api/ShookService';
 
 var page = 1;
 const empty_profile = process.env.REACT_APP_EMPTY_PROFILE;
 
 function ShortForm({ shortsJson }) {
-  const shook_list = shortsJson.data;
+  const [shook_list, setShookList] = useState([]);
   const [currentBook, setCurrentBook] = useState({});
 
   useEffect(() => {
-    if (shook_list) {
-      setCurrentBook(shook_list[page]);
-    }
-  }, [shook_list, shortsJson.length]);
+    setShookList(shortsJson.data);
+    if (shortsJson.data) setCurrentBook(shortsJson.data[0]);
+  }, [shortsJson.data]);
 
-  const handleSlideChange = (swiper) => {
+  const handleSlideChange = async (swiper) => {
     page = swiper.realIndex;
-    // console.log('swiper ' + swiper.realIndex);
-    setCurrentBook(shook_list[swiper.realIndex]);
+    setCurrentBook(shook_list[page]);
+
+    if ((page + 1) % 5 === 0) {
+      await fetchAdditionalShooks(page + 1);
+    }
+  };
+
+  const fetchAdditionalShooks = async (nextPage) => {
+    const additionalShooks = await fetchShook(nextPage);
+    if (additionalShooks.success === true) {
+      setShookList((prev) => [...prev, ...additionalShooks.data]);
+    }
   };
 
   const booksListWithMap =
@@ -97,6 +107,7 @@ function ShortForm({ shortsJson }) {
             effect={'flip'}
             grabCursor={true}
             modules={[EffectFlip]}
+            rebuildOnUpdate={true}
           >
             {booksListWithMap}
           </StyledSwiper>
