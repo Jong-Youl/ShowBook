@@ -47,7 +47,7 @@ const BookDetail = () => {
     // containerRef.current가 null이 아니라면 스크롤 위치 계산
     if (containerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-      if (scrollTop + clientHeight >= scrollHeight) {
+      if (scrollTop + clientHeight + 5 >= scrollHeight) {
         fetchNextPage();
       }
     }
