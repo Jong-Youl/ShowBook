@@ -45,24 +45,18 @@ export const getAllbooks = async (readStatus) => {
 
 // 서재 간 책 이동
 // Todo: RequestBody 추가
-export const moveBooks = (readStatus) => {
+export const moveBooks = (readStatus, bookId, newReadStatus) => {
+  const data = {bookId: bookId, newReadStatus: newReadStatus};
+  console.log("DATA -> " + data)
   axios
     .patch(
-      `/api/library?read_status=${readStatus}`,
+      `/api/library?read_status=${readStatus}`, data,
       {
         headers: {
-          'Authorization': localStorage.getItem('accessToken'),
-        },
-        data: {},
-      },
-      { withCredentials: true },
+          'Authorization': localStorage.getItem('accessToken')
+        }
+      }
     )
-    .then((res) => {
-      console.log(res.data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
 };
 
 // 서재 내 책 삭제
