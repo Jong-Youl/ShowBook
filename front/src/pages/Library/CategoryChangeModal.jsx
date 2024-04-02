@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React, { useEffect, useState } from 'react';
 import {
   Backdrop,
@@ -9,21 +10,21 @@ import {
 } from './CategoryChangeModal.styles';
 import { useParams } from 'react-router-dom';
 import { deleteBook } from '../../api/LibraryService';
-//import { useNavigate } from 'react-router';
+import { moveBooks } from '../../api/LibraryService';
 
 const CategoryChangeModal = ({
   onClose,
   children,
-  selectedBookId
+  selectedBookId,
+  readStatus
 }) => {
   const { category } = useParams();
   const [selectedButton, setSelectedButton] = useState(null);
-  //const navigate = useNavigate();
 
   const categoryToButtonText = {
-    before: '읽고 싶은',
-    now: '읽고 있는',
-    after: '읽은',
+    0: '읽고 싶은',
+    1: '읽고 있는',
+    2: '읽은',
   };
 
   const handleBookDeleteClick = async (book_id) => {
@@ -44,12 +45,14 @@ const CategoryChangeModal = ({
 
   const handleButtonClick = (buttonId) => {
     setSelectedButton(buttonId);
-    //api 연동
+    moveBooks(readStatus, selectedBookId, buttonId);
+    console.log("readStatus 확인: " + readStatus)
+    console.log("selectedBookId 확인: " + selectedBookId)
+    console.log("buttonId 확인: " + buttonId)
   };
 
   const handleModalClose = () => {
     onClose();
-    //navigate(0);
     window.location.replace(`/library/${category}`);
   }
 
@@ -64,7 +67,10 @@ const CategoryChangeModal = ({
             <BookStatusChangeButton
               key={key}
               isSelected={selectedButton === text}
-              onClick={() => handleButtonClick(text)}
+              onClick={() => {
+                handleButtonClick(key);
+                handleModalClose();
+              }}
             >
               {text}
             </BookStatusChangeButton>
