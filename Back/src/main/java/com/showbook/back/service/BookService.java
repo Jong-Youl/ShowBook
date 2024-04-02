@@ -1,16 +1,18 @@
 package com.showbook.back.service;
 
-import com.showbook.back.common.constants.ErrorCode;
-import com.showbook.back.common.exception.CustomException;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.showbook.back.common.constants.ErrorCode;
+import com.showbook.back.common.exception.CustomException;
 import com.showbook.back.dto.response.BookDetailResponseDTO;
 import com.showbook.back.dto.response.BookPurchaseResponseDTO;
 import com.showbook.back.entity.Book;
+import com.showbook.back.entity.Bookmark;
+import com.showbook.back.entity.Member;
 import com.showbook.back.repository.BookRepository;
+import com.showbook.back.repository.BookmarkRepository;
+import com.showbook.back.security.model.PrincipalDetails;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -27,18 +29,22 @@ public class BookService {
 	@Value("${purchase.bridge}")
 	private String bridge;
 
+	private final BookmarkRepository bookmarkRepository;
 	private final BookRepository bookRepository;
 
-	public BookDetailResponseDTO getDetail(long bookId) {
-		Optional<Book> book = bookRepository.findById(bookId);
+	public BookDetailResponseDTO getDetail(Long bookId, PrincipalDetails principalDetails) {
+		Book book = bookRepository.findById(bookId).orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
+		Member member = principalDetails.getMember();
+		Boolean isLiked = bookmarkRepository.findByBookAndMember(book, member) != null;
 
 		//feature에 결측치를 가지는 book은 db에 없음
-		return book.map(value -> BookDetailResponseDTO.builder()
-			.book(value)
-			.build()).orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
+		return BookDetailResponseDTO.builder()
+			.book(book)
+			.isLiked(isLiked)
+			.build();
 	}
 
-	public BookPurchaseResponseDTO getPurchaseUrl(long bookId) {
+	public BookPurchaseResponseDTO getPurchaseUrl(Long bookId) {
 
 		Book book = bookRepository.findById(bookId).
 			orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
@@ -64,4 +70,24 @@ public class BookService {
 		result.append(bridge).append(target2).append(suffix);
 		return result.toString();
 	}
+
+	public void doBookmark(PrincipalDetails principalDetails, Long bookId) {
+		Member member = principalDetails.getMember();
+		Book book = bookRepository.findById(bookId).orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
+
+		Bookmark bookmark = Bookmark.builder()
+			.member(member)
+			.book(book)
+			.build();
+		bookmarkRepository.save(bookmark);
+	}
+	public void deleteBookmark(PrincipalDetails principalDetails, Long bookId) {
+		Member member = principalDetails.getMember();
+		Book book = bookRepository.findById(bookId).orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
+
+		Bookmark bookmark = bookmarkRepository.findByBookAndMember(book, member);
+		bookmarkRepository.delete(bookmark);
+	}
+
+
 }
