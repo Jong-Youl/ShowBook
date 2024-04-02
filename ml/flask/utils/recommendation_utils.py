@@ -41,15 +41,14 @@ vcalculate_score = np.vectorize(calculate_score)
 
 def recommendations(book_id_list):    
     
+    book_id_list = [book_id - 1 for book_id in book_id_list]
     print("=======================================book_id_list=======================================")
     print(book_id_list)
     print("===========================================================================================")
 
     sim_scores = [[i,0] for i in range(len(book_embedding_list))]
     tmp_sim_scores = np.zeros(len(book_embedding_list))
-    
-    print(len(book_embedding_list))
-    
+        
     for idx in book_id_list:
         # 해당 책과 다른 책들의 cosine similarity 계산
         cos_similarity = cosine_similarity(
@@ -82,7 +81,7 @@ def recommendations(book_id_list):
             book_indices.remove(book_id)
     print(book_indices)
     print("===========================================================================================")
-    recommend = books.loc[book_indices]
+    recommend = books.iloc[book_indices]
     recommend = recommend.rename(columns={"book_imageurl":"book_image_url"})
     recommend = recommend[['book_id','book_image_url','title']]
     
