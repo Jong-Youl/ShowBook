@@ -4,10 +4,12 @@ import static org.springframework.http.HttpStatus.*;
 
 import java.util.List;
 
+import com.showbook.back.security.model.PrincipalDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,8 +35,9 @@ public class ReviewController {
 
 	@PostMapping("/{bookId}")
 	@ResponseStatus(CREATED)
-	public void createReview(@RequestBody ReviewRequestDTO reviewRequestDTO, @PathVariable("bookId") Long bookId,  @RequestHeader("Authorization") String token) {
-		reviewService.createReview(reviewRequestDTO,bookId,token);
+	public void createReview(@RequestBody ReviewRequestDTO reviewRequestDTO, @PathVariable("bookId") Long bookId,  @AuthenticationPrincipal PrincipalDetails principalDetails) {
+		Long memberId = principalDetails.getMember().getId();
+		reviewService.createReview(reviewRequestDTO,bookId,memberId);
 	}
 
 	@GetMapping("/{bookId}")
@@ -43,8 +46,9 @@ public class ReviewController {
 	}
 
 	@GetMapping("/my")
-	public ResponseEntity<Page<MyReviewResponseDTO>> getMyReviews(Pageable pageable, @RequestHeader("Authorization") String token) {
-		return new ResponseEntity<>(reviewService.getMyReviews(pageable, token), OK);
+	public ResponseEntity<Page<MyReviewResponseDTO>> getMyReviews(Pageable pageable, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+		Long memberId = principalDetails.getMember().getId();
+		return new ResponseEntity<>(reviewService.getMyReviews(pageable, memberId), OK);
 	}
 
 	@GetMapping("/rating/{bookId}")
