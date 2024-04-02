@@ -93,10 +93,11 @@ function ShortForm({ shortsJson }) {
             modules={[EffectFlip]}
           >
             {booksListWithMap}
+
+            <CurrentBookLike>
+              <LikeButton shookId={currentBook.shook_id} />
+            </CurrentBookLike>
           </StyledSwiper>
-          <CurrentBookLike>
-            <LikeButton shookId={currentBook.shook_id} />
-          </CurrentBookLike>
         </>
       )}
     </>

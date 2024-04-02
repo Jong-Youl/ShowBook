@@ -5,7 +5,7 @@ const StyledLikeButton = styled.button`
   width: 40px;
   height: 40px;
 
-  background-color: var(--bg-beige);
+  background-color: rgba(255, 255, 255, 0);
   background-image: url(${(props) =>
     props.likestatus === 'true'
       ? '/img/icon/heartSelected.png'
