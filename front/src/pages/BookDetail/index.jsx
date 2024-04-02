@@ -162,6 +162,7 @@ const BookDetail = () => {
 
 const Container = styled.div`
   height: calc(85vh - 50px);
+  margin-left: 20px;
   overflow-y: auto;
   ${scrollbarStyles}
 `;
