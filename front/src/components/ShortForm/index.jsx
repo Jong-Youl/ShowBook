@@ -20,7 +20,7 @@ import {
   ProfileImage,
 } from './ShortForm.styles';
 
-var page = 0;
+var page = 1;
 const empty_profile = process.env.REACT_APP_EMPTY_PROFILE;
 
 function ShortForm({ shortsJson }) {

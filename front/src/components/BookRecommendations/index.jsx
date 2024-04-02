@@ -9,7 +9,7 @@ import { bookDataPropTypes } from '../../types/recommendedBooksPropTypes';
 import { fetchBookReviewRating } from '../../api/ReviewService';
 import { BookService } from '../../api/bookService';
 
-var page = 0;
+var page = 1;
 
 function BookRecommendations({ booksJson, setSwiperInstance }) {
 
