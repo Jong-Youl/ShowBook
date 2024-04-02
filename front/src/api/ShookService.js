@@ -7,14 +7,14 @@ const RECOM_URL = process.env.REACT_APP_RECOM_URL;
 const local = localAxios();
 const multi = multiAxios();
 
-export const fetchShook = async () => {
+export const fetchShook = async (page) => {
   try {
     const memberId = jwtDecode(localStorage.getItem('accessToken')).id;
     const response = await local.get(
-      `${RECOM_URL}/ml/api/shook/recommend/${memberId}`,
+      `${RECOM_URL}/ml/api/shook/recommend?member_id=${memberId}&page=${page}`,
     );
     console.log(response.data);
-    return response.data;
+    return response.data;     
   } catch (error) {
     console.error('Error fetching shook:', error);
     throw error;
