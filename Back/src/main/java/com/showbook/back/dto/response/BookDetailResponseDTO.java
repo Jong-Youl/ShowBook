@@ -17,9 +17,10 @@ public class BookDetailResponseDTO {
 	private final String bookImageURL;
 	private final String description;
 	private final Category category;
+	private final Boolean isLiked;
 
 	@Builder
-	public BookDetailResponseDTO(Book book) {
+	public BookDetailResponseDTO(Book book, Boolean isLiked) {
 		this.bookId = book.getBookId();
 		this.title = book.getTitle();
 		this.author = book.getAuthor();
@@ -28,6 +29,6 @@ public class BookDetailResponseDTO {
 		this.bookImageURL = book.getBookImageURL();
 		this.description = book.getDescription();
 		this.category = book.getCategory();
-
+		this.isLiked = isLiked;
 	}
 }
