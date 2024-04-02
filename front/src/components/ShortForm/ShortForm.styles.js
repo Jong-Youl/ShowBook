@@ -68,6 +68,7 @@ export const BookTitle = styled.div`
   font-weight: bold;
   text-align: left;
   color: #000000;
+  cursor: pointer;
 `;
 export const Nickname = styled.div`
   font-size: 16px;
