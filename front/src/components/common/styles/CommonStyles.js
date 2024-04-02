@@ -117,3 +117,18 @@ export const SmallButton = styled.button`
   margin-top: 15px;
   width: fit-content;
 `;
+
+export const TitleAndButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 제목과 버튼 사이 공간을 최대로 확보 */
+  margin-bottom: 20px; /* 컨테이너 아래 여백 추가 */
+`;
+
+export const ArrowButton = styled.button`
+  padding: 5px;
+  font-size: 20px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+`;
