@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Heading } from '../../pages/MainPage/MainPage.styles';
 import { StyledSwiper, StyledSwiperSlide } from './BookRecommendations.styles';
 import 'swiper/css';
@@ -9,12 +9,13 @@ import { bookDataPropTypes } from '../../types/recommendedBooksPropTypes';
 import { fetchBookReviewRating } from '../../api/ReviewService';
 import { BookService } from '../../api/bookService';
 
-var page = 0;
-
 function BookRecommendations({ booksJson, setSwiperInstance }) {
 
   const navigate = useNavigate();
   const bookService = new BookService();
+
+  // useState 훅을 사용하여 page 상태를 관리합니다.
+  const [page, setPage] = useState(0);
 
   const [currentBook, setCurrentBook] = useState({})
 
@@ -22,11 +23,10 @@ function BookRecommendations({ booksJson, setSwiperInstance }) {
     if (booksJson){
       setCurrentBook(booksJson[page])
     }
-  },[currentBook,booksJson])
+  },[page, booksJson]) // page가 변경될 때마다 useEffect가 다시 실행됩니다.
 
   const handleSlideChange = (swiper) =>{
-    page = swiper.realIndex;
-    setCurrentBook(booksJson[swiper.realIndex])
+    setPage(swiper.realIndex); // swiper의 실제 인덱스를 페이지로 설정합니다.
   }
 
   const onHandleClick = async (book_id) => {
