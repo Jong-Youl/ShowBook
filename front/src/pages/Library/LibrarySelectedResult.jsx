@@ -92,7 +92,7 @@ function LibrarySelectedResult({ isEditMode }) {
           selectedBookId={selectedBookId}
           readStatus={readStatus}
         >
-          <p> &nbsp;</p>
+          <p>도서 상태변경</p>
         </CategoryChangeModal>
       )}
     </>
