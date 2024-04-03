@@ -17,7 +17,6 @@ import com.showbook.back.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/book")
@@ -46,7 +45,6 @@ public class BookController {
 	//북마크 취소
 	@DeleteMapping("/bookmark/{book_id}")
 	public void deleteBookmark(@PathVariable("book_id") Long bookId, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-		log.info("자알 받았습니다앙~");
 		bookService.deleteBookmark(principalDetails, bookId);
 	}
 
