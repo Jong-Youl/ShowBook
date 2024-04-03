@@ -149,7 +149,9 @@ const BookDetail = () => {
             onClick={handleClick}
           />
           <BuyButton>
-            <a href={purchaseUrl}>구매하러가기</a>
+            <a href={purchaseUrl} target='_blank' rel='noopener noreferrer'>
+              구매하러가기
+            </a>
           </BuyButton>
           <ReviewButton onClick={goReview}>한줄평 작성</ReviewButton>
         </ButtonsContainer>
