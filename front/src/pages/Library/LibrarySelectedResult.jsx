@@ -19,7 +19,6 @@ function LibrarySelectedResult({ isEditMode }) {
   //const BASE_URL = process.env.REACT_APP_BASE_URL
   const [readStatus, setReadStatus] = useState('');
 
-
   const library = async (x) => {
     const books = await getAllbooks(x);
     setBookList(books);
@@ -92,9 +91,7 @@ function LibrarySelectedResult({ isEditMode }) {
           onClose={closeModal}
           selectedBookId={selectedBookId}
           readStatus={readStatus}
-        >
-          <p>book id: {selectedBookId}</p>
-        </CategoryChangeModal>
+        ></CategoryChangeModal>
       )}
     </>
   );

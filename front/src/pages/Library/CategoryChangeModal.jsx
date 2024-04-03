@@ -16,7 +16,7 @@ const CategoryChangeModal = ({
   onClose,
   children,
   selectedBookId,
-  readStatus
+  readStatus,
 }) => {
   const { category } = useParams();
   const [selectedButton, setSelectedButton] = useState(null);
@@ -29,11 +29,11 @@ const CategoryChangeModal = ({
 
   const handleBookDeleteClick = async (book_id) => {
     try {
-      console.log('bookId : ' + book_id);
+      // console.log('bookId : ' + book_id);
       deleteBook(book_id);
-      console.log('category : ' + category);
+      // console.log('category : ' + category);
     } catch (error) {
-      console.error('Error fetching book:', error);
+      // console.error('Error fetching book:', error);
     }
   };
 
@@ -46,15 +46,15 @@ const CategoryChangeModal = ({
   const handleButtonClick = (buttonId) => {
     setSelectedButton(buttonId);
     moveBooks(readStatus, selectedBookId, buttonId);
-    console.log("readStatus 확인: " + readStatus)
-    console.log("selectedBookId 확인: " + selectedBookId)
-    console.log("buttonId 확인: " + buttonId)
+    // console.log("readStatus 확인: " + readStatus)
+    // console.log("selectedBookId 확인: " + selectedBookId)
+    // console.log("buttonId 확인: " + buttonId)
   };
 
   const handleModalClose = () => {
     onClose();
     window.location.replace(`/library/${category}`);
-  }
+  };
 
   return (
     <>
