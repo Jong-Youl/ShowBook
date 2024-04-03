@@ -20,8 +20,8 @@ def getShooks():
     #1. member_id를 받으면 member_id랑 매칭되는 shook_like 정보 리턴
     member_df = get_shook_like(member_id)
     
-    if (len(member_df) < 30):
-        # member의 shook_like 개수가 30개 미만인 경우 
+    if (len(member_df) < 3):
+        # member의 shook_like 개수가 3개 미만인 경우 
         # 인기 순으로 슈욱을 들고 온다
         print("====================1. get_random_shook====================")
         shooks_list = get_random_shooks(page)
