@@ -1,4 +1,4 @@
-import CATEGORY_MAPPING from "../../../User/CategoryServey/CATEGORY_MAPPING";
+import CATEGORY_MAPPING from "../../../User/CategorySurvey/CATEGORY_MAPPING";
 
 const toCategoryBookDataList = (readingLogs) => {
     const response = []
