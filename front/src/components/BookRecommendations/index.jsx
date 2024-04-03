@@ -9,7 +9,7 @@ import { bookDataPropTypes } from '../../types/recommendedBooksPropTypes';
 import { fetchBookReviewRating } from '../../api/ReviewService';
 import { BookService } from '../../api/bookService';
 
-var page = 1;
+var page = 0;
 
 function BookRecommendations({ booksJson, setSwiperInstance }) {
 
@@ -72,4 +72,3 @@ function BookRecommendations({ booksJson, setSwiperInstance }) {
 BookRecommendations.propTypes = bookDataPropTypes;
 
 export default BookRecommendations;
-
