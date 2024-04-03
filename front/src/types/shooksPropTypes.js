@@ -5,7 +5,7 @@ export const shookDataPropTypes = {
     PropTypes.shape({
       book_id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      memberImageUrl: PropTypes.string.isRequired,
+      memberImageURL: PropTypes.string.isRequired,
       nickname: PropTypes.string.isRequired,
       shook_id: PropTypes.number.isRequired,
       shookImageUrl: PropTypes.string.isRequired,
