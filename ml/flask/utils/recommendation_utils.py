@@ -112,9 +112,9 @@ def recommend_by_category(category_list):
     
     book_list = []
     
-    # 카테고리 별로 책을 랜덤으로 5개 추천
+    # 카테고리 별로 책을 랜덤으로 10개 추천
     for category in category_list:
-        books = Book.query.filter(Book.category.in_([category])).order_by(func.random()).limit(5).all()
+        books = Book.query.filter(Book.category.in_([category])).order_by(func.random()).limit(10).all()
         
         for book in books :
             response = BookResponseDTO(book)
