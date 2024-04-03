@@ -134,7 +134,7 @@ const BookDetail = () => {
         <ButtonsContainer>
           <BookMarkImg
             src={
-              bookmarked ? `/img/icon/bookmark.png` : `/img/icon/bookmarked.png`
+              bookmarked ? `/img/icon/bookmarked.png` : `/img/icon/bookmark.png`
             }
             onClick={handleClick}
           />
