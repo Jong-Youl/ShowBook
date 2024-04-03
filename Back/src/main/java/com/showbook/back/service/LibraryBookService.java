@@ -51,7 +51,6 @@ public class LibraryBookService {
             Month month = libraryBook.getFinishedDate().getMonth();
             months.put(month, months.getOrDefault(month,0) + 1);
         }
-
         return months;
     }
 
