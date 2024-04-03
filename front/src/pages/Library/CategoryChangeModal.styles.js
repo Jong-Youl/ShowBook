@@ -36,9 +36,10 @@ export const CloseButton = styled.button`
 
 export const BookStatusChangeButton = styled.button`
   padding: 30px 20px;
-  font-size: large;
+  font-size: medium;
   margin: 5px;
   margin-top: 20px;
+  min-height: 80px;
   background-color: ${(props) =>
     props.isSelected ? 'var(--main)' : 'var(--bg-beige)'};
   color: ${(props) => (props.isSelected ? '#ffffff' : 'var(--main)')};
