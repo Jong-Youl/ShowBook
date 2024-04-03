@@ -25,10 +25,12 @@ const BookDetail = () => {
   const location = useLocation();
   const book = location.state.book;
   const navigate = useNavigate();
-  const [bookmarked, setBookmarked] = useState(false);
+  const [bookmarked, setBookmarked] = useState(book.isLiked);
   const [purchaseUrl, setPurchaseUrl] = useState('');
   const [rating, setRating] = useState(0.0);
   const bookService = new BookService();
+  
+  console.log("isLiked : " , book.isLiked);
 
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
     ['bookReviews', book.bookId], // 쿼리 키에 bookId를 포함시킴
@@ -84,7 +86,15 @@ const BookDetail = () => {
     setBookmarked((prevState) => !prevState);
     createWishBook(book.bookId);
   };
-
+  useEffect(() => {
+    if(bookmarked) {
+      bookService.doBookmark(book.bookId);
+    }
+    else {
+      bookService.deleteBookmark(book.bookId);
+    }
+  }, [bookmarked])
+  
   const handleGoBack = () => {
     navigate(-1);
   };
