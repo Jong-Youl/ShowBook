@@ -48,9 +48,11 @@ function LibrarySelectedResult({ isEditMode }) {
         break;
       case '1':
         const res1 = library(1);
+        setReadStatus(1);
         break;
       case '2':
         const res2 = library(2);
+        setReadStatus(2);
         break;
       default:
         setBookList([]);
