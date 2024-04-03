@@ -91,7 +91,9 @@ function LibrarySelectedResult({ isEditMode }) {
           onClose={closeModal}
           selectedBookId={selectedBookId}
           readStatus={readStatus}
-        ></CategoryChangeModal>
+        >
+          <p> </p>
+        </CategoryChangeModal>
       )}
     </>
   );
