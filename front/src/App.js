@@ -15,12 +15,13 @@ import Review from './pages/Review';
 import BookDetail from './pages/BookDetail';
 import Login from './pages/User/Login';
 import Signup from './pages/User/Signup';
-import SelectCategory from './pages/User/CategoryServey';
+import SelectCategory from './pages/User/CategorySurvey';
 import { FullScreenLayout } from './layouts/FullScreenLayout';
 import Proxy from './pages/User/Proxy';
 import ShookCreated from './pages/Add/ShookCreated';
 import ShookImageUpload from './pages/Add/ShookImageUpload';
 import { Outlet } from 'react-router';
+import RequireAuth from './pages/User/RequireAuth';
 
 function App() {
   return (
@@ -29,10 +30,10 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route index element={<Navigate replace to='/user/login' />} />
-            <Route path='user' element={<FullScreenLayout />}>
+            <Route path='user' element={<RequireAuth><FullScreenLayout /></RequireAuth>}>
               <Route path='login' element={<Login />} />
               <Route path='signup' element={<Signup />} />
-              <Route path='category-servey' element={<SelectCategory />} />
+              <Route path='category-survey' element={<SelectCategory />} />
               <Route path='proxy' element={<Proxy />} />
             </Route>
             <Route path='/' element={<MobileLayout />}>
