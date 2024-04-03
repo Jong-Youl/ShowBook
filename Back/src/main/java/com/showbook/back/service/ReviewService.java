@@ -55,6 +55,7 @@ public class ReviewService {
 
 	public double getBookReviewRating(Long bookId) {
 		double avgRating = reviewRepository.getBookAverageRating(bookId).orElse(0.0);
+		avgRating = Math.round(avgRating * 10) / 10.0;
 		return avgRating;
 	}
 //	public Long getMemberId(String token) {
