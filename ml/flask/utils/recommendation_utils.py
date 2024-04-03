@@ -39,17 +39,20 @@ def calculate_score(similarity):
 
 vcalculate_score = np.vectorize(calculate_score)
 
-def recommendations(book_id_list):    
+def recommendations(book_id_list): 
+    # print("=======================================book_id_list=======================================")
+    # print(book_id_list)
+    # print("===========================================================================================")
     
-    book_id_list = [book_id - 1 for book_id in book_id_list]
-    print("=======================================book_id_list=======================================")
-    print(book_id_list)
-    print("===========================================================================================")
+    book_idx_list = [book_id - 1 for book_id in book_id_list]
+    # print("=======================================book_idx_list=======================================")
+    # print(book_idx_list)
+    # print("===========================================================================================")
 
     sim_scores = [[i,0] for i in range(len(book_embedding_list))]
     tmp_sim_scores = np.zeros(len(book_embedding_list))
         
-    for idx in book_id_list:
+    for idx in book_idx_list:
         # 해당 책과 다른 책들의 cosine similarity 계산
         cos_similarity = cosine_similarity(
             [book_embedding_list[idx]],book_embedding_list)
@@ -72,22 +75,23 @@ def recommendations(book_id_list):
 
     book_indices = [i[0] for i in sim_scores]
     
+    # print("=======================================sim_scores========================================")
+    # print(sim_scores)
+    # print("===========================================================================================")
     
-    print("=======================================book_indices========================================")
-    print(book_indices)
+    # print("=======================================book_indices========================================")
+    # print(book_indices)
     
-    for book_id in book_indices:
-        if (book_id in book_id_list):
-            book_indices.remove(book_id)
-    print(book_indices)
-    print("===========================================================================================")
+    for book_idx in book_idx_list:
+        if (book_idx in book_indices):
+            book_indices.remove(book_idx)
+            continue
+    # print(book_indices)
+    # print("===========================================================================================")
     recommend = books.iloc[book_indices]
     recommend = recommend.rename(columns={"book_imageurl":"book_image_url"})
     recommend = recommend[['book_id','book_image_url','title']]
-    
-    print("=================================book_recommended=======================================")
-    print(recommend["book_id"])
-    print("===========================================================================================")
+
     return recommend
 
 def random_recommendations():
