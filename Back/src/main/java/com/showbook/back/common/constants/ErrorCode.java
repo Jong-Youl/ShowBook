@@ -32,6 +32,7 @@ public enum ErrorCode {
      * BOOK
      */
     BOOK_NOT_FOUND(NOT_FOUND, "해당하는 책을 찾을 수 없습니다."),
+    BOOKMARK_NOT_FOUND(NOT_FOUND, "북마크가 없습니다."),
 
     /**
      * SHOOK

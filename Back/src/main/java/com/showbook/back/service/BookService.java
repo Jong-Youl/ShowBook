@@ -35,7 +35,7 @@ public class BookService {
 	public BookDetailResponseDTO getDetail(Long bookId, PrincipalDetails principalDetails) {
 		Book book = bookRepository.findById(bookId).orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
 		Member member = principalDetails.getMember();
-		Boolean isLiked = bookmarkRepository.findByBookAndMember(book, member) != null;
+		Boolean isLiked = bookmarkRepository.findByBookAndMember(book, member).isPresent();
 
 		//feature에 결측치를 가지는 book은 db에 없음
 		return BookDetailResponseDTO.builder()
@@ -75,19 +75,21 @@ public class BookService {
 		Member member = principalDetails.getMember();
 		Book book = bookRepository.findById(bookId).orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
 
-		Bookmark bookmark = Bookmark.builder()
-			.member(member)
-			.book(book)
-			.build();
-		bookmarkRepository.save(bookmark);
+		if(bookmarkRepository.findByBookAndMember(book, member).isEmpty()) {
+			Bookmark bookmark = Bookmark.builder()
+				.member(member)
+				.book(book)
+				.build();
+			bookmarkRepository.save(bookmark);
+		}
 	}
 	public void deleteBookmark(PrincipalDetails principalDetails, Long bookId) {
 		Member member = principalDetails.getMember();
 		Book book = bookRepository.findById(bookId).orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
 
-		Bookmark bookmark = bookmarkRepository.findByBookAndMember(book, member);
-		bookmarkRepository.delete(bookmark);
+		if(bookmarkRepository.findByBookAndMember(book, member).isPresent()) {
+			Bookmark bookmark = bookmarkRepository.findByBookAndMember(book, member).orElseThrow(() -> new CustomException(ErrorCode.BOOKMARK_NOT_FOUND));
+			bookmarkRepository.delete(bookmark);
+		}
 	}
-
-
 }
