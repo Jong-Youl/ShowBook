@@ -12,7 +12,7 @@ const ReviewCardContainer = styled.div`
   align-items: flex-start;
 `;
 
-const BookImage = styled.img`
+const MemberProfileImage = styled.img`
   width: 40px; // 이미지 너비
   height: 40px; // 이미지 높이를 너비와 동일하게 설정
   border-radius: 50%; // 완벽한 원형을 만들기 위해 border-radius를 50%로 설정
@@ -98,17 +98,16 @@ const ReviewCard = ({ review }) => {
   };
 
   function handleBookItemClick() {
-    alert('리뷰 rating 항상 0으로 리턴받는데?');
-
+    //alert('리뷰 rating 항상 0으로 리턴받는데?');
     // onHandleClick(bookId);
     onHandleClick(2);
   }
 
   return (
     <ReviewCardContainer>
-      <BookImage
-        src='https://showbookbucket.s3.ap-northeast-2.amazonaws.com/user-image/images+(1).png'
-        alt='User Profile'
+      <MemberProfileImage
+        src={`${review.memberImageUrl}`}
+        alt='Memeber Profile Image'
         onClick={() => handleBookItemClick(review.bookId)}
       />
       <ReviewContent>

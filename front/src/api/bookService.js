@@ -37,6 +37,28 @@ class BookService {
       console.error(error);
     }
   }
+
+  async doBookmark(book_id) {
+    try {
+      await axios.post(`${BASE_URL}/api/book/bookmark/${book_id}`, {}
+        ,{headers : {
+            "Authorization" : localStorage.getItem("accessToken")
+          },withCredentials: true })
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async deleteBookmark(book_id) {
+    try {
+      await axios.delete(`${BASE_URL}/api/book/bookmark/${book_id}`
+        ,{headers : {
+            "Authorization" : localStorage.getItem("accessToken")
+          },withCredentials: true })
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
 
 export {BookService};
