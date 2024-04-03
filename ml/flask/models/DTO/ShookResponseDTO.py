@@ -2,6 +2,10 @@ from models.Member import Member
 from models.MemberImage import MemberImage
 
 def ShookResponseDTO(shook):
+    member_image_id = Member.query \
+                            .with_entities(Member.member_image_id) \
+                            .filter(Member.member_id == shook.member_id) \
+                            .all()[0].member_image_id
     response = {
         "shook_id" : shook.shook_id,
         "book_title" : shook.book_title,
@@ -14,7 +18,7 @@ def ShookResponseDTO(shook):
                             .all()[0].nickname,
         "memberImageURL" : MemberImage.query
                             .with_entities(MemberImage.member_image_url)
-                            .filter(MemberImage.member_image_id == Member.member_image_id)
+                            .filter(MemberImage.member_image_id == member_image_id)
                             .all()[0].member_image_url
     }
     
