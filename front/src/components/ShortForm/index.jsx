@@ -36,6 +36,7 @@ function ShortForm({ shortsJson }) {
   useEffect(() => {
     setShookList(shortsJson.data);
     if (shortsJson.data) setCurrentBook(shortsJson.data[0]);
+    console.log('current ' + currentBook);
   }, [shortsJson.data]);
 
   const handleSlideChange = async (swiper) => {
@@ -106,9 +107,9 @@ function ShortForm({ shortsJson }) {
           <ProfileHeader>
             <ProfileImage
               src={
-                currentBook.memberImageUrl == null
+                currentBook.memberImageURL === null
                   ? empty_profile
-                  : currentBook.memberImageUrl
+                  : currentBook.memberImageURL
               }
               alt='Profile'
             />
