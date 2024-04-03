@@ -32,7 +32,7 @@ function Signup() {
     
   // 회원가입 처리 로직
     if (confirm("한 번 지정하신 회원 정보는 바꾸실 수 없습니다.\n진행하시겠습니까?") == true){
-      navigate('/user/category-servey',{
+      navigate('/user/category-survey',{
         state : {
           email : email,
           roleName : role,
