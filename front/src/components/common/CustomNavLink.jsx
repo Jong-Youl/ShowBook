@@ -3,7 +3,8 @@ import { NavLink } from 'react-router-dom';
 
 export const CustomNavLink = styled(NavLink)`
   flex: 1;
-  min-height: 90pxg;
+  font-size: 14px;
+  min-height: 90px;
   padding: 15px;
   text-decoration: none;
   color: black; // 기본 텍스트 색상
