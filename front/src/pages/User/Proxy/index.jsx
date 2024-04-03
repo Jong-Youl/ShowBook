@@ -4,7 +4,7 @@ import { recommendBookState } from '../../../lib/bookRecoil';
 import { useSetRecoilState } from 'recoil';
 import { MemberService } from '../../../api/MemberService';
 import { BookService } from '../../../api/bookService';
-import { Container, Loading } from '../../MainPage/MainPage.styles';
+import { LoadingContainer, Loading } from '../../MainPage/MainPage.styles';
 import Lottie from 'lottie-react';
 import loadingAnimation from './loading.json';
 const memberService = new MemberService();
@@ -46,7 +46,7 @@ function Proxy() {
     }
   }, [memberId, setMemberInfo, setRecommendBooks]);
   return (
-    <Container>
+    <LoadingContainer>
       <Lottie
         animationData={loadingAnimation}
         style={{
@@ -61,7 +61,7 @@ function Proxy() {
         </Loading>
         <br />
       </Loading>
-    </Container>
+    </LoadingContainer>
   );
 }
 
