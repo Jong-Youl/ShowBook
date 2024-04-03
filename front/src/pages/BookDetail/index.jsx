@@ -29,8 +29,8 @@ const BookDetail = () => {
   const [purchaseUrl, setPurchaseUrl] = useState('');
   const [rating, setRating] = useState(0.0);
   const bookService = new BookService();
-  
-  console.log("isLiked : " , book.isLiked);
+
+  console.log('isLiked : ', book.isLiked);
 
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery(
     ['bookReviews', book.bookId], // 쿼리 키에 bookId를 포함시킴
@@ -87,14 +87,13 @@ const BookDetail = () => {
     createWishBook(book.bookId);
   };
   useEffect(() => {
-    if(bookmarked) {
+    if (bookmarked) {
       bookService.doBookmark(book.bookId);
-    }
-    else {
+    } else {
       bookService.deleteBookmark(book.bookId);
     }
-  }, [bookmarked])
-  
+  }, [bookmarked]);
+
   const handleGoBack = () => {
     navigate(-1);
   };
@@ -164,7 +163,7 @@ const BookDetail = () => {
               ))}
             </div>
           ))}
-          {hasNextPage && <div>리뷰 로딩 중...</div>}
+          {hasNextPage && <div></div>}
           <ReviewEnd>모든 리뷰를 불러왔습니다.</ReviewEnd>
         </div>
       </Container>

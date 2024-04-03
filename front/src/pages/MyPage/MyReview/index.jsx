@@ -56,7 +56,7 @@ const MyReview = () => {
           ))}
         </div>
       ))}
-      {hasNextPage && <div>리뷰 로딩 중...</div>}
+      {hasNextPage && <div></div>}
       <div>모든 리뷰를 불러왔습니다.</div>
     </Container>
   );
