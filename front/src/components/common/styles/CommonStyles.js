@@ -86,7 +86,7 @@ export const Button = styled.button`
 
 export const ChartTitle = styled.h2`
   text-align: left;
-  margin: 15px 15px 20px;
+  margin: 15px 15px 0px;
   font-size: 20px;
   font-weight: bold;
 `;
