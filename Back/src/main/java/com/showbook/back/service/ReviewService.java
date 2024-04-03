@@ -43,13 +43,6 @@ public class ReviewService {
 		List<ReviewResponseDTO> reviewResponseDTOList = reviewList.stream()
 			.map(r -> toReviewResponseDTO(r,bookRepository.findById(bookId).orElseThrow(),memberRepository.getReferenceById(r.getMember().getId())))
 			.toList();
-		// for (Review review : reviewList) {
-		// 	Member member = memberRepository.getReferenceById(review.getMember().getId());
-		// 	Book book = bookRepository.findById(bookId).orElseThrow();
-		// 	ReviewResponseDTO reviewResponseDTO = ReviewResponseDTO.builder().title(book.getTitle())
-		// 		.content(review.getContent()).createdAt(review.getCreatedAt()).nickname(member.getNickname()).memberImageUrl(member.getMemberImage().getImageUrl()).build();
-		// 	reviewResponseDTOList.add(reviewResponseDTO);
-		// }
 		return new PageImpl<>(reviewResponseDTOList, reviewList.getPageable(), reviewList.getTotalElements());
 	}
 
@@ -58,18 +51,11 @@ public class ReviewService {
 		Page<Review> reviewList = reviewCustomRepository.findReviewsByMemberId(pageable, memberId);
 		List<MyReviewResponseDTO> myReviewResponseDTOList = reviewList.stream()
 			.map(this::toMyReviewResponseDTO).toList();
-		// for (Review review : reviewList) {
-		// 	MyReviewResponseDTO myReviewResponseDTO = MyReviewResponseDTO.builder().title(review.getBook().getTitle())
-		// 		.bookImageUrl(review.getBook().getBookImageURL()).createdAt(review.getCreatedAt()).rating(review.getRating())
-		// 		.content(review.getContent()).build();
-		// 	myReviewResponseDTOList.add(myReviewResponseDTO);
-		// }
 		return new PageImpl<>(myReviewResponseDTOList,reviewList.getPageable(),reviewList.getTotalElements());
-		// return myReviewResponseDTOList;
 	}
 
 	public double getBookReviewRating(Long bookId) {
-		double avgRating = reviewRepository.getBookAverageRating(bookId);
+		double avgRating = reviewRepository.getBookAverageRating(bookId).orElse(0.0);
 		return avgRating;
 	}
 	public Long getMemberId(String token) {
