@@ -54,9 +54,8 @@ const CategoryChangeModal = ({
   const handleModalClose = () => {
     onClose();
     // window.location.replace(`/library/${category}`);
-    window.location.href(`/library/${category}`);
-    window.location.replace(`/library/${category}`);
-  };
+    // window.location.href(`/library/${category}`);
+    location.reload(`/library/${category}`);
 
   return (
     <>
