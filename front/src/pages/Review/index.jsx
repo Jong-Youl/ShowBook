@@ -108,7 +108,7 @@ const ReviewContent = styled.textarea`
   padding-left: 10px;
   resize : none;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* 그림자 설정 */
-  width: 40svh;
+  width: 40svw;
   height: 15svh;
   ::placeholder {
     color: gray; /* Placeholder 텍스트 색상 설정 */
