@@ -55,6 +55,7 @@ const CategoryChangeModal = ({
     onClose();
     // window.location.replace(`/library/${category}`);
     window.location.href(`/library/${category}`);
+    window.location.replace(`/library/${category}`);
   };
 
   return (
