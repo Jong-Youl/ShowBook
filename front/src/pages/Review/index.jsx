@@ -106,6 +106,7 @@ const ReviewContent = styled.textarea`
   margin-left: 14%;
   padding-top: 10px;
   padding-left: 10px;
+  resize : none;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* 그림자 설정 */
   width: 40svh;
   height: 15svh;
