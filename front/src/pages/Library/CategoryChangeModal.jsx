@@ -56,8 +56,9 @@ const CategoryChangeModal = ({
     // window.location.replace(`/library/${category}`);
     // window.location.href(`/library/${category}`);
     location.reload(`/library/${category}`);
-
-  return (
+    // location.href(`/library/${category}`);
+  };
+    return (
     <>
       <Backdrop onClick={onClose} />
       <ModalWrapper>
